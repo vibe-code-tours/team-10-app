@@ -67,7 +67,12 @@ export default async function OrdersPage() {
               total_amount: number;
               status: string;
               payment_method: string;
-              items?: any[];
+              items?: {
+                id: string;
+                quantity: number;
+                price: number;
+                product?: { title: string } | { title: string }[];
+              }[];
             }) => {
               const status = statusMap[order.status] ?? statusMap.pending;
 
@@ -116,14 +121,11 @@ export default async function OrdersPage() {
                   </div>
 
                   <div className="card-body" style={{ padding: "0" }}>
-                    {order.items?.map(
-                      (item: {
-                        id: string;
-                        product_id: string;
-                        quantity: number;
-                        price: number;
-                        product?: { title: string; image_url: string } | any;
-                      }) => (
+                    {order.items?.map((item) => {
+                      const productInfo = Array.isArray(item.product)
+                        ? item.product[0]
+                        : item.product;
+                      return (
                         <div
                           key={item.id}
                           className="flex items-center justify-between"
@@ -134,7 +136,7 @@ export default async function OrdersPage() {
                           }}
                         >
                           <span>
-                            {item.product?.title || "Unknown Product"}
+                            {productInfo?.title || "Unknown Product"}
                             <span
                               style={{
                                 color: "var(--color-text-tertiary)",
@@ -148,8 +150,8 @@ export default async function OrdersPage() {
                             ${(Number(item.price) * item.quantity).toFixed(2)}
                           </span>
                         </div>
-                      ),
-                    )}
+                      );
+                    })}
                   </div>
 
                   <div
