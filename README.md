@@ -1,69 +1,34 @@
-<!--
-  Vibe Code Tours — Project Starter
-  A ready-to-build repo with CI, security scanning, and team practices baked in.
-  Click "Use this template" → "Create a new repository" to start your project.
-  Then replace THIS README with your project's own (keep the Quickstart working).
--->
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-# {{PROJECT_NAME}}
+## Getting Started
 
-> One line: what you're building, and for which real user.
-
-![ci](../../actions/workflows/ci.yml/badge.svg) ![security](../../actions/workflows/security.yml/badge.svg)
-
-<!-- A screenshot or GIF of the app goes here — it's the best README section. -->
-
----
-
-## Quickstart
+First, run the development server:
 
 ```bash
-git clone <your-repo-url> && cd <repo>
-cp .env.example .env        # fill in real values LOCALLY — never commit .env
-# then, for your stack:
-npm install && npm run dev  # Node    (or)
-# pip install -r requirements.txt && python -m app   # Python
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-Keep this Quickstart working — it's how a new teammate onboards in 2 minutes.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Stack
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-<!-- Languages, frameworks, hosting/deploy target, AI/LLM provider. -->
+## Learn More
 
-## Project structure
+To learn more about Next.js, take a look at the following resources:
 
-| Path | What |
-|---|---|
-| `src/` (or `app/`) | application code |
-| `tests/` | tests |
-| `docs/` | ARCHITECTURE.md + decision records |
-| `.github/` | CI, security, PR/issue templates |
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Team
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-<!-- Members + this week's roles (Anchor / Reviewer). Link your board. -->
+## Deploy on Vercel
 
----
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## What's already set up for you
-
-This repo was created from the **Vibe Code Tours project starter**. It ships with:
-
-| File | Gives you |
-|---|---|
-| `.github/workflows/ci.yml` | lint · typecheck · test · build on every PR (stays green until you add each script) |
-| `.github/workflows/security.yml` | gitleaks (leaked keys) + semgrep (SAST) — advisory, report-only |
-| `.github/dependabot.yml` | weekly PRs for vulnerable / outdated dependencies |
-| `.env.example` | secret hygiene — copy to `.env`, never commit real keys |
-| `.github/pull_request_template.md` · `ISSUE_TEMPLATE/` · `CODEOWNERS` | small reviewed PRs, one-owner issues |
-| `docs/ARCHITECTURE.md` · `docs/decisions/` | a 1-page overview + lightweight ADRs |
-| `working-agreement.md` | how your team works (GitHub Flow + rotating roles) |
-
-**First thing to do:** follow [`SETUP.md`](./SETUP.md) — a ~1-hour checklist to turn it all on.
-
-**Git rule:** branch → PR → 1 teammate review → merge. No push to `main`, no self-merge.
-
-> A green pipeline ≠ secure. Scanners catch leaked keys, known-CVE deps, and injection
-> patterns. They do **not** catch prompt-injection, over-scoped tokens, or hallucinated
-> packages — a human still reviews for those.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
