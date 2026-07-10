@@ -39,7 +39,7 @@ export async function submitReview(formData: FormData) {
 
     revalidatePath(`/products/${productId}`);
     return { success: true };
-  } catch (err: any) {
-    return { error: err.message };
+  } catch (err: unknown) {
+    return { error: err instanceof Error ? err.message : "Unknown error" };
   }
 }

@@ -60,114 +60,131 @@ export default async function OrdersPage() {
             gap: "var(--space-lg)",
           }}
         >
-          {orders.map((order: any) => {
-            const status = statusMap[order.status] ?? statusMap.pending;
+          {orders.map(
+            (order: {
+              id: string;
+              created_at: string;
+              total_amount: number;
+              status: string;
+              payment_method: string;
+              items?: any[];
+            }) => {
+              const status = statusMap[order.status] ?? statusMap.pending;
 
-            return (
-              <div key={order.id} className="card" id={`order-${order.id}`}>
-                <div
-                  className="card-header"
-                  style={{ paddingBottom: "var(--space-sm)" }}
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span
-                        style={{
-                          fontWeight: 600,
-                          fontSize: "var(--font-size-sm)",
-                          color: "var(--color-text-secondary)",
-                        }}
-                      >
-                        Order ID: {order.id.slice(0, 8)}...
-                      </span>
-                      <div
-                        className="text-secondary"
-                        style={{
-                          fontSize: "var(--font-size-xs)",
-                          marginTop: "4px",
-                        }}
-                      >
-                        {new Date(order.created_at).toLocaleDateString(
-                          "my-MM",
-                          {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          },
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex gap-sm">
-                      <span className={`badge ${status.class}`}>
-                        {status.label}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="card-body" style={{ padding: "0" }}>
-                  {order.items?.map((item: any) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between"
-                      style={{
-                        padding: "var(--space-md) var(--space-lg)",
-                        borderBottom: "1px solid var(--color-border-light)",
-                        fontSize: "var(--font-size-sm)",
-                      }}
-                    >
-                      <span>
-                        {item.product?.title || "Unknown Product"}
+              return (
+                <div key={order.id} className="card" id={`order-${order.id}`}>
+                  <div
+                    className="card-header"
+                    style={{ paddingBottom: "var(--space-sm)" }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
                         <span
                           style={{
-                            color: "var(--color-text-tertiary)",
-                            marginLeft: "var(--space-sm)",
+                            fontWeight: 600,
+                            fontSize: "var(--font-size-sm)",
+                            color: "var(--color-text-secondary)",
                           }}
                         >
-                          x {item.quantity}
+                          Order ID: {order.id.slice(0, 8)}...
                         </span>
-                      </span>
-                      <span className="font-bold">
-                        ${(Number(item.price) * item.quantity).toFixed(2)}
-                      </span>
+                        <div
+                          className="text-secondary"
+                          style={{
+                            fontSize: "var(--font-size-xs)",
+                            marginTop: "4px",
+                          }}
+                        >
+                          {new Date(order.created_at).toLocaleDateString(
+                            "my-MM",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            },
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex gap-sm">
+                        <span className={`badge ${status.class}`}>
+                          {status.label}
+                        </span>
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
 
-                <div
-                  className="card-footer"
-                  style={{ background: "var(--color-surface-hover)" }}
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span
+                  <div className="card-body" style={{ padding: "0" }}>
+                    {order.items?.map(
+                      (item: {
+                        id: string;
+                        product_id: string;
+                        quantity: number;
+                        price: number;
+                        product?: { title: string; image_url: string } | any;
+                      }) => (
+                        <div
+                          key={item.id}
+                          className="flex items-center justify-between"
+                          style={{
+                            padding: "var(--space-md) var(--space-lg)",
+                            borderBottom: "1px solid var(--color-border-light)",
+                            fontSize: "var(--font-size-sm)",
+                          }}
+                        >
+                          <span>
+                            {item.product?.title || "Unknown Product"}
+                            <span
+                              style={{
+                                color: "var(--color-text-tertiary)",
+                                marginLeft: "var(--space-sm)",
+                              }}
+                            >
+                              x {item.quantity}
+                            </span>
+                          </span>
+                          <span className="font-bold">
+                            ${(Number(item.price) * item.quantity).toFixed(2)}
+                          </span>
+                        </div>
+                      ),
+                    )}
+                  </div>
+
+                  <div
+                    className="card-footer"
+                    style={{ background: "var(--color-surface-hover)" }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span
+                          style={{
+                            fontSize: "var(--font-size-sm)",
+                            color: "var(--color-text-secondary)",
+                          }}
+                        >
+                          ငွေပေးချေမှု -{" "}
+                          {order.payment_method === "cod"
+                            ? "Cash on Delivery"
+                            : "Mobile Banking"}
+                        </span>
+                      </div>
+                      <div
                         style={{
-                          fontSize: "var(--font-size-sm)",
-                          color: "var(--color-text-secondary)",
+                          fontWeight: 600,
+                          fontSize: "var(--font-size-md)",
+                          color: "var(--color-primary)",
                         }}
                       >
-                        ငွေပေးချေမှု -{" "}
-                        {order.payment_method === "cod"
-                          ? "Cash on Delivery"
-                          : "Mobile Banking"}
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        fontWeight: 600,
-                        fontSize: "var(--font-size-md)",
-                        color: "var(--color-primary)",
-                      }}
-                    >
-                      Total: ${Number(order.total_amount).toFixed(2)}
+                        Total: ${Number(order.total_amount).toFixed(2)}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            },
+          )}
         </div>
       )}
     </div>

@@ -36,7 +36,7 @@ export default function ProductForm({ product }: { product?: Product }) {
       const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
       const filePath = `public/${fileName}`;
 
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from("product-images")
         .upload(filePath, file, { upsert: true });
 

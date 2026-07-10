@@ -64,7 +64,7 @@ export async function createOrder(
     }
 
     return { success: true, orderId: order.id };
-  } catch (err: any) {
-    return { error: err.message };
+  } catch (err: unknown) {
+    return { error: err instanceof Error ? err.message : "Unknown error" };
   }
 }

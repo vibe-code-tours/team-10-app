@@ -28,7 +28,7 @@ export async function updateOrderStatus(orderId: string, newStatus: string) {
     revalidatePath(`/admin/orders`);
     revalidatePath(`/admin/orders/${orderId}`);
     return { success: true };
-  } catch (err: any) {
-    return { error: err.message };
+  } catch (err: unknown) {
+    return { error: err instanceof Error ? err.message : "Unknown error" };
   }
 }

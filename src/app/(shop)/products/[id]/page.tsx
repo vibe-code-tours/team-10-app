@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -213,7 +214,7 @@ export default async function ProductDetailPage({ params }: Props) {
               gridTemplateColumns: "1fr",
               gap: "var(--space-2xl)",
               "@media (minWidth: 768px)": { gridTemplateColumns: "2fr 1fr" },
-            } as any
+            } as React.CSSProperties
           }
         >
           {/* Reviews List */}
@@ -226,70 +227,80 @@ export default async function ProductDetailPage({ params }: Props) {
                   gap: "var(--space-lg)",
                 }}
               >
-                {reviews.map((review: any) => (
-                  <div
-                    key={review.id}
-                    style={{
-                      padding: "var(--space-md)",
-                      background: "var(--color-surface)",
-                      borderRadius: "var(--radius-md)",
-                      border: "1px solid var(--color-border-light)",
-                    }}
-                  >
+                {reviews.map(
+                  (review: {
+                    id: string;
+                    rating: number;
+                    comment: string;
+                    created_at: string;
+                    users?: { full_name: string };
+                  }) => (
                     <div
+                      key={review.id}
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        marginBottom: "var(--space-sm)",
+                        padding: "var(--space-md)",
+                        background: "var(--color-surface)",
+                        borderRadius: "var(--radius-md)",
+                        border: "1px solid var(--color-border-light)",
                       }}
                     >
                       <div
                         style={{
                           display: "flex",
-                          gap: "2px",
-                          color: "#FACC15",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          marginBottom: "var(--space-sm)",
                         }}
                       >
-                        {[...Array(5)].map((_, i) => (
-                          <svg
-                            key={i}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill={i < review.rating ? "currentColor" : "none"}
-                            stroke={i < review.rating ? "none" : "currentColor"}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                          </svg>
-                        ))}
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "2px",
+                            color: "#FACC15",
+                          }}
+                        >
+                          {[...Array(5)].map((_, i) => (
+                            <svg
+                              key={i}
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill={i < review.rating ? "currentColor" : "none"}
+                              stroke={
+                                i < review.rating ? "none" : "currentColor"
+                              }
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                          ))}
+                        </div>
+                        <span
+                          style={{
+                            fontSize: "var(--font-size-xs)",
+                            color: "var(--color-text-tertiary)",
+                          }}
+                        >
+                          {new Date(review.created_at).toLocaleDateString()}
+                        </span>
                       </div>
-                      <span
-                        style={{
-                          fontSize: "var(--font-size-xs)",
-                          color: "var(--color-text-tertiary)",
-                        }}
-                      >
-                        {new Date(review.created_at).toLocaleDateString()}
-                      </span>
+                      {review.comment && (
+                        <p
+                          style={{
+                            fontSize: "var(--font-size-sm)",
+                            color: "var(--color-text-secondary)",
+                            lineHeight: 1.6,
+                          }}
+                        >
+                          {review.comment}
+                        </p>
+                      )}
                     </div>
-                    {review.comment && (
-                      <p
-                        style={{
-                          fontSize: "var(--font-size-sm)",
-                          color: "var(--color-text-secondary)",
-                          lineHeight: 1.6,
-                        }}
-                      >
-                        {review.comment}
-                      </p>
-                    )}
-                  </div>
-                ))}
+                  ),
+                )}
               </div>
             ) : (
               <p

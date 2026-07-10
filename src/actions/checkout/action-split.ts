@@ -55,7 +55,12 @@ export async function splitAndCreateOrders(
 
   const grouped = cartItems.reduce(
     (acc, item) => {
-      const product = item.product as any;
+      const product = item.product as unknown as {
+        id: string;
+        name: string;
+        price: number;
+        store_id: string;
+      } | null;
       if (!product) return acc;
 
       const storeId = product.store_id as string;

@@ -7,6 +7,12 @@ Developing core e-commerce features (Search, Filter, Authentication, Orders, Rev
 
 ## Log
 
+- **2026-07-10**: Fixed all strict lint and build errors, initialized Git repository for team-10-app.
+  - **Changed**: Replaced strict `any` types with explicit typing in `action-split.ts`, `action-orders.ts`, `CartProvider.tsx`, `AddToCartButton.tsx`, `orders/page.tsx` and others. Formatted entire codebase using Prettier. Initialized git repository locally and linked to remote `https://github.com/vibe-code-tours/team-10-app.git`.
+  - **Why**: To ensure the project is fully clean for production build and is linked to the requested remote team repository.
+  - **Gotchas**: Next.js App Router heavily relies on strict Supabase TypeScript generation. Dealing with inferred arrays from single-row relationships (like `products` joined from `order_items`) required explicit type union to appease Next.js' strict build checks.
+  - **Open threads**: Push changes to remote.
+
 - **2026-07-09**: Implemented Search, Filtering, Authentication, Reviews, and User Profiles.
   - **Changed:** Added global search bar and sort/filter dropdowns to products page. Built order history (`/account/orders`), product reviews component (`/products/[id]`), and a dedicated profile settings page (`/account/settings`). Added database migrations for `public.users` (with auth trigger) and `public.product_reviews`, and modified the `orders` table to include `user_id`. Updated the project directory to `Lin Let`.
   - **Why:** To satisfy user requests for Search & Filtering (Feature 4), Customer Authentication & Order History (Feature 5), Reviews & Ratings (Feature 6), and a User Profile Settings page.

@@ -8,12 +8,13 @@ import Link from "next/link";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, totalPrice, clearCart, totalItems } = useCart();
+  const { items, totalPrice, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 

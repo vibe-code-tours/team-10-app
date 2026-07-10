@@ -36,7 +36,7 @@ export async function updateProfile(formData: FormData) {
 
     revalidatePath("/account/settings");
     revalidatePath("/account");
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error(err);
   }
 }
@@ -69,7 +69,7 @@ export async function updatePaymentMethod(formData: FormData) {
     }
 
     revalidatePath("/account/settings");
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error(err);
   }
 }

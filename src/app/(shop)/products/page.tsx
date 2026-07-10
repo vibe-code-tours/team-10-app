@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import SortDropdown from "@/components/shop/SortDropdown";

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -22,9 +23,10 @@ interface Props {
 export default function CartItemRow({ item }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const product = item.product as any;
+  const product = item.product;
   const firstImage = product?.images?.sort(
-    (a: any, b: any) => a.sort_order - b.sort_order,
+    (a: { sort_order: number }, b: { sort_order: number }) =>
+      a.sort_order - b.sort_order,
   )[0];
 
   async function handleQuantityChange(newQty: number) {

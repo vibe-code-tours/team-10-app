@@ -13,7 +13,17 @@ export type CartItem = {
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: any, quantity: number) => void;
+  addToCart: (
+    product: {
+      id: string;
+      name: string;
+      price: number;
+      image_url: string;
+      quantity?: number;
+      stock: number;
+    },
+    quantity: number,
+  ) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -32,6 +42,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const savedCart = localStorage.getItem("shopmm_cart");
     if (savedCart) {
       try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setItems(JSON.parse(savedCart));
       } catch (e) {
         console.error("Failed to parse cart", e);
@@ -47,7 +58,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [items, mounted]);
 
-  const addToCart = (product: any, quantity: number) => {
+  const addToCart = (
+    product: {
+      id: string;
+      name: string;
+      price: number;
+      image_url: string;
+      quantity?: number;
+      stock: number;
+    },
+    quantity: number,
+  ) => {
     setItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
@@ -64,7 +85,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         ...prev,
         {
           id: product.id,
-          title: product.title,
+          title: product.name,
           price: Number(product.price),
           image_url: product.image_url,
           quantity,

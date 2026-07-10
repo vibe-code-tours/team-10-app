@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -66,6 +67,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
               </h2>
             </div>
             <div className="card-body" style={{ padding: 0 }}>
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {items?.map((item: any) => (
                 <div
                   key={item.id}

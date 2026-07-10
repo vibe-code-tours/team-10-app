@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
@@ -10,7 +11,16 @@ export default async function HomePage() {
     .order("created_at", { ascending: false });
 
   // Group products by category
-  const productsByCategory: Record<string, any[]> = {};
+  const productsByCategory: Record<
+    string,
+    {
+      id: string;
+      title: string;
+      price: number;
+      image_url: string;
+      category: string;
+    }[]
+  > = {};
 
   if (products) {
     products.forEach((product) => {

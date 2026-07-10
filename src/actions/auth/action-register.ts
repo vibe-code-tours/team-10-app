@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { registerSchema, type RegisterInput } from "@/lib/validations";
+import { registerSchema } from "@/lib/validations";
 import { headers } from "next/headers";
 
 export type RegisterResult = {
@@ -28,7 +28,7 @@ export async function registerWithEmail(
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
-  const { data, error } = await supabase.auth.signUp({
+  const { error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {

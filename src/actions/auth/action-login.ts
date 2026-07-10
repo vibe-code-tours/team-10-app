@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { loginSchema, type LoginInput } from "@/lib/validations";
+import { loginSchema } from "@/lib/validations";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 

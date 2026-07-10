@@ -4,7 +4,13 @@ import { useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
 
 interface Props {
-  product: any;
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    image_url: string;
+    stock: number;
+  };
 }
 
 export default function AddToCartButton({ product }: Props) {
