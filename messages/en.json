@@ -1,0 +1,135 @@
+{
+  "Header": {
+    "sellerCentre": "Seller Centre",
+    "startSelling": "Start Selling",
+    "download": "Download",
+    "followUs": "Follow us on Facebook",
+    "notifications": "Notifications",
+    "help": "Help",
+    "language": "English",
+    "signUp": "Sign Up",
+    "login": "Login",
+    "account": "Account",
+    "searchPlaceholder": "Sign Up & Get RM18 Off Voucher!",
+    "settings": "Settings",
+    "payment": "Payment Preferences",
+    "logout": "Logout"
+  },
+  "HomePage": {
+    "categories": "CATEGORIES",
+    "dailyDiscover": "DAILY DISCOVER",
+    "sold": "sold",
+    "comingSoon": "Products coming soon",
+    "viewMore": "View More",
+    "quickLinks": {
+      "new_user_zone": "New User Zone",
+      "free_shipping": "Free Shipping & Vouchers",
+      "daily_50": "Lagi Murah Daily 50% Off",
+      "football": "Football Festival",
+      "shopee_choice": "Shopee Choice",
+      "get_ready": "#GetReadyWithShopee",
+      "supermarket": "Shopee Supermarket",
+      "global": "Global Outlet",
+      "cod": "Cash On Delivery",
+      "collection_point": "Be a Shopee Collection Point"
+    }
+  },
+  "Auth": {
+    "welcomeBack": "Welcome Back",
+    "loginToStart": "Login to start shopping",
+    "loginWithGoogle": "Login with Google",
+    "or": "OR",
+    "email": "Email",
+    "password": "Password",
+    "loggingIn": "Logging in...",
+    "loginBtn": "Login",
+    "noAccount": "Don't have an account?",
+    "register": "Register"
+  },
+  "Admin": {
+    "panel": "Admin Panel",
+    "nav": {
+      "dashboard": "Dashboard",
+      "products": "Products",
+      "orders": "Orders",
+      "categories": "Categories",
+      "logout": "Logout"
+    },
+    "dashboard": {
+      "title": "Sales Overview & Analytics",
+      "description": "Monitor shop revenue, order statuses, and performance metrics.",
+      "totalSales": "Total Revenue",
+      "totalOrders": "Total Orders",
+      "pendingOrders": "Pending Orders",
+      "deliveredOrders": "Delivered Orders",
+      "recentOrders": "Recent Orders",
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "total": "Total",
+      "status": "Status",
+      "date": "Date",
+      "viewAll": "View All Orders",
+      "view": "View",
+      "noOrders": "No orders found.",
+      "orderDistribution": "Order Status Distribution",
+      "overview": "Overview"
+    },
+    "products": {
+      "title": "Products Inventory",
+      "description": "Manage your complete product inventory and stock levels.",
+      "addProduct": "Add Product",
+      "stats": {
+        "totalProducts": "Total Products",
+        "outOfStock": "Out of Stock",
+        "lowStock": "Low Stock (<10)",
+        "totalInventory": "Total Inventory"
+      },
+      "filters": {
+        "searchPlaceholder": "Search products...",
+        "allCategories": "All Categories",
+        "allStock": "All Stock Levels",
+        "inStock": "In Stock",
+        "lowStock": "Low Stock",
+        "outOfStock": "Out of Stock",
+        "sort": {
+          "newest": "Newest",
+          "priceAsc": "Price: Low to High",
+          "priceDesc": "Price: High to Low",
+          "stockAsc": "Stock: Low to High",
+          "stockDesc": "Stock: High to Low"
+        },
+        "clear": "Clear Filters"
+      },
+      "table": {
+        "image": "Image",
+        "product": "Product",
+        "category": "Category",
+        "price": "Price",
+        "stock": "Stock",
+        "actions": "Actions",
+        "noProducts": "No products matching query.",
+        "pcs": "pcs",
+        "statusInStock": "In Stock",
+        "statusLowStock": "Low Stock",
+        "statusOutOfStock": "Out of Stock"
+      },
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "pageOf": "Page {page} of {totalPages}"
+      }
+    },
+    "categories": {
+      "title": "Product Categories",
+      "description": "Manage your store's product categories.",
+      "addCategory": "Add Category",
+      "table": {
+        "name": "Category Name",
+        "slug": "Slug",
+        "dateCreated": "Date Created",
+        "actions": "Actions",
+        "noCategories": "No categories found."
+      }
+    }
+  }
+}

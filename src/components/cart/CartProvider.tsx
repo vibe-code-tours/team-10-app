@@ -39,7 +39,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Load from local storage on mount
-    const savedCart = localStorage.getItem("shopmm_cart");
+    const savedCart = localStorage.getItem("yoeyarzay_cart");
     if (savedCart) {
       try {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -54,7 +54,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Save to local storage whenever items change
     if (mounted) {
-      localStorage.setItem("shopmm_cart", JSON.stringify(items));
+      localStorage.setItem("yoeyarzay_cart", JSON.stringify(items));
     }
   }, [items, mounted]);
 
