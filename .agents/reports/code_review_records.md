@@ -1,0 +1,9 @@
+# API Security Scan Findings
+
+The following security issues were identified and recorded for future remediation via `/code-fix`.
+
+- [x] [FIXED 2026-07-11] **[High Priority]** `src/actions/admin/action-categories.ts:L16-L20` — Missing function-level auth (Admin check). The `createCategory`, `updateCategory`, and `deleteCategory` functions only check if a user is logged in, but not if they have an admin role. Any authenticated user can modify categories. Fixed by adding `requireAdmin()` (checks server-authoritative `public.users.role`) at the top of all three actions.
+- [x] [FIXED 2026-07-11] **[High Priority]** `src/actions/admin/action-products.ts:L19-L23` — Missing function-level auth (Admin check). Similar to categories, any authenticated user can create, update, or delete products. Fixed by adding `requireAdmin()` at the top of all three actions.
+- [x] [FIXED 2026-07-11] **[High Priority]** `src/actions/admin/action-orders.ts:L11-L16` — Missing function-level auth (Admin check). Any authenticated user could potentially update order statuses. Fixed by replacing the auth-only check with `requireAdmin()`.
+- [x] [FIXED 2026-07-11] **[Normal Priority]** `src/actions/auth/action-login.ts:L26-L29` — No rate limiting. The `loginWithEmail` Server Action passes credentials directly to Supabase without application-level rate limiting, risking brute-force attacks. Fixed by adding an in-memory sliding-window rate limit (5 attempts/60s per IP+email) via `src/lib/rate-limit.ts`.
+- [x] [FIXED 2026-07-11] **[Normal Priority]** `src/actions/shop/action-review.ts:L25-L30` — Missing pagination/throttling. The `submitReview` action lacks rate limiting, allowing a malicious user to spam fake reviews. Fixed by adding an in-memory rate limit (3 reviews/60s per user) via `src/lib/rate-limit.ts`.
