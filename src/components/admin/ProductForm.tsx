@@ -15,7 +15,19 @@ type Product = {
   image_url: string;
 };
 
-export default function ProductForm({ product }: { product?: Product }) {
+type CategoryOption = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
+export default function ProductForm({
+  product,
+  categories = [],
+}: {
+  product?: Product;
+  categories?: CategoryOption[];
+}) {
   const [isPending, startTransition] = useTransition();
   const [inputType, setInputType] = useState<"url" | "file">("url");
   const [file, setFile] = useState<File | null>(null);
@@ -105,17 +117,20 @@ export default function ProductForm({ product }: { product?: Product }) {
           <label className="form-label" htmlFor="category">
             Category
           </label>
-          <select
-            className="form-input"
-            id="category"
-            name="category"
-            defaultValue={product?.category || "electronics"}
-            required
-          >
-            <option value="electronics">Electronics</option>
-            <option value="clothing">Clothing</option>
-            <option value="accessories">Accessories</option>
-          </select>
+        <select
+          className="form-input"
+          id="category"
+          name="category"
+          defaultValue={product?.category || ""}
+          required
+        >
+          <option value="" disabled>Select a Category...</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.slug} style={{ textTransform: "capitalize" }}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
         </div>
 
         <div className="form-group">

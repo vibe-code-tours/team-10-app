@@ -39,3 +39,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# sensitive data
+*.db
+credentials/
+service_account
+*.key
+
+# scratch scripts
+check_buckets.js
+check_images.js
+check_one.js
+check_products.js
+make_admin.js
+test_lorem.js
+update_broken_images.js
+update_broken_images_lorem.js

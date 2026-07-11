@@ -1,19 +1,13 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/auth-helpers";
 import { revalidatePath } from "next/cache";
 
 export async function updateOrderStatus(orderId: string, newStatus: string) {
   try {
+    await requireAdmin();
     const supabase = await createClient();
-
-    // Security check: Must be authenticated (admin)
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      return { error: "Unauthorized" };
-    }
 
     const { error } = await supabase
       .from("orders")

@@ -11,7 +11,7 @@ interface SendEmailOptions {
 export async function sendEmail({ to, subject, html }: SendEmailOptions) {
   try {
     const { data, error } = await resend.emails.send({
-      from: "ShopMM <noreply@shopmm.com>",
+      from: "Yoe Yar Zay <noreply@yoeyarzay.com>",
       to,
       subject,
       html,
@@ -44,7 +44,7 @@ export async function sendOrderConfirmation(
     html: `
       <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
         <div style="text-align: center; margin-bottom: 32px;">
-          <h1 style="color: #111; font-size: 24px; margin: 0; letter-spacing: -0.5px;">ShopMM</h1>
+          <h1 style="color: #111; font-size: 24px; margin: 0; letter-spacing: -0.5px;">Yoe Yar Zay</h1>
         </div>
         <div style="background: #f8f9fe; border-radius: 16px; padding: 32px; margin-bottom: 24px;">
           <h2 style="margin: 0 0 16px; font-size: 18px;">အော်ဒါအတည်ပြုပြီးပါပြီ</h2>
@@ -69,7 +69,7 @@ export async function sendOrderConfirmation(
           </table>
         </div>
         <p style="text-align: center; color: #9ca3af; font-size: 14px;">
-          © ${new Date().getFullYear()} ShopMM. All rights reserved.
+          © ${new Date().getFullYear()} Yoe Yar Zay. All rights reserved.
         </p>
       </div>
     `,

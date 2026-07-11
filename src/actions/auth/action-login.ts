@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { loginSchema } from "@/lib/validations";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import { isRateLimited, getClientIp } from "@/lib/rate-limit";
 
 export type AuthResult = {
   error?: string;
@@ -19,6 +20,13 @@ export async function loginWithEmail(formData: FormData): Promise<AuthResult> {
   const parsed = loginSchema.safeParse(raw);
   if (!parsed.success) {
     return { error: parsed.error.issues[0].message };
+  }
+
+  const ip = await getClientIp();
+  if (isRateLimited(`login:${ip}:${parsed.data.email}`, 5, 60_000)) {
+    return {
+      error: "အကြိမ်ပေါင်းများစွာ ကြိုးစားထားပါသည်။ ခဏနေမှ ထပ်မံကြိုးစားပါ။",
+    };
   }
 
   const supabase = await createClient();
