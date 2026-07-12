@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useCart } from "@/components/cart/CartProvider";
 import { useEffect, useState } from "react";
 
 export default function CartPage() {
+  const t = useTranslations("Cart");
   const { items, updateQuantity, removeFromCart, totalItems, totalPrice } =
     useCart();
   const [mounted, setMounted] = useState(false);
@@ -20,21 +22,21 @@ export default function CartPage() {
   return (
     <div className="container section" id="cart-page">
       <h1 className="section-title" style={{ marginBottom: "var(--space-xl)" }}>
-        ခြင်းတောင်း
+        {t("title")}
       </h1>
 
       {items.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-title">
-            ခြင်းတောင်းထဲတွင် ပစ္စည်းမရှိပါ
+            {t("empty")}
           </div>
-          <div className="empty-state-desc">ပစ္စည်းများဝယ်ယူရန် စတင်ပါ</div>
+          <div className="empty-state-desc">{t("startShopping")}</div>
           <Link
             href="/products"
             className="btn btn-primary"
             id="btn-start-shopping"
           >
-            ပစ္စည်းများကြည့်ရန်
+            {t("viewProducts")}
           </Link>
         </div>
       ) : (
@@ -56,8 +58,8 @@ export default function CartPage() {
             <div className="card">
               <div className="card-header">
                 <div className="flex items-center gap-sm">
-                  <span style={{ fontWeight: 500 }}>ဝယ်ယူမည့် ပစ္စည်းများ</span>
-                  <span className="badge badge-neutral">{totalItems} ခု</span>
+                  <span style={{ fontWeight: 500 }}>{t("itemsToOrder")}</span>
+                  <span className="badge badge-neutral">{totalItems} {t("items")}</span>
                 </div>
               </div>
               <div className="card-body" style={{ padding: 0 }}>
@@ -137,7 +139,7 @@ export default function CartPage() {
                           padding: "4px",
                         }}
                       >
-                        ဖယ်ရှားရန်
+                        {t("remove")}
                       </button>
                       <div
                         className="flex items-center"
@@ -197,7 +199,7 @@ export default function CartPage() {
                   marginBottom: "var(--space-lg)",
                 }}
               >
-                အော်ဒါအကျဉ်း
+                {t("orderSummary")}
               </h3>
 
               <div
@@ -210,17 +212,17 @@ export default function CartPage() {
               >
                 <div className="flex justify-between">
                   <span className="text-secondary">
-                    ပစ္စည်း ({totalItems} ခု)
+                    {t("itemsCount", { count: totalItems })}
                   </span>
                   <span className="font-bold">${totalPrice.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-secondary">ပို့ဆောင်ခ</span>
+                  <span className="text-secondary">{t("shipping")}</span>
                   <span
                     className="text-secondary"
                     style={{ fontSize: "var(--font-size-sm)" }}
                   >
-                    အခမဲ့
+                    {t("free")}
                   </span>
                 </div>
                 <div
@@ -231,7 +233,7 @@ export default function CartPage() {
                   }}
                 />
                 <div className="flex justify-between">
-                  <span style={{ fontWeight: 600 }}>စုစုပေါင်း</span>
+                  <span style={{ fontWeight: 600 }}>{t("total")}</span>
                   <span style={{ fontWeight: 600 }}>
                     ${totalPrice.toFixed(2)}
                   </span>
@@ -243,7 +245,7 @@ export default function CartPage() {
                 className="btn btn-primary btn-full"
                 id="btn-checkout"
               >
-                Checkout သို့သွားရန် →
+                {t("goToCheckout")}
               </Link>
             </div>
           </div>

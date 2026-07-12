@@ -1,21 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { submitReview } from "@/actions/shop/action-review";
 import Link from "next/link";
 import { Star } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 interface Props {
   productId: string;
-  isLoggedIn: boolean;
 }
 
-export default function ReviewForm({ productId, isLoggedIn }: Props) {
+export default function ReviewForm({ productId }: Props) {
+  const t = useTranslations("Reviews");
   const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => setIsLoggedIn(!!user));
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session?.user);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (isLoggedIn === null) {
+    return (
+      <div
+        style={{
+          padding: "var(--space-xl)",
+          background: "var(--color-surface)",
+          borderRadius: "var(--radius-md)",
+          border: "1px solid var(--color-border-light)",
+          minHeight: "140px",
+        }}
+      />
+    );
+  }
 
   if (!isLoggedIn) {
     return (
@@ -35,7 +63,7 @@ export default function ReviewForm({ productId, isLoggedIn }: Props) {
             fontWeight: 500,
           }}
         >
-          Review ရေးရန်
+          {t("writeReview")}
         </h3>
         <p
           style={{
@@ -44,10 +72,10 @@ export default function ReviewForm({ productId, isLoggedIn }: Props) {
             fontSize: "var(--font-size-sm)",
           }}
         >
-          မှတ်ချက်ရေးရန်နှင့် အဆင့်သတ်မှတ်ရန် အကောင့်ဝင်ဖို့ လိုအပ်ပါတယ်။
+          {t("loginRequired")}
         </p>
         <Link href="/login" className="btn btn-primary">
-          အကောင့်ဝင်မည်
+          {t("loginBtn")}
         </Link>
       </div>
     );
@@ -72,7 +100,7 @@ export default function ReviewForm({ productId, isLoggedIn }: Props) {
             fontWeight: 500,
           }}
         >
-          ကျေးဇူးတင်ပါတယ်!
+          {t("thankYou")}
         </h3>
         <p
           style={{
@@ -80,7 +108,7 @@ export default function ReviewForm({ productId, isLoggedIn }: Props) {
             fontSize: "var(--font-size-sm)",
           }}
         >
-          သင့်ရဲ့ မှတ်ချက်ကို အောင်မြင်စွာ မှတ်တမ်းတင်ပြီးပါပြီ။
+          {t("submitted")}
         </p>
       </div>
     );
@@ -121,7 +149,7 @@ export default function ReviewForm({ productId, isLoggedIn }: Props) {
           fontWeight: 600,
         }}
       >
-        Review ရေးရန်
+        {t("writeReview")}
       </h3>
 
       {error && (
@@ -156,7 +184,7 @@ export default function ReviewForm({ productId, isLoggedIn }: Props) {
               marginBottom: "var(--space-xs)",
             }}
           >
-            အဆင့်သတ်မှတ်ချက် (Rating)
+            {t("rating")}
           </label>
           <div style={{ display: "flex", gap: "4px" }}>
             {[1, 2, 3, 4, 5].map((star) => (
@@ -199,14 +227,14 @@ export default function ReviewForm({ productId, isLoggedIn }: Props) {
               marginBottom: "var(--space-xs)",
             }}
           >
-            မှတ်ချက် (ရွေးချယ်နိုင်သည်)
+            {t("commentLabel")}
           </label>
           <textarea
             id="comment"
             name="comment"
             className="form-input"
             rows={4}
-            placeholder="ဒီပစ္စည်းအကြောင်း သင်ဘယ်လိုထင်လဲ..."
+            placeholder={t("commentPlaceholder")}
           />
         </div>
 
@@ -217,7 +245,7 @@ export default function ReviewForm({ productId, isLoggedIn }: Props) {
           style={{ alignSelf: "flex-start" }}
         >
           {loading ? <span className="spinner" /> : null}
-          {loading ? "ပို့ဆောင်နေသည်..." : "Review တင်မည်"}
+          {loading ? t("submitting") : t("submitBtn")}
         </button>
       </form>
     </div>

@@ -1,7 +1,8 @@
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import AddToCartButton from "@/components/shop/AddToCartButton";
 import ReviewForm from "@/components/shop/ReviewForm";
 
@@ -9,26 +10,23 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+export const revalidate = 60;
+
 export default async function ProductDetailPage({ params }: Props) {
   const { id } = await params;
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const supabase = createPublicClient();
+  const t = await getTranslations("ProductDetail");
 
-  const { data: product } = await supabase
-    .from("products")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const [{ data: product }, { data: reviews }] = await Promise.all([
+    supabase.from("products").select("*").eq("id", id).single(),
+    supabase
+      .from("product_reviews")
+      .select("*")
+      .eq("product_id", id)
+      .order("created_at", { ascending: false }),
+  ]);
 
   if (!product) notFound();
-
-  const { data: reviews } = await supabase
-    .from("product_reviews")
-    .select("*")
-    .eq("product_id", id)
-    .order("created_at", { ascending: false });
 
   return (
     <div className="container section" id="product-detail">
@@ -40,11 +38,11 @@ export default async function ProductDetailPage({ params }: Props) {
         }}
       >
         <Link href="/" style={{ color: "var(--color-text-tertiary)" }}>
-          Home
+          {t("home")}
         </Link>
         {" / "}
         <Link href="/products" style={{ color: "var(--color-text-tertiary)" }}>
-          ပစ္စည်းများ
+          {t("productsBreadcrumb")}
         </Link>
         {" / "}
         {product.category && (
@@ -143,7 +141,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   borderRadius: "4px",
                 }}
               >
-                လက်ကျန်ရှိ ({product.stock} ခု)
+                {t("inStock", { count: product.stock })}
               </span>
             ) : (
               <span
@@ -155,7 +153,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   borderRadius: "4px",
                 }}
               >
-                လက်ကျန်ကုန်ပါပြီ
+                {t("outOfStock")}
               </span>
             )}
           </div>
@@ -177,7 +175,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   marginBottom: "var(--space-md)",
                 }}
               >
-                အသေးစိတ်
+                {t("description")}
               </h3>
               <p
                 style={{
@@ -208,7 +206,7 @@ export default async function ProductDetailPage({ params }: Props) {
             marginBottom: "var(--space-lg)",
           }}
         >
-          မှတ်ချက်များနှင့် အဆင့်သတ်မှတ်ချက်များ (Reviews & Ratings)
+          {t("reviewsTitle")}
         </h2>
 
         <div
@@ -313,14 +311,14 @@ export default async function ProductDetailPage({ params }: Props) {
                   fontStyle: "italic",
                 }}
               >
-                မှတ်ချက် မရှိသေးပါ။ ပထမဆုံး မှတ်ချက်ပေးသူ ဖြစ်ပါစေ!
+                {t("noReviews")}
               </p>
             )}
           </div>
 
           {/* Review Form */}
           <div>
-            <ReviewForm productId={product.id} isLoggedIn={!!user} />
+            <ReviewForm productId={product.id} />
           </div>
         </div>
       </div>

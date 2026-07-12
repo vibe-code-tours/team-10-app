@@ -1,13 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { getTranslations } from "next-intl/server";
 import { HeroSlider } from "@/components/home/HeroSlider";
 import { Flame, Clock, Sparkles, ChevronRight } from "lucide-react";
 import { DailyDiscover } from "@/components/home/DailyDiscover";
 
+export const revalidate = 60;
+
 export default async function HomePage() {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const t = await getTranslations("HomePage");
 
   const { data: products } = await supabase
@@ -58,19 +60,6 @@ export default async function HomePage() {
     watches: "https://loremflickr.com/200/200/watches?lock=1",
   };
 
-  const quickLinks = [
-    { label: t("quickLinks.new_user_zone"), icon: "🎁" },
-    { label: t("quickLinks.free_shipping"), icon: "🚚" },
-    { label: t("quickLinks.daily_50"), icon: "🏷️" },
-    { label: t("quickLinks.football"), icon: "⚽" },
-    { label: t("quickLinks.shopee_choice"), icon: "⭐" },
-    { label: t("quickLinks.get_ready"), icon: "👗" },
-    { label: t("quickLinks.supermarket"), icon: "🛒" },
-    { label: t("quickLinks.global"), icon: "🌍" },
-    { label: t("quickLinks.cod"), icon: "💵" },
-    { label: t("quickLinks.collection_point"), icon: "🏪" },
-  ];
-
   return (
     <div
       style={{
@@ -84,68 +73,6 @@ export default async function HomePage() {
       {/* Banner Section */}
       <div className="container" style={{ paddingTop: "20px" }}>
         <HeroSlider />
-      </div>
-
-      {/* Quick Links */}
-      <div className="container" style={{ marginTop: "24px" }}>
-        <div
-          style={{
-            background: "var(--color-surface)",
-            borderRadius: "12px",
-            padding: "24px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            gap: "16px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
-            flexWrap: "wrap",
-          }}
-        >
-          {quickLinks.map((link, i) => (
-            <div
-              key={i}
-              className="quick-link-item"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: "80px",
-                textAlign: "center",
-                gap: "8px",
-                cursor: "pointer",
-                transition: "transform var(--transition-fast)",
-              }}
-            >
-              <div
-                className="quick-link-icon-wrapper"
-                style={{
-                  width: "48px",
-                  height: "48px",
-                  background: "var(--color-primary-ghost)",
-                  color: "var(--color-primary)",
-                  borderRadius: "16px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "22px",
-                  transition: "all var(--transition-fast)",
-                }}
-              >
-                {link.icon}
-              </div>
-              <span
-                style={{
-                  fontSize: "12px",
-                  fontWeight: 500,
-                  lineHeight: "1.3",
-                  color: "var(--color-text-secondary)",
-                }}
-              >
-                {link.label}
-              </span>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Categories Section */}
@@ -528,7 +455,7 @@ export default async function HomePage() {
                                 zIndex: 1,
                               }}
                             >
-                              ရောင်းပြီး {mockSoldPercentage}%
+                              {t("soldPercent", { percent: mockSoldPercentage })}
                             </span>
                           </div>
                         </div>
@@ -578,8 +505,8 @@ export default async function HomePage() {
               >
                 <Sparkles size={16} />
                 {category === "computer"
-                  ? "Computers (ကွန်ပျူတာများ)"
-                  : "Mobiles (ဖုန်းများ)"}
+                  ? t("computersLabel")
+                  : t("mobilesLabel")}
               </h2>
               <Link
                 href={`/products?category=${category}`}
@@ -744,7 +671,14 @@ export default async function HomePage() {
       })}
 
       {/* Daily Discover Section */}
-      <DailyDiscover products={products || []} soldText={t("sold") || "sold"} />
+      <DailyDiscover
+        products={products || []}
+        soldText={t("sold") || "sold"}
+        title={t("dailyDiscover")}
+        forYouText={t("forYou")}
+        trendingText={t("trending")}
+        noProductsText={t("noProductsFound")}
+      />
 
       <style
         dangerouslySetInnerHTML={{

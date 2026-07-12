@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useCart } from "@/components/cart/CartProvider";
 import { useEffect, useState } from "react";
 
 export function CartIcon() {
+  const t = useTranslations("Cart");
   const { totalItems } = useCart();
   const [mounted, setMounted] = useState(false);
 
@@ -18,7 +20,7 @@ export function CartIcon() {
       href="/cart"
       className="icon-btn"
       id="cart-link"
-      aria-label="ခြင်းတောင်း"
+      aria-label={t("ariaLabel")}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

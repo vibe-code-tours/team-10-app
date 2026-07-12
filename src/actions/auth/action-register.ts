@@ -30,8 +30,7 @@ export async function registerWithEmail(
   if (isRateLimited(`register:${ip}`, 5, 300_000)) {
     // 5 per 5 minutes
     return {
-      error:
-        "အကောင့်ဖွင့်ခြင်း အကြိမ်ရေများလွန်းနေပါသည်။ ခဏနေမှ ထပ်မံကြိုးစားပါ။",
+      error: "Too many sign-up attempts. Please try again later.",
     };
   }
 
@@ -51,14 +50,14 @@ export async function registerWithEmail(
 
   if (error) {
     if (error.message.includes("already registered")) {
-      return { error: "ဤအီးမေးလ်ဖြင့် အကောင့်ရှိပြီးသားဖြစ်ပါသည်" };
+      return { error: "An account with this email already exists" };
     }
-    return { error: "အကောင့်ဖန်တီး၍မရပါ" };
+    return { error: "Could not create account" };
   }
 
   return {
     success: true,
     message:
-      "အကောင့်ဖန်တီးပြီးပါပြီ။ အီးမေးလ်ကိုစစ်ဆေးပြီး အတည်ပြုလင့်ခ်ကိုနှိပ်ပါ။",
+      "Account created. Please check your email and click the verification link.",
   };
 }

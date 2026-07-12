@@ -1,22 +1,22 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  email: z.string().email("မှန်ကန်သော email ထည့်ပါ"),
-  password: z.string().min(6, "စကားဝှက် အနည်းဆုံး ၆ လုံးထည့်ပါ"),
+  email: z.string().email("Enter a valid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export const registerSchema = z
   .object({
-    full_name: z.string().min(2, "အမည်ကို အနည်းဆုံး ၂ လုံးထည့်ပါ"),
-    email: z.string().email("မှန်ကန်သော email ထည့်ပါ"),
+    full_name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Enter a valid email"),
     password: z
       .string()
-      .min(6, "စကားဝှက် အနည်းဆုံး ၆ လုံးထည့်ပါ")
-      .max(72, "စကားဝှက် ၇၂ လုံးထက်မပိုရပါ"),
+      .min(6, "Password must be at least 6 characters")
+      .max(72, "Password must be at most 72 characters"),
     confirm_password: z.string(),
   })
   .refine((data) => data.password === data.confirm_password, {
-    message: "စကားဝှက်နှစ်ခု မတူညီပါ",
+    message: "Passwords do not match",
     path: ["confirm_password"],
   });
 

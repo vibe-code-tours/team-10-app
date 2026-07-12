@@ -21,18 +21,12 @@
     "sold": "ခု ရောင်းပြီး",
     "comingSoon": "ပစ္စည်းများ မကြာမီရောက်လာပါမည်",
     "viewMore": "ပိုမိုကြည့်ရှုရန်",
-    "quickLinks": {
-      "new_user_zone": "အသုံးပြုသူအသစ်ဇုန်",
-      "free_shipping": "ပို့ဆောင်ခ အခမဲ့ & ဘောက်ချာ",
-      "daily_50": "နေ့စဥ် ၅၀% လျှော့စျေး",
-      "football": "ဘောလုံးပွဲတော်",
-      "shopee_choice": "အထူးရွေးချယ်မှု",
-      "get_ready": "ပြင်ဆင်ထားလိုက်ပါ",
-      "supermarket": "စူပါမားကတ်",
-      "global": "ကမ္ဘာတစ်ဝှမ်း",
-      "cod": "အိမ်ရောက်ငွေချေ",
-      "collection_point": "ကိုယ်စားလှယ်"
-    }
+    "computersLabel": "ကွန်ပျူတာများ",
+    "mobilesLabel": "ဖုန်းများ",
+    "soldPercent": "{percent}% ရောင်းပြီး",
+    "forYou": "သင့်အတွက်",
+    "trending": "အရောင်းရဆုံး",
+    "noProductsFound": "ပစ္စည်းရှာမတွေ့ပါ"
   },
   "Auth": {
     "welcomeBack": "ပြန်လည်ကြိုဆိုပါတယ်",
@@ -143,6 +137,9 @@
     "paymentMethod": "ငွေပေးချေမှုစနစ် (Payment Method)",
     "cod": "ပစ္စည်းရောက်မှ ငွေချေမည် (Cash on Delivery)",
     "mobileBanking": "KBZ Pay / Wave Pay ဖြင့် ငွေလွှဲမည်",
+    "scanToPay": "ငွေပေးချေရန် စကင်န်ဖတ်ပါ",
+    "scanInstructions": "{amount} လွှဲရန် KPay သို့မဟုတ် Wave Pay app ဖြင့် ဒီ QR ကို စကင်န်ဖတ်ပါ။",
+    "qrPlaceholderNote": "Demo QR — ငွေပေးချေမှုစနစ် နှင့် အမှန်တကယ် ချိတ်ဆက်မထားသေးပါ။",
     "orderSummary": "အော်ဒါအကျဉ်း",
     "totalAmount": "စုစုပေါင်းကျသင့်ငွေ",
     "placingOrder": "အော်ဒါတင်နေသည်...",
@@ -163,5 +160,73 @@
     "createBtn": "အကောင့်ဖန်တီးရန်",
     "haveAccount": "အကောင့်ရှိပြီးသားလား?",
     "loginLink": "ဝင်ရောက်ရန်"
+  },
+  "ProductDetail": {
+    "home": "ပင်မစာမျက်နှာ",
+    "productsBreadcrumb": "ပစ္စည်းများ",
+    "inStock": "လက်ကျန်ရှိ ({count} ခု)",
+    "outOfStock": "လက်ကျန်ကုန်ပါပြီ",
+    "description": "အသေးစိတ်",
+    "reviewsTitle": "မှတ်ချက်များနှင့် အဆင့်သတ်မှတ်ချက်များ",
+    "noReviews": "မှတ်ချက် မရှိသေးပါ။ ပထမဆုံး မှတ်ချက်ပေးသူ ဖြစ်ပါစေ!"
+  },
+  "Reviews": {
+    "writeReview": "Review ရေးရန်",
+    "loginRequired": "မှတ်ချက်ရေးရန်နှင့် အဆင့်သတ်မှတ်ရန် အကောင့်ဝင်ဖို့ လိုအပ်ပါတယ်။",
+    "loginBtn": "အကောင့်ဝင်မည်",
+    "thankYou": "ကျေးဇူးတင်ပါတယ်!",
+    "submitted": "သင့်ရဲ့ မှတ်ချက်ကို အောင်မြင်စွာ မှတ်တမ်းတင်ပြီးပါပြီ။",
+    "rating": "အဆင့်သတ်မှတ်ချက် (Rating)",
+    "commentLabel": "မှတ်ချက် (ရွေးချယ်နိုင်သည်)",
+    "commentPlaceholder": "ဒီပစ္စည်းအကြောင်း သင်ဘယ်လိုထင်လဲ...",
+    "submitting": "ပို့ဆောင်နေသည်...",
+    "submitBtn": "Review တင်မည်"
+  },
+  "AddToCart": {
+    "added": "ခြင်းတောင်းထဲထည့်ပြီးပါပြီ",
+    "adding": "ထည့်နေသည်...",
+    "addToCart": "ခြင်းတောင်းထဲထည့်ရန်"
+  },
+  "Cart": {
+    "title": "ခြင်းတောင်း",
+    "empty": "ခြင်းတောင်းထဲတွင် ပစ္စည်းမရှိပါ",
+    "startShopping": "ပစ္စည်းများဝယ်ယူရန် စတင်ပါ",
+    "viewProducts": "ပစ္စည်းများကြည့်ရန်",
+    "itemsToOrder": "ဝယ်ယူမည့် ပစ္စည်းများ",
+    "items": "ခု",
+    "remove": "ဖယ်ရှားရန်",
+    "orderSummary": "အော်ဒါအကျဉ်း",
+    "itemsCount": "ပစ္စည်း ({count} ခု)",
+    "shipping": "ပို့ဆောင်ခ",
+    "free": "အခမဲ့",
+    "total": "စုစုပေါင်း",
+    "goToCheckout": "Checkout သို့သွားရန် →",
+    "ariaLabel": "ခြင်းတောင်း"
+  },
+  "Products": {
+    "searchResultsFor": "\"{query}\" ရှာဖွေမှု",
+    "allProducts": "ပစ္စည်းအားလုံး",
+    "itemsCount": "{count} ခု",
+    "brandFilterTitle": "Brand ဖြင့် စစ်ထုတ်ရန်",
+    "computerBrands": "Computer Brands",
+    "mobileBrands": "Mobile Brands",
+    "brands": "Brands",
+    "allBrandsCount": "အားလုံး ({count})",
+    "prev": "← ယခင်",
+    "next": "နောက် →",
+    "pageOf": "စာမျက်နှာ {page} / {totalPages}",
+    "notFoundTitle": "ပစ္စည်းရှာမတွေ့ပါ",
+    "notFoundDesc": "ရှာဖွေမှုကိုပြောင်းကြည့်ပါ"
+  },
+  "Sidebar": {
+    "searchPlaceholder": "ရှာဖွေရန်...",
+    "categoryTitle": "အမျိုးအစား",
+    "allCount": "အားလုံး ({count})"
+  },
+  "Sort": {
+    "label": "စီစဉ်ရန်:",
+    "newest": "အသစ်ထွက်",
+    "priceAsc": "ဈေးနှုန်း အနည်းဆုံး",
+    "priceDesc": "ဈေးနှုန်း အများဆုံး"
   }
 }
