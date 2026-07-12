@@ -1,8 +1,10 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function SortDropdown() {
+  const t = useTranslations("Sort");
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentSort = searchParams.get("sort") || "newest";
@@ -35,7 +37,7 @@ export default function SortDropdown() {
           whiteSpace: "nowrap",
         }}
       >
-        စီစဉ်ရန်:
+        {t("label")}
       </label>
       <select
         id="sort-select"
@@ -47,9 +49,9 @@ export default function SortDropdown() {
           fontSize: "var(--font-size-sm)",
         }}
       >
-        <option value="newest">အသစ်ထွက်</option>
-        <option value="price_asc">ဈေးနှုန်း အနည်းဆုံး</option>
-        <option value="price_desc">ဈေးနှုန်း အများဆုံး</option>
+        <option value="newest">{t("newest")}</option>
+        <option value="price_asc">{t("priceAsc")}</option>
+        <option value="price_desc">{t("priceDesc")}</option>
       </select>
     </div>
   );

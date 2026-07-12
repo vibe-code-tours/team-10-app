@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useCart } from "@/components/cart/CartProvider";
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function AddToCartButton({ product }: Props) {
+  const t = useTranslations("AddToCart");
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ export default function AddToCartButton({ product }: Props) {
   function handleAddToCart() {
     setLoading(true);
     addToCart(product, quantity);
-    setMessage({ type: "success", text: "ခြင်းတောင်းထဲထည့်ပြီးပါပြီ" });
+    setMessage({ type: "success", text: t("added") });
     setLoading(false);
     setTimeout(() => setMessage(null), 3000);
   }
@@ -85,7 +87,7 @@ export default function AddToCartButton({ product }: Props) {
         id="btn-add-to-cart"
       >
         {loading ? <span className="spinner" /> : null}
-        {loading ? "ထည့်နေသည်..." : "ခြင်းတောင်းထဲထည့်ရန်"}
+        {loading ? t("adding") : t("addToCart")}
       </button>
 
       {message && (
