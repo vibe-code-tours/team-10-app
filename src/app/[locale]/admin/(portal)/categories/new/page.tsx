@@ -8,7 +8,11 @@ export default function NewCategoryPage() {
         <Link
           href="/admin/categories"
           className="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] text-sm font-medium mb-4 inline-block"
-          style={{ textDecoration: "none", display: "inline-block", marginBottom: "var(--space-md)" }}
+          style={{
+            textDecoration: "none",
+            display: "inline-block",
+            marginBottom: "var(--space-md)",
+          }}
         >
           &larr; Back to Categories
         </Link>

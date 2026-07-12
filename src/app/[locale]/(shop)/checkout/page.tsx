@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import { createOrder } from "@/actions/checkout/action-checkout";
 import { useCart } from "@/components/cart/CartProvider";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function CheckoutPage() {
+  const t = useTranslations("Checkout");
   const router = useRouter();
   const { items, totalPrice, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
@@ -31,15 +33,13 @@ export default function CheckoutPage() {
     return (
       <div className="container section">
         <div className="empty-state">
-          <div className="empty-state-title">
-            ခြင်းတောင်းထဲတွင် ပစ္စည်းမရှိပါ
-          </div>
+          <div className="empty-state-title">{t("emptyCart")}</div>
           <Link
             href="/products"
             className="btn btn-primary"
             style={{ marginTop: "1rem" }}
           >
-            ပစ္စည်းများကြည့်ရန်
+            {t("viewProducts")}
           </Link>
         </div>
       </div>
@@ -67,7 +67,7 @@ export default function CheckoutPage() {
   return (
     <div className="container section" id="checkout-page">
       <h1 className="section-title" style={{ marginBottom: "var(--space-xl)" }}>
-        Checkout (ငွေပေးချေမှု)
+        {t("title")}
       </h1>
 
       {error && (
@@ -106,7 +106,7 @@ export default function CheckoutPage() {
               <h2
                 style={{ fontSize: "var(--font-size-base)", fontWeight: 500 }}
               >
-                ပို့ဆောင်ရမည့် လိပ်စာအချက်အလက်
+                {t("shippingAddress")}
               </h2>
             </div>
             <div
@@ -118,7 +118,7 @@ export default function CheckoutPage() {
               }}
             >
               <div className="form-group">
-                <label className="form-label">အမည် (Full Name)</label>
+                <label className="form-label">{t("fullName")}</label>
                 <input
                   required
                   type="text"
@@ -130,7 +130,7 @@ export default function CheckoutPage() {
                 />
               </div>
               <div className="form-group">
-                <label className="form-label">ဖုန်းနံပါတ် (Phone Number)</label>
+                <label className="form-label">{t("phone")}</label>
                 <input
                   required
                   type="tel"
@@ -142,9 +142,7 @@ export default function CheckoutPage() {
                 />
               </div>
               <div className="form-group">
-                <label className="form-label">
-                  အပြည့်အစုံ လိပ်စာ (Full Address)
-                </label>
+                <label className="form-label">{t("fullAddress")}</label>
                 <textarea
                   required
                   className="form-input"
@@ -163,7 +161,7 @@ export default function CheckoutPage() {
               <h2
                 style={{ fontSize: "var(--font-size-base)", fontWeight: 500 }}
               >
-                ငွေပေးချေမှုစနစ် (Payment Method)
+                {t("paymentMethod")}
               </h2>
             </div>
             <div className="card-body">
@@ -181,7 +179,7 @@ export default function CheckoutPage() {
                   }
                   style={{ accentColor: "var(--color-text)" }}
                 />
-                <span>ပစ္စည်းရောက်မှ ငွေချေမည် (Cash on Delivery)</span>
+                <span>{t("cod")}</span>
               </label>
               <label
                 className="flex items-center gap-sm"
@@ -197,7 +195,7 @@ export default function CheckoutPage() {
                   }
                   style={{ accentColor: "var(--color-text)" }}
                 />
-                <span>KBZ Pay / Wave Pay ဖြင့် ငွေလွှဲမည်</span>
+                <span>{t("mobileBanking")}</span>
               </label>
             </div>
           </div>
@@ -218,7 +216,7 @@ export default function CheckoutPage() {
                 marginBottom: "var(--space-lg)",
               }}
             >
-              အော်ဒါအကျဉ်း
+              {t("orderSummary")}
             </h3>
 
             <div
@@ -249,7 +247,7 @@ export default function CheckoutPage() {
                 }}
               />
               <div className="flex justify-between">
-                <span style={{ fontWeight: 600 }}>စုစုပေါင်းကျသင့်ငွေ</span>
+                <span style={{ fontWeight: 600 }}>{t("totalAmount")}</span>
                 <span
                   style={{ fontWeight: 600, color: "var(--color-primary)" }}
                 >
@@ -265,7 +263,7 @@ export default function CheckoutPage() {
               id="btn-place-order"
             >
               {loading ? <span className="spinner" /> : null}
-              {loading ? "အော်ဒါတင်နေသည်..." : "အော်ဒါအတည်ပြုရန်"}
+              {loading ? t("placingOrder") : t("placeOrder")}
             </button>
           </div>
         </div>

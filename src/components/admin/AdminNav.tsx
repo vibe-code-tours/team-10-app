@@ -1,7 +1,13 @@
 "use client";
 
 import { Link, usePathname } from "@/i18n/routing";
-import { Package, ClipboardList, LogOut, LayoutDashboard, FolderTree } from "lucide-react";
+import {
+  Package,
+  ClipboardList,
+  LogOut,
+  LayoutDashboard,
+  FolderTree,
+} from "lucide-react";
 import { signOut } from "@/actions/auth/action-signout";
 import { useTranslations } from "next-intl";
 
@@ -15,7 +21,15 @@ export default function AdminNav() {
   const isCategoriesActive = pathname.startsWith("/admin/categories");
 
   return (
-    <nav className="admin-nav" style={{ display: "flex", flexDirection: "column", gap: "4px", height: "100%" }}>
+    <nav
+      className="admin-nav"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "4px",
+        height: "100%",
+      }}
+    >
       <Link
         href="/admin"
         className={`admin-nav-link ${isDashboardActive ? "active" : ""}`}

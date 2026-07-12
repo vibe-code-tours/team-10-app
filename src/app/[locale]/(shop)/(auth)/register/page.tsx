@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { registerWithEmail } from "@/actions/auth/action-register";
 
 export default function RegisterPage() {
+  const t = useTranslations("Register");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -23,7 +25,7 @@ export default function RegisterPage() {
     }
 
     if (result.success) {
-      setSuccess(result.message ?? "အီးမေးလ်ကိုစစ်ဆေးပါ");
+      setSuccess(result.message ?? t("checkEmail"));
       setLoading(false);
     }
   }
@@ -31,10 +33,8 @@ export default function RegisterPage() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h1 className="auth-title">အကောင့်ဖန်တီးရန်</h1>
-        <p className="auth-subtitle">
-          အချက်အလက်များဖြည့်သွင်းပြီး အကောင့်ဖန်တီးပါ
-        </p>
+        <h1 className="auth-title">{t("title")}</h1>
+        <p className="auth-subtitle">{t("subtitle")}</p>
 
         <form action={handleRegister} className="auth-form">
           {error && (
@@ -75,7 +75,7 @@ export default function RegisterPage() {
               name="full_name"
               id="full_name"
               className="form-input"
-              placeholder="သင့်အမည်"
+              placeholder={t("namePlaceholder")}
               required
               minLength={2}
               autoComplete="name"
@@ -91,7 +91,7 @@ export default function RegisterPage() {
               name="email"
               id="register-email"
               className="form-input"
-              placeholder="you@example.com"
+              placeholder={t("emailPlaceholder")}
               required
               autoComplete="email"
             />
@@ -106,7 +106,7 @@ export default function RegisterPage() {
               name="password"
               id="register-password"
               className="form-input"
-              placeholder="••••••••"
+              placeholder={t("passwordPlaceholder")}
               required
               minLength={6}
               autoComplete="new-password"
@@ -122,7 +122,7 @@ export default function RegisterPage() {
               name="confirm_password"
               id="confirm_password"
               className="form-input"
-              placeholder="••••••••"
+              placeholder={t("passwordPlaceholder")}
               required
               minLength={6}
               autoComplete="new-password"
@@ -136,12 +136,12 @@ export default function RegisterPage() {
             id="btn-register"
           >
             {loading ? <span className="spinner" /> : null}
-            {loading ? "ဖန်တီးနေသည်..." : "အကောင့်ဖန်တီးရန်"}
+            {loading ? t("creating") : t("createBtn")}
           </button>
         </form>
 
         <div className="auth-footer">
-          အကောင့်ရှိပြီးသားလား? <Link href="/login">ဝင်ရောက်ရန်</Link>
+          {t("haveAccount")} <Link href="/login">{t("loginLink")}</Link>
         </div>
       </div>
     </div>

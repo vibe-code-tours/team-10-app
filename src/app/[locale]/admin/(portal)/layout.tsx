@@ -56,7 +56,22 @@ export default async function AdminLayout({
               textDecoration: "none",
             }}
           >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ background: "var(--color-primary)", color: "#fff", borderRadius: "6px", padding: "3px" }}>
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{
+                background: "var(--color-primary)",
+                color: "#fff",
+                borderRadius: "6px",
+                padding: "3px",
+              }}
+            >
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
@@ -66,8 +81,24 @@ export default async function AdminLayout({
         </div>
 
         {/* Sidebar Inner Content (Title & Nav) */}
-        <div style={{ padding: "0 var(--space-lg) var(--space-lg) var(--space-lg)" }}>
-          <h2 className="admin-sidebar-title" style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--color-text-secondary)", marginBottom: "var(--space-md)", display: "flex", alignItems: "center", gap: "6px" }}>
+        <div
+          style={{
+            padding: "0 var(--space-lg) var(--space-lg) var(--space-lg)",
+          }}
+        >
+          <h2
+            className="admin-sidebar-title"
+            style={{
+              fontSize: "11px",
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              color: "var(--color-text-secondary)",
+              marginBottom: "var(--space-md)",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
             <Shield size={14} />
             <span>{t("panel")}</span>
           </h2>
@@ -75,7 +106,15 @@ export default async function AdminLayout({
         </div>
       </aside>
 
-      <div className="admin-main-wrapper" style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+      <div
+        className="admin-main-wrapper"
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          minWidth: 0,
+        }}
+      >
         <header
           className="admin-top-header"
           style={{
@@ -91,7 +130,13 @@ export default async function AdminLayout({
             zIndex: 100,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "var(--space-sm)" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "var(--space-sm)",
+            }}
+          >
             <AdminHeaderTitle />
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
