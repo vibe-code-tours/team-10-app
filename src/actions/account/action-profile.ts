@@ -14,7 +14,8 @@ const PaymentMethodSchema = z.object({
   paymentMethod: z.string().trim().min(1, "Payment method is required"),
 });
 
-export async function updateProfile(formData: FormData) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function updateProfile(state: any, formData: FormData) {
   try {
     const supabase = await createClient();
     const {
@@ -62,7 +63,8 @@ export async function updateProfile(formData: FormData) {
   return { success: true };
 }
 
-export async function updatePaymentMethod(formData: FormData) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function updatePaymentMethod(state: any, formData: FormData) {
   try {
     const supabase = await createClient();
     const {

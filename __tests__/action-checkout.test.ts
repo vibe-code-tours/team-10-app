@@ -40,15 +40,16 @@ describe('Action: createOrder', () => {
   });
 
   it('should return error if customer data is invalid', async () => {
-    const formData = new FormData();
-    formData.append('cartItems', JSON.stringify([{ id: 'prod-1', quantity: 2, price: 1000 }]));
-    formData.append('customerName', 'J'); // Too short
-    formData.append('customerPhone', '1234'); // Too short
-    formData.append('customerAddress', 'Home'); // Too short
-    formData.append('paymentMethod', ''); // Empty
-    formData.append('totalAmount', '2000');
+    const items = [{ id: 'prod-1', quantity: 2, price: 1000 }];
+    const customerDetails = {
+      customer_name: 'J',
+      customer_phone: '1234',
+      customer_address: 'Home',
+      payment_method: '',
+    };
+    const totalAmount = 2000;
 
-    const result = await createOrder(formData);
+    const result = await createOrder(customerDetails, items, totalAmount);
 
     expect(result).toHaveProperty('error');
     expect(result.success).toBeUndefined();
@@ -61,15 +62,14 @@ describe('Action: createOrder', () => {
       price: 100,
     }));
 
-    const formData = new FormData();
-    formData.append('cartItems', JSON.stringify(massiveItems));
-    formData.append('customerName', 'John Doe');
-    formData.append('customerPhone', '09123456789');
-    formData.append('customerAddress', '123 Main St, Yangon');
-    formData.append('paymentMethod', 'cod');
-    formData.append('totalAmount', '6000');
+    const customerDetails = {
+      customer_name: 'John Doe',
+      customer_phone: '09123456789',
+      customer_address: '123 Main St, Yangon',
+      payment_method: 'cod',
+    };
 
-    const result = await createOrder(formData);
+    const result = await createOrder(customerDetails, massiveItems, 6000);
 
     expect(result).toEqual({ error: 'You cannot checkout with more than 50 unique items at once.' });
   });
