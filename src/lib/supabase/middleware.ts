@@ -1,7 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function updateSession(request: NextRequest, response: NextResponse) {
+export async function updateSession(
+  request: NextRequest,
+  response: NextResponse,
+) {
   const supabaseResponse = response;
 
   const supabase = createServerClient(
@@ -32,20 +35,20 @@ export async function updateSession(request: NextRequest, response: NextResponse
 
   // Strip locale from pathname for route matching
   const pathname = request.nextUrl.pathname;
-  const pathWithoutLocale = pathname.replace(/^\/(en|my)/, '') || '/';
+  const pathWithoutLocale = pathname.replace(/^\/(en|my)/, "") || "/";
 
   const protectedPaths = ["/checkout", "/account", "/seller", "/admin"];
   // Note: /admin/login is an auth path, not a protected path
-  const isProtected = protectedPaths.some((path) =>
-    pathWithoutLocale.startsWith(path),
-  ) && !pathWithoutLocale.startsWith("/admin/login");
+  const isProtected =
+    protectedPaths.some((path) => pathWithoutLocale.startsWith(path)) &&
+    !pathWithoutLocale.startsWith("/admin/login");
 
   if (isProtected && !user) {
     const url = request.nextUrl.clone();
     // Keep locale if present
     const localeMatch = pathname.match(/^\/(en|my)/);
-    const locale = localeMatch ? localeMatch[0] : '';
-    
+    const locale = localeMatch ? localeMatch[0] : "";
+
     // Show 404 if trying to access admin, else redirect to /login
     if (pathWithoutLocale.startsWith("/admin")) {
       url.pathname = locale ? `${locale}/404` : `/404`;
@@ -65,12 +68,12 @@ export async function updateSession(request: NextRequest, response: NextResponse
   if (isAuthPage && user) {
     const url = request.nextUrl.clone();
     const localeMatch = pathname.match(/^\/(en|my)/);
-    const locale = localeMatch ? localeMatch[0] : '';
-    
+    const locale = localeMatch ? localeMatch[0] : "";
+
     if (pathWithoutLocale.startsWith("/admin/login")) {
       url.pathname = `${locale}/admin`;
     } else {
-      url.pathname = locale || '/';
+      url.pathname = locale || "/";
     }
     return NextResponse.redirect(url);
   }
