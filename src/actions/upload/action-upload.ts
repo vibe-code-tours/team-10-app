@@ -74,6 +74,18 @@ export async function uploadPaymentProof(
     return { error: "LOGIN_REQUIRED" };
   }
 
+  // Verify the caller actually owns this order before attaching a proof (IDOR guard).
+  const { data: order, error: orderLookupError } = await supabase
+    .from("orders")
+    .select("id")
+    .eq("id", orderId)
+    .eq("user_id", user.id)
+    .single();
+
+  if (orderLookupError || !order) {
+    return { error: "ငွေလွှဲပြေစာသိမ်းဆည်း၍မရပါ" };
+  }
+
   const { error: insertError } = await supabase.from("payment_proofs").insert({
     order_id: orderId,
     file_url: result.url,
@@ -88,7 +100,7 @@ export async function uploadPaymentProof(
     .from("orders")
     .update({ payment_status: "uploaded" })
     .eq("id", orderId)
-    .eq("buyer_id", user.id);
+    .eq("user_id", user.id);
 
   return { url: result.url };
 }

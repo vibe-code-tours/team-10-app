@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { createCategory, updateCategory } from "@/actions/admin/action-categories";
+import {
+  createCategory,
+  updateCategory,
+} from "@/actions/admin/action-categories";
 import { Link } from "@/i18n/routing";
 
 type Category = {
@@ -49,21 +52,48 @@ export default function CategoryForm({ category }: { category?: Category }) {
           await createCategory(formData);
         }
       } catch (error) {
-        setErrorMsg(error instanceof Error ? error.message : "Failed to save category.");
+        setErrorMsg(
+          error instanceof Error ? error.message : "Failed to save category.",
+        );
       }
     });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="card card-body" style={{ maxWidth: "600px" }}>
+    <form
+      onSubmit={handleSubmit}
+      className="card card-body"
+      style={{ maxWidth: "600px" }}
+    >
       {errorMsg && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm border border-red-200" style={{ color: "var(--color-danger)", background: "rgba(197,48,48,0.06)", borderColor: "rgba(197,48,48,0.12)", padding: "0.75rem", borderRadius: "var(--radius-md)", marginBottom: "1rem" }}>
+        <div
+          className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm border border-red-200"
+          style={{
+            color: "var(--color-danger)",
+            background: "rgba(197,48,48,0.06)",
+            borderColor: "rgba(197,48,48,0.12)",
+            padding: "0.75rem",
+            borderRadius: "var(--radius-md)",
+            marginBottom: "1rem",
+          }}
+        >
           {errorMsg}
         </div>
       )}
 
-      <div className="form-group mb-md" style={{ marginBottom: "var(--space-md)" }}>
-        <label className="form-label" htmlFor="name" style={{ display: "block", marginBottom: "var(--space-xs)", fontWeight: 500 }}>
+      <div
+        className="form-group mb-md"
+        style={{ marginBottom: "var(--space-md)" }}
+      >
+        <label
+          className="form-label"
+          htmlFor="name"
+          style={{
+            display: "block",
+            marginBottom: "var(--space-xs)",
+            fontWeight: 500,
+          }}
+        >
           Category Name
         </label>
         <input
@@ -78,8 +108,19 @@ export default function CategoryForm({ category }: { category?: Category }) {
         />
       </div>
 
-      <div className="form-group mb-md" style={{ marginBottom: "var(--space-md)" }}>
-        <label className="form-label" htmlFor="slug" style={{ display: "block", marginBottom: "var(--space-xs)", fontWeight: 500 }}>
+      <div
+        className="form-group mb-md"
+        style={{ marginBottom: "var(--space-md)" }}
+      >
+        <label
+          className="form-label"
+          htmlFor="slug"
+          style={{
+            display: "block",
+            marginBottom: "var(--space-xs)",
+            fontWeight: 500,
+          }}
+        >
           Slug (URL identifier)
         </label>
         <input
@@ -92,12 +133,25 @@ export default function CategoryForm({ category }: { category?: Category }) {
           minLength={2}
           placeholder="e.g. computers"
         />
-        <span style={{ fontSize: "11px", color: "var(--color-text-tertiary)", marginTop: "4px", display: "block" }}>
+        <span
+          style={{
+            fontSize: "11px",
+            color: "var(--color-text-tertiary)",
+            marginTop: "4px",
+            display: "block",
+          }}
+        >
           Slugs should contain only lowercase letters, numbers, and hyphens.
         </span>
       </div>
 
-      <div style={{ display: "flex", gap: "var(--space-sm)", marginTop: "var(--space-lg)" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "var(--space-sm)",
+          marginTop: "var(--space-lg)",
+        }}
+      >
         <button type="submit" className="btn btn-primary" disabled={isPending}>
           {isPending ? "Saving..." : "Save Category"}
         </button>

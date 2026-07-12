@@ -32,18 +32,17 @@ description: End-of-session persistence. Run before finishing so decisions, chan
    needed) and leave one line at the bottom of the Log: "Older entries: see archive/".
    Never rewrite or summarize archived entries — move them as-is.
 2. **Decision record (ADR)** — If a non-trivial technical/architecture decision was made
-   (new pattern, dependency, tradeoff, or a rule change), copy
-   [.agents/memory/decisions/TEMPLATE.md](../../memory/decisions/TEMPLATE.md) to the next numbered
-   record in [.agents/memory/decisions/](../../memory/decisions/) (Context → Decision →
-   Consequences) and add a row to the index table in its `README.md`.
+   (new pattern, dependency, tradeoff, or a rule change), add the next numbered record to
+   [.agents/memory/decisions/](../../memory/decisions/), following the structure of the existing
+   ADRs there (Context → Decision → Consequences).
 3. **Structure docs** — If files/folders were added, moved, or split, update
-   [docs/PROJECT_MAP.md](../../../docs/PROJECT_MAP.md) — and
+   [project_mapping.md](../../architecture/project_mapping.md) — and
    [docs/ARCHITECTURE.md](../../../docs/ARCHITECTURE.md) if a layer/subsystem changed.
 4. **New convention** — If a new coding rule/convention emerged, add it to the correct
-   `.agents/` file ([agents.md](../../agents.md) for global rules, or the relevant doc
-   under `.agents/rules/`) and add/adjust its row in [.agents/INDEX.md](../../INDEX.md).
-5. **Link check** — Run `python scripts/check_doc_links.py` from the repo root. If it
-   reports broken links (usually caused by files moved this session), fix them before
+   `.agents/` file ([AGENTS.md](../../../AGENTS.md) for global rules, or the relevant doc
+   under `.agents/rules/`).
+5. **Link check** — Manually re-open any doc links you added/changed this session
+   (there is no automated link checker in this project) and fix anything broken before
    finishing — a broken doc graph silently blinds the next agent.
 6. **Show the diff** — Before the user commits, show what was written (`git diff --stat`
    or the changed doc content) so nothing is persisted silently.
@@ -58,6 +57,6 @@ Any new `.md` content in `.agents/` must be `***English***` first, then `***Myan
 *Myanmar — ဘာလို့လိုအပ်လဲ:*
 *Chat ထဲက ဆုံးဖြတ်ချက်တွေ session ဆုံးရင် ပျောက်တယ်။ ဒီ ritual က disk ပေါ်ရေးပေးတယ် —*
 *.agents/memory/MEMORY.md မှာ entry (ဘာပြောင်း/ဘာကြောင့်/gotcha/open threads)၊ decision ရှိရင်*
-*.agents/memory/decisions/ မှာ ADR အသစ်၊ file tree ပြောင်းရင် `docs/PROJECT_MAP.md` update၊*
+*.agents/memory/decisions/ မှာ ADR အသစ်၊ file tree ပြောင်းရင် `.agents/architecture/project_mapping.md` update၊*
 *ပြီးမှ commit မလုပ်ခင် diff ပြပါ။ **သတိ:** `/start` က ဖတ်တဲ့ file တွေက ဒီ file တွေပဲ*
 *ဖြစ်လို့ တခြားနေရာမှာ သွားရေးရင် memory ပျောက်ပါမယ်။*

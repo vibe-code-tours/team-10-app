@@ -17,10 +17,10 @@ export default function NotFound() {
         justifyContent: "center",
         background: "var(--color-bg, #f4f6f8)",
         padding: "2rem",
-        textAlign: "center"
+        textAlign: "center",
       }}
     >
-      <div 
+      <div
         style={{
           width: "120px",
           height: "120px",
@@ -30,49 +30,57 @@ export default function NotFound() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          marginBottom: "2rem"
+          marginBottom: "2rem",
         }}
       >
         <SearchX size={56} strokeWidth={1.5} />
       </div>
 
-      <h1 
+      <h1
         style={{
           fontSize: "5rem",
           fontWeight: 800,
           margin: "0 0 1rem 0",
           color: "var(--color-text, #111827)",
           lineHeight: 1,
-          letterSpacing: "-0.02em"
+          letterSpacing: "-0.02em",
         }}
       >
         404
       </h1>
 
-      <h2 
+      <h2
         style={{
           fontSize: "1.75rem",
           fontWeight: 600,
           margin: "0 0 1rem 0",
-          color: "var(--color-text-secondary, #4B5563)"
+          color: "var(--color-text-secondary, #4B5563)",
         }}
       >
         Page Not Found
       </h2>
 
-      <p 
+      <p
         style={{
           maxWidth: "450px",
           color: "var(--color-text-tertiary, #6B7280)",
           lineHeight: 1.6,
           marginBottom: "2.5rem",
-          fontSize: "1.1rem"
+          fontSize: "1.1rem",
         }}
       >
-        We&apos;re sorry, but the page you were looking for doesn&apos;t exist, has been moved, or you don&apos;t have permission to view it.
+        We&apos;re sorry, but the page you were looking for doesn&apos;t exist,
+        has been moved, or you don&apos;t have permission to view it.
       </p>
 
-      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "1rem",
+          flexWrap: "wrap",
+          justifyContent: "center",
+        }}
+      >
         <button
           onClick={() => router.back()}
           style={{
@@ -87,11 +95,12 @@ export default function NotFound() {
             fontSize: "1rem",
             fontWeight: 500,
             cursor: "pointer",
-            transition: "all 0.2s ease"
+            transition: "all 0.2s ease",
           }}
           onMouseOver={(e) => {
             e.currentTarget.style.background = "var(--color-surface, #FFFFFF)";
-            e.currentTarget.style.borderColor = "var(--color-text-secondary, #4B5563)";
+            e.currentTarget.style.borderColor =
+              "var(--color-text-secondary, #4B5563)";
           }}
           onMouseOut={(e) => {
             e.currentTarget.style.background = "transparent";
@@ -116,10 +125,11 @@ export default function NotFound() {
             fontSize: "1rem",
             fontWeight: 500,
             textDecoration: "none",
-            transition: "background-color 0.2s ease"
+            transition: "background-color 0.2s ease",
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.background = "var(--color-primary-dark, #3367D6)";
+            e.currentTarget.style.background =
+              "var(--color-primary-dark, #3367D6)";
           }}
           onMouseOut={(e) => {
             e.currentTarget.style.background = "var(--color-primary, #4285F4)";

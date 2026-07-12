@@ -23,6 +23,7 @@ export async function updateOrderStatus(orderId: string, newStatus: string) {
     revalidatePath(`/admin/orders/${orderId}`);
     return { success: true };
   } catch (err: unknown) {
-    return { error: err instanceof Error ? err.message : "Unknown error" };
+    console.error("updateOrderStatus error:", err);
+    return { error: "Failed to update order status." };
   }
 }

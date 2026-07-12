@@ -37,6 +37,9 @@ export async function GET(request: Request) {
 
         if (upsertError) {
           console.error("User upsert error:", upsertError);
+          return NextResponse.redirect(
+            `${origin}/login?error=account_creation_failed`,
+          );
         }
       }
 

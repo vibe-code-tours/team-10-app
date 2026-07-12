@@ -14,16 +14,14 @@ export const metadata: Metadata = {
   keywords: ["myanmar", "online shop", "e-commerce", "shopping"],
 };
 
-export default async function RootLayout(
-  props: {
-    children: React.ReactNode;
-    params: Promise<{ locale: string }>;
-  }
-) {
+export default async function RootLayout(props: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
   const params = await props.params;
   const { locale } = params;
   const { children } = props;
-  
+
   const messages = await getMessages();
 
   return (
@@ -35,9 +33,7 @@ export default async function RootLayout(
             defaultTheme="system"
             enableSystem
           >
-            <CartProvider>
-              {children}
-            </CartProvider>
+            <CartProvider>{children}</CartProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

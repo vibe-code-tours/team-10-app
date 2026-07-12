@@ -1,6 +1,6 @@
 # Git Workflow
 
-This document defines the version control practices and Git workflow for the **yeaung** project. Adherence to this workflow ensures a clean, understandable, and stable codebase.
+This document defines the version control practices and Git workflow for the **YoeYarZaw** project. Adherence to this workflow ensures a clean, understandable, and stable codebase.
 
 ## 1. Branching Strategy
 

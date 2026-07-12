@@ -31,7 +31,22 @@ export default function AdminLoginPage() {
       <div className="admin-login-brand">
         <div className="brand-content">
           <div className="brand-logo-wrapper">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ background: "#fff", color: "var(--color-primary)", borderRadius: "12px", padding: "6px" }}>
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{
+                background: "#fff",
+                color: "var(--color-primary)",
+                borderRadius: "12px",
+                padding: "6px",
+              }}
+            >
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
@@ -40,10 +55,13 @@ export default function AdminLoginPage() {
           <h1>Yoe Yar Zay</h1>
           <h2>E-commerce Admin Portal</h2>
           <p>
-            Manage your store&apos;s products, categories, user orders, and monitor overall performance through a unified, high-density dashboard.
+            Manage your store&apos;s products, categories, user orders, and
+            monitor overall performance through a unified, high-density
+            dashboard.
           </p>
           <div className="brand-footer">
-            &copy; {new Date().getFullYear()} Yoe Yar Zay Online Shop. All rights reserved.
+            &copy; {new Date().getFullYear()} Yoe Yar Zay Online Shop. All
+            rights reserved.
           </div>
         </div>
       </div>
@@ -65,12 +83,8 @@ export default function AdminLoginPage() {
 
           <form action={handleEmailLogin} className="login-form">
             <input type="hidden" name="redirect" value="/admin" />
-            
-            {error && (
-              <div className="error-message">
-                {error}
-              </div>
-            )}
+
+            {error && <div className="error-message">{error}</div>}
 
             <div className="input-group">
               <label htmlFor="email">{t("email")}</label>
@@ -115,7 +129,9 @@ export default function AdminLoginPage() {
         </div>
       </div>
 
-      <style dangerouslySetInnerHTML={{__html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .admin-login-layout {
           display: flex;
           min-height: 100vh;
@@ -399,7 +415,9 @@ export default function AdminLoginPage() {
             background: transparent;
           }
         }
-      `}} />
+      `,
+        }}
+      />
     </div>
   );
 }

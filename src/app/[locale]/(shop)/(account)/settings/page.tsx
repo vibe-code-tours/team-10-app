@@ -1,11 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import {
-  updateProfile,
-  updatePaymentMethod,
-} from "@/actions/account/action-profile";
+
 import { signOut } from "@/actions/auth/action-signout";
 import Link from "next/link";
+import { ProfileSettingsForms } from "@/components/account/ProfileSettingsForms";
 
 export const metadata = { title: "Settings - User Profile" };
 
@@ -46,140 +44,7 @@ export default async function SettingsPage() {
             Settings (ဆက်တင်)
           </h1>
         </div>
-
-        {/* Profile Details Form */}
-        <div className="card" style={{ marginBottom: "var(--space-xl)" }}>
-          <div className="card-header">
-            <h2 style={{ fontSize: "var(--font-size-lg)", fontWeight: 600 }}>
-              ကိုယ်ရေးအချက်အလက် (Profile Details)
-            </h2>
-          </div>
-          <div className="card-body">
-            <form
-              action={updateProfile}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "var(--space-md)",
-              }}
-            >
-              <div className="form-group">
-                <label className="form-label" htmlFor="full_name">
-                  အမည် (Full Name)
-                </label>
-                <input
-                  type="text"
-                  id="full_name"
-                  name="full_name"
-                  className="form-input"
-                  defaultValue={profile?.full_name || ""}
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label" htmlFor="phone_number">
-                  ဖုန်းနံပါတ် (Phone Number)
-                </label>
-                <input
-                  type="tel"
-                  id="phone_number"
-                  name="phone_number"
-                  className="form-input"
-                  defaultValue={profile?.phone_number || ""}
-                  placeholder="Enter your phone number"
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label" htmlFor="address">
-                  လိပ်စာ (Address)
-                </label>
-                <textarea
-                  id="address"
-                  name="address"
-                  className="form-input"
-                  rows={3}
-                  defaultValue={profile?.address || ""}
-                  placeholder="Enter your full address"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="btn btn-primary"
-                style={{ alignSelf: "flex-start" }}
-              >
-                သိမ်းဆည်းမည် (Save Profile)
-              </button>
-            </form>
-          </div>
-        </div>
-
-        {/* Payment Preferences Form */}
-        <div className="card" id="payment" style={{ marginBottom: "var(--space-xl)" }}>
-          <div className="card-header">
-            <h2 style={{ fontSize: "var(--font-size-lg)", fontWeight: 600 }}>
-              ငွေပေးချေမှုစနစ် (Payment Method)
-            </h2>
-          </div>
-          <div className="card-body">
-            <form
-              action={updatePaymentMethod}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "var(--space-md)",
-              }}
-            >
-              <label
-                className="flex items-center gap-sm"
-                style={{ cursor: "pointer" }}
-              >
-                <input
-                  type="radio"
-                  name="payment_method"
-                  value="cod"
-                  defaultChecked={
-                    profile?.preferred_payment_method === "cod" ||
-                    !profile?.preferred_payment_method
-                  }
-                  style={{ accentColor: "var(--color-text)" }}
-                />
-                <span>ပစ္စည်းရောက်မှ ငွေချေမည် (Cash on Delivery)</span>
-              </label>
-
-              <label
-                className="flex items-center gap-sm"
-                style={{ cursor: "pointer" }}
-              >
-                <input
-                  type="radio"
-                  name="payment_method"
-                  value="mobile_banking"
-                  defaultChecked={
-                    profile?.preferred_payment_method === "mobile_banking"
-                  }
-                  style={{ accentColor: "var(--color-text)" }}
-                />
-                <span>
-                  KBZ Pay / Wave Pay ဖြင့် ငွေလွှဲမည် (Mobile Banking)
-                </span>
-              </label>
-
-              <button
-                type="submit"
-                className="btn btn-primary"
-                style={{
-                  alignSelf: "flex-start",
-                  marginTop: "var(--space-sm)",
-                }}
-              >
-                ပြောင်းလဲမည် (Change Payment Method)
-              </button>
-            </form>
-          </div>
-        </div>
+        <ProfileSettingsForms profile={profile} />
 
         {/* Logout Section */}
         <div

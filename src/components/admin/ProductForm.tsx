@@ -117,20 +117,26 @@ export default function ProductForm({
           <label className="form-label" htmlFor="category">
             Category
           </label>
-        <select
-          className="form-input"
-          id="category"
-          name="category"
-          defaultValue={product?.category || ""}
-          required
-        >
-          <option value="" disabled>Select a Category...</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.slug} style={{ textTransform: "capitalize" }}>
-              {cat.name}
+          <select
+            className="form-input"
+            id="category"
+            name="category"
+            defaultValue={product?.category || ""}
+            required
+          >
+            <option value="" disabled>
+              Select a Category...
             </option>
-          ))}
-        </select>
+            {categories.map((cat) => (
+              <option
+                key={cat.id}
+                value={cat.slug}
+                style={{ textTransform: "capitalize" }}
+              >
+                {cat.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="form-group">
