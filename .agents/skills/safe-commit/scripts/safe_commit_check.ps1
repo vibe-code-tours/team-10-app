@@ -5,8 +5,8 @@
 # checks; approval gates stay with the agent/user.
 #
 #   safety     (Phase 1, read-only)  Sensitive-file sweep (tracked / loose / .gitignore gaps)
-#   format     (Phase 2, WRITE)      Auto-format touched sides only
-#   precheck   (Phase 3, read-only)  Tests for touched sides + doc-link integrity
+#   format     (Phase 2, WRITE)      Prettier-format the touched src/ files
+#   precheck   (Phase 3, read-only)  `npm run lint` if the change touches src/
 #   summary    (Phase 6, read-only)  Change summary for atomic commit grouping
 #
 # Usage (from repo root):
@@ -18,23 +18,18 @@
 param([ValidateSet('safety','format','precheck','summary')][string]$Cmd = 'safety')
 
 $ErrorActionPreference = 'Continue'
-$Root     = (Resolve-Path "$PSScriptRoot\..\..\..\..").Path
-$Backend  = Join-Path $Root 'frontend'
-$Frontend = Join-Path $Root 'frontend'
+$Root = (Resolve-Path "$PSScriptRoot\..\..\..\..").Path
 Set-Location $Root
 
 # .env.example / .env.sample are templates and intentionally tracked - excluded.
 $SensitiveRe = '(\.env($|\.local|\.production|\.development)|\.db$|\.sqlite3?$|\.pem$|\.key$|service_account.*\.json|credentials/|secrets?\.|token.*\.json|\.p12$)'
-# ALLOWLIST: intentionally-versioned source-of-truth data DBs (not a leak).
-# See git_workflow.md section 4 + database_rules.
-$AllowlistRe = 'frontend/.*'
+# ALLOWLIST: intentionally-versioned template files (not a leak).
+$AllowlistRe = '\.env\.example$'
 
 function Section($t) { Write-Host "`n============================================================"; Write-Host "== $t"; Write-Host "============================================================" }
-function Py-Run { if (Get-Command pipenv -ErrorAction SilentlyContinue) { Push-Location $Backend; pipenv run @args; Pop-Location } elseif (Test-Path "$Backend\venv\Scripts\python.exe") { Push-Location $Backend; & ".\venv\Scripts\python.exe" -m @args; Pop-Location } else { Push-Location $Backend; python -m @args; Pop-Location } }
 
 function Touched { @(git diff --name-only) + @(git diff --cached --name-only) + @(git ls-files --others --exclude-standard) | Sort-Object -Unique }
-function Touches-Backend  { (Touched) -match '^frontend/' }
-function Touches-Frontend { (Touched) -match '^frontend/' }
+function Touches-App { (Touched) -match '^src/' }
 
 function Cmd-Safety {
   Section "PHASE 1 - DATA SAFETY SWEEP (read-only)"
@@ -63,19 +58,13 @@ function Cmd-Safety {
 }
 
 function Cmd-Format {
-  Section "PHASE 2 - AUTO-FORMAT (writes files; touched sides only)"
-  if (Touches-Backend)  { Write-Host "backend touched -> npx prettier --write 'src/**/*.{js,jsx,ts,tsx,css}'"; Push-Location $Backend; npx prettier --write 'src/**/*.{js,jsx,ts,tsx,css}'; Pop-Location } else { Write-Host "backend untouched - skipped" }
-  if (Touches-Frontend) { Write-Host "frontend touched -> npm run format"; Push-Location $Frontend; npm run format; Pop-Location } else { Write-Host "frontend untouched - skipped" }
+  Section "PHASE 2 - AUTO-FORMAT (writes files; only if src/ touched)"
+  if (Touches-App) { Write-Host "src/ touched -> npx prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md}'"; npx prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md}' } else { Write-Host "src/ untouched - skipped" }
 }
 
 function Cmd-Precheck {
-  Section "PHASE 3 - PRE-CHECK (tests + doc links; read-only)"
-  if (Touches-Backend) { npm run test } else { Write-Host "backend untouched - npm run test skipped" }
-  if (Touches-Frontend) {
-    Push-Location $Frontend; $env:CI = 'true'; npm test -- --watchAll=false; Remove-Item Env:\CI; Pop-Location
-  } else { Write-Host "frontend untouched - jest skipped" }
-  Write-Host ""
-  python scripts/check_doc_links.py
+  Section "PHASE 3 - PRE-CHECK (lint; read-only)"
+  if (Touches-App) { npm run lint } else { Write-Host "src/ untouched - lint skipped" }
 }
 
 function Cmd-Summary {

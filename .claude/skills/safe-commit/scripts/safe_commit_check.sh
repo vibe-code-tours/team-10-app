@@ -9,9 +9,8 @@
 #                - tracked files matching secret/db patterns (already in git!)
 #                - untracked-but-not-ignored sensitive files (one `git add -A` from leaking)
 #                - .gitignore coverage gaps
-#   format     (Phase 2, WRITE)      Auto-format ONLY the sides touched by the
-#                                    current change (backend ruff / frontend prettier).
-#   precheck   (Phase 3, read-only)  Tests for touched sides + doc-link integrity.
+#   format     (Phase 2, WRITE)      Prettier-format the touched src/ files.
+#   precheck   (Phase 3, read-only)  `npm run lint` if the change touches src/.
 #   summary    (Phase 6, read-only)  git status + diff stat grouped by top-level area,
 #                                    to help propose atomic commit groups.
 #
@@ -24,8 +23,6 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
-BACKEND="$ROOT/frontend"
-FRONTEND="$ROOT/frontend"
 cd "$ROOT"
 
 # Patterns that indicate a sensitive or data file. Tune here, not inline.
@@ -33,24 +30,16 @@ cd "$ROOT"
 SENSITIVE_RE='(\.env($|\.local|\.production|\.development)|\.db$|\.sqlite3?$|\.pem$|\.key$|service_account.*\.json|credentials/|secrets?\.|token.*\.json|\.p12$)'
 # ALLOWLIST: intentionally-versioned files that match SENSITIVE_RE but are approved
 # source-of-truth data — NOT a leak. See git_workflow.md §4 + database_rules.
-ALLOWLIST_RE='frontend/.*'
+ALLOWLIST_RE='\.env\.example$'
 
 section() { printf '\n============================================================\n== %s\n============================================================\n' "$1"; }
 run()     { printf '\n$ %s\n' "$*"; "$@" || printf '\n[exit %s] (non-fatal — treat as finding)\n' "$?"; }
 
-py_run() {
-  if command -v pipenv >/dev/null 2>&1; then ( cd "$BACKEND" && pipenv run "$@" );
-  elif [ -x "$BACKEND/venv/Scripts/python.exe" ]; then ( cd "$BACKEND" && "./venv/Scripts/python.exe" -m "$@" );
-  elif [ -x "$BACKEND/venv/bin/python" ]; then ( cd "$BACKEND" && "./venv/bin/python" -m "$@" );
-  else ( cd "$BACKEND" && python -m "$@" ); fi
-}
-
-# Which sides does the current change touch? (staged + unstaged + untracked)
+# Does the current change touch app code? (staged + unstaged + untracked)
 touched() {
   { git diff --name-only; git diff --cached --name-only; git ls-files --others --exclude-standard; } | sort -u
 }
-touches_backend()  { touched | grep -q '^frontend/';  }
-touches_frontend() { touched | grep -q '^frontend/'; }
+touches_app() { touched | grep -q '^src/'; }
 
 cmd_safety() {
   section "PHASE 1 — DATA SAFETY SWEEP (read-only)"
@@ -85,28 +74,18 @@ cmd_safety() {
 }
 
 cmd_format() {
-  section "PHASE 2 — AUTO-FORMAT (writes files; touched sides only)"
-  if touches_backend; then
-    echo "backend touched → npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css}\""
-    run py_run npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css}\"
-  else echo "backend untouched — skipped"; fi
-  if touches_frontend; then
-    echo "frontend touched → npm run format"
-    ( cd "$FRONTEND" && run npm run format )
-  else echo "frontend untouched — skipped"; fi
+  section "PHASE 2 — AUTO-FORMAT (writes files; only if src/ touched)"
+  if touches_app; then
+    echo "src/ touched → npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md}\""
+    run npx prettier --write "src/**/*.{js,jsx,ts,tsx,css,md}"
+  else echo "src/ untouched — skipped"; fi
 }
 
 cmd_precheck() {
-  section "PHASE 3 — PRE-CHECK (tests + doc links; read-only)"
-  if touches_backend; then
-    run npm run test
-  else echo "backend untouched — npm run test skipped"; fi
-  if touches_frontend; then
-    # CRA/Jest: CI=true + --watchAll=false => single non-interactive run
-    ( cd "$FRONTEND" && CI=true run npm test -- --watchAll=false )
-  else echo "frontend untouched — jest skipped"; fi
-  echo ""
-  run python scripts/check_doc_links.py
+  section "PHASE 3 — PRE-CHECK (lint; read-only)"
+  if touches_app; then
+    run npm run lint
+  else echo "src/ untouched — lint skipped"; fi
 }
 
 cmd_summary() {

@@ -4,17 +4,17 @@
 # ----------------------------------------------------------------------------
 # Gathers the mechanical evidence a reviewer needs so findings can be recorded
 # into .agents/reports/code_review_records.md. NEVER modifies source:
-#   ruff/prettier run in CHECK mode only; everything else is grep/git/wc.
+#   eslint/prettier run in CHECK mode only; everything else is grep/git/wc.
 #
 # Sections:
 #   1. Changed files + diff stat (review scope)
-#   2. Backend lint      : npm run lint  +  ruff format --check app/
-#   3. Frontend format   : prettier --check "src/**/*.{js,jsx,css,md}"
-#   4. Domain compliance : scan for gambling terminology
-#   5. Hardcoded URLs    : backend URL hardcoded in frontend (must use config.js API_URL)
+#   2. Lint            : npm run lint
+#   3. Format check    : prettier --check "src/**/*.{ts,tsx,css,md}"
+#   4. Domain compliance : money handled as numeric, no client-trusted prices
+#   5. Hardcoded URLs  : localhost/raw API endpoints outside src/lib/supabase/
 #   6. Hardcoded secrets : obvious secret patterns
-#   7. File-size guard   : .py/.js over soft thresholds (300 warn / 500 flag)
-#   8. Dependency guard  : diff of package.json / package.json vs the base ref
+#   7. File-size guard : .ts/.tsx over soft thresholds (300 warn / 500 flag)
+#   8. Dependency guard : diff of package.json vs the base ref
 #
 # Usage (from repo root):
 #   bash .agents/skills/code-review/scripts/run_review.sh              # vs origin/main
@@ -24,8 +24,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
-BACKEND="$ROOT/frontend"
-FRONTEND="$ROOT/frontend"
+SRC="$ROOT/src"
 cd "$ROOT"
 
 BASE="${1:-origin/main}"
@@ -35,45 +34,37 @@ if [ "$BASE" = "--working" ]; then DIFF_RANGE=""; fi
 section() { printf '\n============================================================\n== %s\n============================================================\n' "$1"; }
 run()     { printf '\n$ %s\n' "$*"; "$@" || printf '\n[exit %s] (non-fatal — recorded as finding)\n' "$?"; }
 
-py_run() {
-  if command -v pipenv >/dev/null 2>&1; then ( cd "$BACKEND" && pipenv run "$@" );
-  elif [ -x "$BACKEND/venv/Scripts/python.exe" ]; then ( cd "$BACKEND" && "./venv/Scripts/python.exe" -m "$@" );
-  elif [ -x "$BACKEND/venv/bin/python" ]; then ( cd "$BACKEND" && "./venv/bin/python" -m "$@" );
-  else ( cd "$BACKEND" && python -m "$@" ); fi
-}
-
 # ---------------------------------------------------------------------------
 section "1. CHANGED FILES + DIFF STAT  (range: ${DIFF_RANGE:-working tree})"
 if [ -z "$DIFF_RANGE" ]; then run git diff --stat; else run git diff --stat "$DIFF_RANGE"; fi
 
 # ---------------------------------------------------------------------------
-section "2. BACKEND LINT — ruff check + format --check (NO write)"
+section "2. LINT — npm run lint (NO write)"
 run npm run lint
-run py_run ruff format --check app/
 
 # ---------------------------------------------------------------------------
-section "3. FRONTEND FORMAT — prettier --check (NO write)"
-( cd "$FRONTEND" && run npx prettier --check "src/**/*.{js,jsx,css,md}" )
+section "3. FORMAT CHECK — prettier --check (NO write)"
+run npx prettier --check "src/**/*.{ts,tsx,css,md}"
 
 # ---------------------------------------------------------------------------
-section "4. DOMAIN COMPLIANCE — gambling terminology (must be a statistical tool)"
-# Word-boundary, case-insensitive. 'bet' excluded as a bare substring (matches 'between').
-run grep -rniE '\b(gamble|gambling|wager|jackpot|casino|payout|stake|win real money|place a bet|bookie|odds of winning)\b' \
-  "$BACKEND/app" "$FRONTEND/src" --include='*.py' --include='*.js' --include='*.jsx' \
-  || echo "  clean — no gambling terms found"
+section "4. DOMAIN COMPLIANCE — money must never be trusted from the client"
+# Prices/totals must be read from the DB inside a Server Action, never taken from form input.
+run grep -rniE '(price|total|amount|subtotal)\s*[:=]\s*(Number\(|parseFloat\(|parseInt\(|formData\.get|body\.|params\.)' \
+  "$SRC" --include='*.ts' --include='*.tsx' \
+  || echo "  clean — no client-supplied price/total assignments found"
 
 # ---------------------------------------------------------------------------
-section "5. HARDCODED BACKEND URL in frontend (must import API_URL from config.js)"
-run grep -rniE '(localhost:8000|127\.0\.0\.1|https?://[^"'"'"' ]*(:8000|/api|/token))' \
-  "$FRONTEND/src" --include='*.js' --include='*.jsx' \
-  | grep -v 'src/config.js' \
-  || echo "  clean — no hardcoded backend URLs outside config.js"
+section "5. HARDCODED URLS — localhost / raw API endpoints outside src/lib/supabase/"
+run grep -rniE '(localhost:[0-9]+|127\.0\.0\.1|https?://[^"'"'"' ]*\.supabase\.co)' \
+  "$SRC" --include='*.ts' --include='*.tsx' \
+  | grep -v 'src/lib/supabase/' \
+  || echo "  clean — no hardcoded URLs outside src/lib/supabase/"
 
 # ---------------------------------------------------------------------------
 section "6. HARDCODED SECRETS (obvious patterns)"
 run grep -rniE '(secret_key|api_key|password|passwd|token)\s*[:=]\s*["'"'"'][^"'"'"']{6,}' \
-  "$BACKEND/app" "$FRONTEND/src" --include='*.py' --include='*.js' --include='*.jsx' \
-  | grep -viE '(process\.env|os\.environ|settings\.|getenv|=\s*None|=\s*""|:\s*str)' \
+  "$SRC" --include='*.ts' --include='*.tsx' \
+  | grep -viE '(process\.env|=\s*""|:\s*string)' \
   || echo "  clean — no obvious hardcoded secrets"
 
 # ---------------------------------------------------------------------------
@@ -85,14 +76,12 @@ while IFS= read -r f; do
   if   [ "$n" -gt 500 ]; then printf '  🔴 %5s  %s\n' "$n" "${f#$ROOT/}"; found_big=1
   elif [ "$n" -gt 300 ]; then printf '  🟡 %5s  %s\n' "$n" "${f#$ROOT/}"; found_big=1
   fi
-done < <(find "$BACKEND/app" "$FRONTEND/src" \( -name '*.py' -o -name '*.js' -o -name '*.jsx' \) 2>/dev/null)
+done < <(find "$SRC" \( -name '*.ts' -o -name '*.tsx' \) 2>/dev/null)
 [ "$found_big" -eq 0 ] && echo "  all files within thresholds"
 
 # ---------------------------------------------------------------------------
-section "8. DEPENDENCY GUARD — changes to package.json / package.json"
-for dep in frontend/package.json frontend/package.json; do
-  if [ -z "$DIFF_RANGE" ]; then d=$(git diff -- "$dep"); else d=$(git diff "$DIFF_RANGE" -- "$dep"); fi
-  if [ -n "$d" ]; then printf '\n--- %s changed ---\n%s\n' "$dep" "$d"; else echo "  $dep — unchanged"; fi
-done
+section "8. DEPENDENCY GUARD — changes to package.json"
+if [ -z "$DIFF_RANGE" ]; then d=$(git diff -- package.json); else d=$(git diff "$DIFF_RANGE" -- package.json); fi
+if [ -n "$d" ]; then printf '\n--- package.json changed ---\n%s\n' "$d"; else echo "  package.json — unchanged"; fi
 
 section "REVIEW SWEEP COMPLETE — record findings into .agents/reports/code_review_records.md"

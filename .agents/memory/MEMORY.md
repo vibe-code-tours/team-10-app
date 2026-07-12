@@ -3,9 +3,48 @@
 > **Goal:** High-performance E-commerce platform built with Next.js (App Router) and Supabase.
 
 ## Current Focus
-Closed the 5 findings from the API security scan (admin-auth + rate-limiting). Awaiting user confirmation on the Multi-Vendor Marketplace design (`docs/features/multi-vendor-marketplace.md`) before implementing role separation.
+Completed detailed Myanmar translations (`README_mm.md`) for all 45 `.agents/skills`. Previously, closed the 6 `/security-auditor` findings (RLS hardening + price-tampering + IDOR + error leaks) via `/code-fix`. The `requireAdmin()` Server-Action layer is now backed by RLS that actually enforces `role = 'admin'`. **Migration `20260712120000_harden_rls_and_schema.sql` is now LIVE on the production DB** (`rnrxbetdkosopdptkzqz.supabase.co`), applied manually via the SQL Editor and verified via REST. **No user currently has `role = 'admin'`** — must be set manually before admin actions will work again. Still awaiting user confirmation on the Multi-Vendor Marketplace design (`docs/features/multi-vendor-marketplace.md`). Separately, applied 7 `/ui-ux-scan` a11y/mobile fixes (focus rings, contrast, 44px tap targets, mobile theme/lang) — **uncommitted, not yet `/safe-commit`ed, no visual QA**.
+
+*Myanmar — အနှစ်ချုပ်:*
+လက်ရှိတွင် Skill (၄၅) ခုလုံးအတွက် `README_mm.md` မြန်မာဘာသာပြန်ဆိုခြင်းကို အောင်မြင်စွာ ပြီးမြောက်ခဲ့သည်။ ယခင်လုပ်ဆောင်ခဲ့သော RLS လုံခြုံရေးပြင်ဆင်မှုများမှာ Production DB တွင် အသက်ဝင်နေပြီဖြစ်သော်လည်း Admin Role သတ်မှတ်ပေးရန် ကျန်ရှိနေသေးသည်။ Multi-Vendor Marketplace ဒီဇိုင်းအတည်ပြုချက် စောင့်ဆိုင်းနေပြီး၊ UI/UX ပြင်ဆင်မှုများကိုလည်း Commit လုပ်ရန် ကျန်ရှိနေသေးသည်။
 
 ## Log
+
+- **2026-07-12**: Executed `/safe-commit` workflow (pre-check and formatting).
+  - **Changed**: Fixed TypeScript lint errors (`any` types and unused imports) in `action-checkout.test.ts`, `ProfileSettingsForms.tsx`, and `settings/page.tsx`. Ran auto-formatter across `src/`.
+  - **Why**: To ensure code quality and prevent broken builds before committing the recent UI/UX and security changes.
+  - **Gotchas**: None.
+  - **Open threads**: Proceeding to code review and atomic commits (Phase 6).
+
+*Myanmar — အနှစ်ချုပ်:*
+- **2026-07-12**: `/safe-commit` လုပ်ငန်းစဉ်ကို ဆောင်ရွက်ခဲ့ပါသည်။
+  - **ပြောင်းလဲမှု**: TypeScript lint error များဖြစ်သော `any` type များနှင့် အသုံးမပြုသော import များကို ပြင်ဆင်ခဲ့ပါသည်။ `src/` အောက်ရှိ ဖိုင်များကို auto-format လုပ်ခဲ့ပါသည်။
+  - **အကြောင်းရင်း**: UI/UX နှင့် လုံခြုံရေး ပြင်ဆင်မှုများကို Commit မလုပ်မီ ကုဒ်များ မှန်ကန်စေရန်နှင့် အရည်အသွေး ကောင်းမွန်စေရန် ဖြစ်ပါသည်။
+  - **လက်ကျန်အလုပ်**: Commit အဆင့် (Phase 6) သို့ ဆက်လက်လုပ်ဆောင်ရန် ကျန်ရှိပါသည်။
+- **2026-07-12**: Generated detailed Myanmar documentation (`README_mm.md`) for all 45 skills.
+  - **Changed**: Created or overwrote `README_mm.md` in all 45 subdirectories of `.agents/skills/` (from `accessibility-check` to `ui-ux-tester`).
+  - **Why**: The user pointed out that the previous Myanmar summaries were too brief ("အပေါ်ယံအကျဉ်းချုံး"). They requested detailed, step-by-step translations matching the original `SKILL.md` content, while keeping technical terms in English.
+  - **Gotchas**: To avoid truncation issues, the generation was split into 9 batches of 5 skills using a "Batch Processing" strategy. Each `README_mm.md` includes a strict English directive instructing the agent to ignore the file and only read `SKILL.md`.
+  - **Open threads**: The 7 `/ui-ux-scan` a11y/mobile fixes from earlier today are still uncommitted and unverified visually. The RLS-authorization design for Multi-Vendor Marketplace is still awaiting confirmation.
+
+*Myanmar — အနှစ်ချုပ်:*
+- **2026-07-12**: `.agents/skills/` အောက်ရှိ Skill (၄၅) ခုလုံးအတွက် အသေးစိတ် မြန်မာလိုရှင်းလင်းချက် (`README_mm.md`) များကို ရေးသားဖန်တီးပေးခဲ့သည်။
+  - **ပြောင်းလဲမှု**: Skill ဖိုင်တွဲ ၄၅ ခုလုံးတွင် `README_mm.md` ဖိုင်များကို အသစ်ဖန်တီး/အစားထိုးခဲ့သည်။
+  - **အကြောင်းရင်း**: ယခင်ရေးသားထားသော မြန်မာဘာသာအနှစ်ချုပ်များမှာ အပေါ်ယံသာဖြစ်နေသဖြင့် မူရင်း `SKILL.md` အတိုင်း အသေးစိတ် ဘာသာပြန်ပေးရန် User မှ တောင်းဆိုခဲ့သောကြောင့် ဖြစ်သည်။ နည်းပညာစကားလုံးများကို အင်္ဂလိပ်လိုသာထားရှိပြီး Batch လိုက်ခွဲ၍ ရေးသားခဲ့သည်။
+  - **သတိထားရန်**: စာလုံးရေများ၍ ပြတ်တောက်သွားခြင်းမှ ကာကွယ်ရန် ၅ ခုစီ ခွဲ၍ (Batch processing ဖြင့်) ရေးသားခဲ့သည်။ Agent မှ ယင်းဖိုင်များကို မှားယွင်းမဖတ်မိစေရန် ဖိုင်ထိပ်ဆုံးတွင် အင်္ဂလိပ်ဘာသာဖြင့် တားမြစ်ချက် ထည့်သွင်းထားသည်။
+  - **လက်ကျန်အလုပ်**: ယခင်လုပ်ဆောင်ထားသော UI/UX အပြောင်းအလဲများမှာ Commit မလုပ်ရသေးဘဲ Visual QA လုပ်ရန် ကျန်ရှိနေသေးသည်။ Multi-Vendor Marketplace အတွက် ဒီဇိုင်းအတည်ပြုချက် စောင့်ဆိုင်းနေဆဲဖြစ်သည်။
+
+- **2026-07-12**: Fixed 7 `/ui-ux-scan` findings (static source audit) across CSS + header components.
+  - **Changed**: `src/app/globals.css` — added a global `:focus-visible` outline (was: only `.form-input:focus` had any focus style); raised `--color-text-tertiary` `#999→#767676` (light) and `#555→#949494` (dark) for WCAG-AA contrast; changed `.header` `position: fixed→sticky` + solid `--color-surface` bg (resolving the conflict with Header's inline `sticky`); un-hid `.header-settings-group` on mobile (theme + language switcher were `display:none` under 768px — a11y/bilingual regression); added a mobile-only `@media (max-width:768px)` block giving `.icon-btn`/`.btn-sm`/chips/`.category-*-link`/footer links ≥44px tap area; bumped 9px badge fonts → 10px. `src/components/layout/Header.tsx` — removed the redundant inline `<header>` style, tokenized inline `24px/14px` font-sizes to `--font-size-2xl/--font-size-sm`, added `aria-label="Search"` to the search submit. Added `aria-label` to `LanguageSwitcher` and `aria-label`/`aria-haspopup`/`aria-expanded` to `ProfileDropdown` trigger.
+  - **Why**: Static UI/UX audit (Playwright MCP unavailable) surfaced 3 high (touch targets, no keyboard focus, low contrast) + 4 warnings; user approved all 3 proposal phases.
+  - **Gotchas**: Playwright MCP browser tools are NOT available in this environment — ran the scan against source instead. Verified via dev server: `/en` + `/en/products` render 200, compiled CSS serves `#767676`/`#949494`/`:focus-visible`, old `#999` gone. Header's inner/search bar remain inline-styled (no CSS-class equivalent; de-inlining them is deferred, higher-risk-than-value). Used `t("account")` for the ProfileDropdown label (key exists in both locales); avoided `t("searchPlaceholder")` for the search button since EN value is a promo string.
+  - **Open threads**: Changes are UNCOMMITTED and UNVERIFIED VISUALLY (no screenshots without Playwright) — recommend a visual pass at ≤768px. Not yet run through `/safe-commit`.
+
+- **2026-07-12**: Fixed all 6 `/security-auditor` findings via `/code-fix` (RLS hardening + price-tampering + IDOR + error leaks).
+  - **Changed**: Created migration `supabase/migrations/20260712120000_harden_rls_and_schema.sql` — adds `public.is_admin()` (SECURITY DEFINER helper), locks products/categories writes to admins, adds a `lock_user_role` trigger (`prevent_role_change()`) blocking role self-escalation, replaces the wide-open `using(true)` orders/order_items policies with owner-or-admin scoping + a `guard_order_updates` trigger (non-admins may only touch payment fields), adds the missing `orders.payment_status` column, and creates the never-existed `payment_proofs` table with ownership-scoped RLS. Rewrote `src/actions/checkout/action-checkout.ts` to re-fetch prices/stock server-side, recompute the total (logs tamper warning on mismatch), persist server prices, and decrement stock via the service-role admin client. Fixed `src/actions/upload/action-upload.ts` (ownership check before proof insert; `buyer_id`→`user_id`). Replaced raw `error.message` leaks with generic messages in `action-products.ts`, `action-categories.ts`, `action-orders.ts`, `action-review.ts`. Marked all 6 items `[FIXED 2026-07-12]` in `.agents/reports/code_review_records.md`. Recorded the RLS-authorization design as `docs/decisions/0003-rls-server-authoritative-authorization.md`.
+  - **Why**: The `requireAdmin()` Server-Action fixes from 2026-07-11 were bypassable — Supabase RLS treated any `authenticated` user as admin, so a signed-up user could skip the Server Actions and hit the anon REST API directly (`supabase.from('products').delete()`, read all orders' PII, self-escalate `role`). This closes the root cause plus the price-tampering and IDOR gaps flagged in the same audit.
+  - **Gotchas**: (1) Locking `products` writes to admins meant the buyer's checkout stock-decrement was now RLS-blocked — fixed by using `createAdminClient()` (service_role, in `src/lib/supabase/server.ts`) for that one trusted step. (2) `orders` had NO `payment_status` column and `action-upload.ts` filtered on a nonexistent `buyer_id` — both were silent no-ops before. (3) `payment_proofs` was referenced by code but had no migration at all. (4) RLS column-level restriction isn't possible via policy alone (WITH CHECK can't see OLD), so both role-lock and order-field-lock are enforced by BEFORE UPDATE triggers. (5) **Applied manually via SQL Editor** (not `supabase db push` — CLI isn't linked, no DB password/Docker in this environment) directly against the production project `rnrxbetdkosopdptkzqz.supabase.co`; migration history table is NOT tracking it, so a future `supabase db push` may try to re-run it (harmless — it's fully idempotent: `if not exists`/`drop policy if exists`/`create or replace`) or may need `supabase migration repair --status applied <version>` first. (6) User initially ran it against the wrong (empty) Supabase project by mistake — always confirm the dashboard's project ref matches `NEXT_PUBLIC_SUPABASE_URL` before running DDL. (7) `supabase/schema.sql` in this repo is a **stale/divergent schema** (different column names — `owner_id`/`buyer_id`/email-based) that does NOT match the actual `migrations/` history the app uses — never run it.
+  - **Open threads**: Set `role = 'admin'` on the actual admin account (`update public.users set role='admin' where id='<uuid>'`) — no user has it yet post-migration, so admin actions (`requireAdmin()` + RLS) will currently reject everyone. RLS smoke-test still pending: confirm a non-admin session gets denied on `products`/`categories` writes and can't self-escalate `role`. `docs/decisions/` has no README index (skill expects one). ADRs live in `docs/decisions/`, not `.agents/memory/decisions/` (which is empty). No `docs/PROJECT_MAP.md` exists.
 
 - **2026-07-11**: Executed /safe-commit workflow and modernized README.
   - **Changed**: Added missing sensitive patterns (`*.db`, etc.) to `.gitignore`. Fixed ESLint warnings (ignored scratch scripts in `eslint.config.mjs`, fixed unescaped quotes in `login` and `not-found` pages). Rewrote `README.md` completely with a modern layout, badges, tech stack grid, and comprehensive setup instructions.
@@ -88,18 +127,6 @@ Closed the 5 findings from the API security scan (admin-auth + rate-limiting). A
 - **2026-07-10**: Added product counts next to category filters (category + counts), and updated start skill rules.
   - **Changed**: Modified `src/app/[locale]/(shop)/products/page.tsx` to compute categories and product counts dynamically in memory from the database. Added count display indicators next to both "အားလုံး" (All) and individual category links/chips on desktop and mobile. Also updated `.agents/skills/start/SKILL.md` to instruct agents to follow the Bilingual rule (English first, then Myanmar) for any `.md` contents under `.agents/` during bootstrapping.
   - **Why**: To address the user requests to show the exact product counts next to categories, and to mandate the Bilingual rule step directly in the `/start` workflow.
-  - **Gotchas**: None.
-  - **Open threads**: None.
-
-- **2026-07-10**: Implemented Client-side Lazy Loading (Infinite Scroll) for Daily Discover Grid.
-  - **Changed**: Extracted static server-side Daily Discover grid into a Client Component `src/components/home/DailyDiscover.tsx`. Implemented batch rendering (24 products initially, followed by 18 products per scroll batch) triggered by an `IntersectionObserver` with a styled blue spinning loader and simulated 600ms latency. Passed dynamic localized parameters from `page.tsx` and resolved TypeScript assignment errors.
-  - **Why**: To prevent homepage lag, handle large product volume scaling, and offer a premium Shopee-style dynamic loading UX on scroll.
-  - **Gotchas**: Keep prop definitions typed strictly. Pass default fallback empty arrays (`products || []`) to satisfy TypeScript compiler limits.
-  - **Open threads**: None.
-
-- **2026-07-10**: Overhauled homepage layout with featured highlight row panels.
-  - **Changed**: Restricted homepage category row panel displays to only featured tech categories (`computer` and `mobile`), displaying 5 products + 1 view more card. Omitted other categories (`beauty` and `clothing`) from vertical row panels to make the homepage compact, leaving them accessible via bubble links and the unified Daily Discover feed.
-  - **Why**: To prevent homepage layout redundancy and excessive vertical scroll, implementing a Shopee-style Highlight Row Panel design.
   - **Gotchas**: None.
   - **Open threads**: None.
 

@@ -22,7 +22,7 @@ When invoked, perform a comprehensive macro-level review of the project. Do NOT 
 6. **Orphaned File / Dead Code Detection:**
    - Scan for UI components, logic files, or old docs that are no longer referenced.
 7. **Dependency Drift:**
-   - Check `frontend/package.json` and `frontend/package.json`. Are there unnecessary heavy packages when native solutions (built-in React hooks, stdlib/numpy) exist?
+   - Check `package.json`. Are there unnecessary heavy packages when native solutions (built-in React hooks, Web APIs, Next.js built-ins) exist?
 
 ## Execution Steps
 

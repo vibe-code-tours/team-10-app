@@ -5,12 +5,12 @@ description: Review code comprehensively against the project's architecture, spe
 
 # /code-review — Static Analysis & Architecture Review (Read-Only)
 
-> **Role:** Act as a strict Senior Code Reviewer for the TBWays Tools Full-Stack Web app
-> (React 18 + FastAPI). Your job is to **discover and record** code quality issues —
+> **Role:** Act as a strict Senior Code Reviewer for the YoeYarZay E-commerce App
+> (Next.js + Supabase). Your job is to **discover and record** code quality issues —
 > **NEVER fix code directly.** All findings go to the report file for `/code-fix` to consume.
 >
-> **Parent Rules:** [AGENTS.md](../../../AGENTS.md) | [agents.md](../../agents.md)
-> **Architecture:** [docs/ARCHITECTURE.md](../../../docs/ARCHITECTURE.md) | [docs/PROJECT_MAP.md](../../../docs/PROJECT_MAP.md)
+> **Parent Rules:** [AGENTS.md](../../../AGENTS.md)
+> **Architecture:** [docs/ARCHITECTURE.md](../../../docs/ARCHITECTURE.md) | [project_mapping.md](../../architecture/project_mapping.md)
 > **Guardrails:** [architecture-guardrails/SKILL.md](../architecture-guardrails/SKILL.md)
 
 ---
@@ -27,7 +27,7 @@ description: Review code comprehensively against the project's architecture, spe
 When invoked, perform a comprehensive review of the recent changes or the currently active file using this checklist. Review scope: files specified by the user, or recent `git diff` if not specified.
 
 > **Fastest path — run the bundled sweep script first** to gather all mechanical evidence
-> (diff scope, ruff/prettier checks, gambling-term scan, hardcoded-URL/secret scan, file-size
+> (diff scope, lint/prettier checks, domain scan, hardcoded-URL/secret scan, file-size
 > guard, dependency diff). It is read-only and never aborts on a failing check:
 >
 > ```bash
@@ -48,31 +48,30 @@ When invoked, perform a comprehensive review of the recent changes or the curren
 
 ### Axis 2: Project Standards (Is it written correctly?)
 
-3. **Architecture check:** Does it violate the responsibility-based modularity rule (soft thresholds: 300/500 lines, single-responsibility per file)? Backend: does it bypass the layered architecture (route → service → repository)? Frontend: is business logic mixed into rendering instead of custom hooks?
-4. **Performance check:** Backend — is heavy math done with numpy and offloaded via `async`/`BackgroundTasks` so the main thread never blocks? Frontend — are `useMemo`/`useCallback` used for expensive renders, and are large lists virtualized/paginated?
-5. **Domain compliance:** Does the code contain gambling terminology? (Must strictly remain a statistical tool — no "Bet", "Gamble", "Win Real Money").
-6. **Security:** Is all input validated with Pydantic? Are protected endpoints guarded with `Depends(protected_route)` (JWT)? No hardcoded secrets — use `.env`.
-7. **Error Handling:** Are `try/except` blocks used in routes, returning masked `"Internal Server Error"` instead of `str(e)`? Does the frontend handle axios errors and loading states?
-8. **State Management:** Zustand stores for cross-component state; `useState`/`useReducer` for local; custom hooks for complex logic; React Context only for rarely-changing globals. No Redux/MobX/Recoil without permission.
-9. **API contract:** Does the frontend use the centralized `API_URL` from `src/config.js` (never a local hardcoded URL)?
+Check against the protocols in [architecture-guardrails/SKILL.md](../architecture-guardrails/SKILL.md):
+
+3. **Architecture check:** Does it violate the responsibility-based modularity rule (soft thresholds: 300/500 lines, single-responsibility per file)? Are Server Components used by default, with `'use client'` only where interactivity is needed? Are data mutations done via Server Actions (`src/actions/`) rather than client-side fetches?
+4. **Performance check:** Is Next.js caching / static generation leveraged where possible? Are `useMemo`/`useCallback` used for expensive client-side computations?
+5. **Domain compliance:** Are prices/totals recomputed server-side from the DB inside the Server Action (never trusted from client form data)? Is stock/quantity validated before an order is written?
+6. **Security:** Is all input validated with Zod schemas? Is Supabase RLS (Row Level Security) relied on for DB access control? Is the Supabase **service role key** kept server-side only (never sent to the client, never in a `NEXT_PUBLIC_` var)?
+7. **Error Handling:** Do Server Actions return standardized error objects instead of leaking raw exceptions? Are `error.tsx`/`not-found.tsx` boundaries used for routing errors? No silent `catch {}`.
+8. **State Management:** React hooks (`useState`/`useReducer`) for local state; Context only for global UI state when prop-drilling is too deep. No new state library (Redux/Zustand/MobX) without explicit permission.
+9. **API contract:** Are Supabase client calls confined to `src/lib/supabase/` (no ad-hoc `fetch` calls to hardcoded Supabase/API URLs scattered through components)?
 
 ### Axis 3: Code Formatting & Dependencies (Is it clean?)
 
 10. **Formatting compliance (non-modifying check):**
-    - Backend: run `npm run lint` in `frontend` — record any lint violations
-    - Backend: run `ruff format --check app/` — record files that would be reformatted
-    - Frontend: run `npx prettier --check "src/**/*.{js,jsx,css,md}"` in `frontend` — record unformatted files
-    - **DO NOT run formatting commands that modify files** (`ruff format`, `prettier --write`)
+    - Run `npm run lint` from the repo root — record any lint violations
+    - Run `npx prettier --check "src/**/*.{ts,tsx,css,md}"` from the repo root — record unformatted files
+    - **DO NOT run formatting commands that modify files** (`prettier --write`)
 
 11. **Dependency guard:**
-    - Check `package.json` and `package.json` for recently added packages (the script prints the diff)
-    - Flag any new npm/PyPI packages that were NOT explicitly approved by the user
-    - Verify the package is necessary (can the same be done with existing deps):
-      - Frontend runtime: `react`, `react-dom`, `react-router-dom`, `zustand`, `axios`, `@dnd-kit/*`, `react-select`, `react-colorful`, `react-icons`, `@heroicons/react`, `html2canvas`, `ajv`
-      - Frontend dev/build: `tailwindcss` + `postcss` + `autoprefixer`, `prettier`, `playwright`, `@testing-library/*`
-      - Backend: `fastapi`, `uvicorn`, `numpy`, `pandas`, `pydantic`, `passlib`/`bcrypt`, `python-jose`
-    - **DB layer note:** this project uses the **stdlib `sqlite3`** module directly (no ORM). There is
-      **no `sqlalchemy`** — a PR that adds SQLAlchemy/any ORM is a new dependency and must be flagged.
+    - Check `package.json` for recently added packages (the script prints the diff)
+    - Flag any new npm package that was NOT explicitly approved by the user (see [AGENTS.md](../../../AGENTS.md) Protocol 7 — never introduce new npm packages without permission)
+    - Verify the package is necessary (can the same be done with an existing dep):
+      current runtime deps are `@supabase/ssr`, `@supabase/supabase-js`, `next`, `react`, `react-dom`, `next-intl`, `next-themes`, `zod`, `date-fns`, `lucide-react`, `resend`, `@react-email/components`, `embla-carousel-react`/`-autoplay`
+    - **DB layer note:** this project uses **Supabase (PostgreSQL)** as its only backend. There is
+      **no separate API server** — a PR that adds an ORM (Prisma, Drizzle, etc.) or a custom backend framework is a new architectural direction and must be flagged.
 
 ---
 
@@ -81,7 +80,7 @@ When invoked, perform a comprehensive review of the recent changes or the curren
 Categorize all found issues into:
 
 ### 🔴 High Priority (ဦးစားပေး — အမြန်ပြင်သင့်တဲ့ကုဒ်)
-- App crashes, major rule violations (e.g., multi-responsibility files >500 lines, gambling terms, wrong state management)
+- App crashes, major rule violations (e.g., multi-responsibility files >500 lines, wrong state management)
 - Security issues (missing auth, exposed secrets, unvalidated input)
 - Layer violations (SQL in routes, business logic in UI components)
 - Unapproved dependency additions
