@@ -30,6 +30,12 @@ export async function submitReview(formData: FormData) {
       return { error: "Invalid review data." };
     }
 
+    if (!comment || comment.trim().length < 3) {
+      return {
+        error: "Review is too short. Please write at least 3 characters.",
+      };
+    }
+
     const { error } = await supabase.from("product_reviews").insert({
       product_id: productId,
       user_id: user.id,
@@ -48,6 +54,7 @@ export async function submitReview(formData: FormData) {
     revalidatePath(`/products/${productId}`);
     return { success: true };
   } catch (err: unknown) {
-    return { error: err instanceof Error ? err.message : "Unknown error" };
+    console.error("submitReview error:", err);
+    return { error: "Failed to submit review. Please try again." };
   }
 }

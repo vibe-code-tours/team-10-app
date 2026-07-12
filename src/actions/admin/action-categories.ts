@@ -32,7 +32,7 @@ export async function createCategory(formData: FormData) {
 
   if (error) {
     console.error("Error creating category:", error);
-    throw new Error(error.message);
+    throw new Error("Failed to create category. Please try again.");
   }
 
   revalidatePath("/admin/categories");
@@ -59,7 +59,7 @@ export async function updateCategory(id: string, formData: FormData) {
 
   if (error) {
     console.error("Error updating category:", error);
-    throw new Error(error.message);
+    throw new Error("Failed to update category. Please try again.");
   }
 
   revalidatePath("/admin/categories");
@@ -77,7 +77,7 @@ export async function deleteCategory(id: string) {
 
   if (error) {
     console.error("Error deleting category:", error);
-    throw new Error(error.message);
+    throw new Error("Failed to delete category. Please try again.");
   }
 
   revalidatePath("/admin/categories");

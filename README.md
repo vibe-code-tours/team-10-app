@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/icon.svg" alt="Yoe Yar Zay Logo" width="120" height="120" />
+  <img src="src/app/icon.svg" alt="Yoe Yar Zay Logo" width="120" height="120" />
   <h1>Yoe Yar Zay Online Shop</h1>
   <p>
     <em>A modern, high-performance E-commerce Platform & Multi-Vendor Marketplace</em>

@@ -21,7 +21,14 @@ export default function AdminHeaderTitle() {
   }
 
   return (
-    <span style={{ fontWeight: 600, fontSize: "16px", color: "var(--color-text)", transition: "all 0.2s" }}>
+    <span
+      style={{
+        fontWeight: 600,
+        fontSize: "16px",
+        color: "var(--color-text)",
+        transition: "all 0.2s",
+      }}
+    >
       {title}
     </span>
   );

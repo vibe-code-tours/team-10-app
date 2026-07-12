@@ -34,7 +34,7 @@ export async function createProduct(formData: FormData) {
 
   if (error) {
     console.error("Error creating product:", error);
-    throw new Error(error.message);
+    throw new Error("Failed to create product. Please try again.");
   }
 
   revalidatePath("/admin/products");
@@ -64,7 +64,7 @@ export async function updateProduct(id: string, formData: FormData) {
 
   if (error) {
     console.error("Error updating product:", error);
-    throw new Error(error.message);
+    throw new Error("Failed to update product. Please try again.");
   }
 
   revalidatePath("/admin/products");
@@ -81,7 +81,7 @@ export async function deleteProduct(id: string) {
 
   if (error) {
     console.error("Error deleting product:", error);
-    throw new Error(error.message);
+    throw new Error("Failed to delete product. Please try again.");
   }
 
   revalidatePath("/admin/products");

@@ -9,14 +9,15 @@ You are (likely) starting a fresh session with no memory of previous chats. Do t
 following **in order**, then STOP and wait for the user's actual task. Do NOT write
 production code during /start.
 
-1. Read **[AGENTS.md](../../../AGENTS.md)** (source of truth) and **[.agents/agents.md](../../agents.md)** (full constitution).
+1. Read **[AGENTS.md](../../../AGENTS.md)** (source of truth).
    If you don't already know the codebase, also skim **[docs/ARCHITECTURE.md](../../../docs/ARCHITECTURE.md)**
-   and **[docs/PROJECT_MAP.md](../../../docs/PROJECT_MAP.md)**.
+   and **[project_mapping.md](../../architecture/project_mapping.md)**.
 2. Read **[.agents/memory/MEMORY.md](../../memory/MEMORY.md)** — current focus + recent log entries.
 3. Skim **[.agents/memory/decisions/](../../memory/decisions/)** — the latest 2–3 ADRs.
 4. Run `git status` and `git log --oneline -15` to see the branch and recent work.
-5. Identify which **domain doc(s) in `.agents/`** are relevant to the user's task (search,
-   yeaung, editor/canvas, db-migration, drag-drop…) and read those before touching related code.
+5. Identify which **domain doc(s) in `.agents/`** are relevant to the user's task (storefront,
+   cart/checkout, auth, admin CRUD, Supabase schema/migrations, i18n…) and read those before
+   touching related code.
 6. Adhere to the **Bilingual rule**: Any new or updated `.md` content in `.agents/` must be
    `***English***` first, then `***Myanmar***` (agents read English only).
 

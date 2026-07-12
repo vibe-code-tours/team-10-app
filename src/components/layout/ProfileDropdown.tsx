@@ -11,14 +11,20 @@ interface ProfileDropdownProps {
   fullName: string;
 }
 
-export default function ProfileDropdown({ userEmail, fullName }: ProfileDropdownProps) {
+export default function ProfileDropdown({
+  userEmail,
+  fullName,
+}: ProfileDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("Header");
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
@@ -29,9 +35,16 @@ export default function ProfileDropdown({ userEmail, fullName }: ProfileDropdown
   }, []);
 
   return (
-    <div className="profile-dropdown-container" ref={dropdownRef} style={{ position: "relative" }}>
+    <div
+      className="profile-dropdown-container"
+      ref={dropdownRef}
+      style={{ position: "relative" }}
+    >
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={t("account")}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
         style={{
           background: "transparent",
           border: "none",
@@ -70,7 +83,13 @@ export default function ProfileDropdown({ userEmail, fullName }: ProfileDropdown
           {(fullName?.[0] || userEmail?.[0] || "?").toUpperCase()}
         </div>
         <span>{fullName.split(" ")[0]}</span>
-        <ChevronDown size={14} style={{ transform: isOpen ? "rotate(180deg)" : "none", transition: "transform var(--transition-base)" }} />
+        <ChevronDown
+          size={14}
+          style={{
+            transform: isOpen ? "rotate(180deg)" : "none",
+            transition: "transform var(--transition-base)",
+          }}
+        />
       </button>
 
       {isOpen && (
@@ -92,11 +111,34 @@ export default function ProfileDropdown({ userEmail, fullName }: ProfileDropdown
           }}
         >
           {/* User Info Header */}
-          <div style={{ padding: "8px 12px", borderBottom: "1px solid var(--color-border)", marginBottom: "4px" }}>
-            <div style={{ fontWeight: 600, fontSize: "13px", color: "var(--color-text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          <div
+            style={{
+              padding: "8px 12px",
+              borderBottom: "1px solid var(--color-border)",
+              marginBottom: "4px",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: 600,
+                fontSize: "13px",
+                color: "var(--color-text)",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
               {fullName}
             </div>
-            <div style={{ fontSize: "11px", color: "var(--color-text-secondary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            <div
+              style={{
+                fontSize: "11px",
+                color: "var(--color-text-secondary)",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
               {userEmail}
             </div>
           </div>
@@ -142,7 +184,13 @@ export default function ProfileDropdown({ userEmail, fullName }: ProfileDropdown
             <span>{t("payment")}</span>
           </Link>
 
-          <hr style={{ border: 0, borderTop: "1px solid var(--color-border)", margin: "4px 0" }} />
+          <hr
+            style={{
+              border: 0,
+              borderTop: "1px solid var(--color-border)",
+              margin: "4px 0",
+            }}
+          />
 
           {/* Logout Action */}
           <form action={signOut} style={{ width: "100%" }}>

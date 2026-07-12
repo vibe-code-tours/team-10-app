@@ -1,7 +1,7 @@
 "use client";
 
-import { useLocale } from 'next-intl';
-import { useRouter, usePathname } from '@/i18n/routing';
+import { useLocale } from "next-intl";
+import { useRouter, usePathname } from "@/i18n/routing";
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
@@ -9,23 +9,28 @@ export default function LanguageSwitcher() {
   const pathname = usePathname();
 
   const toggleLanguage = () => {
-    const nextLocale = locale === 'en' ? 'my' : 'en';
+    const nextLocale = locale === "en" ? "my" : "en";
     router.replace(pathname, { locale: nextLocale });
   };
 
   return (
-    <button 
+    <button
       onClick={toggleLanguage}
-      style={{ 
-        background: 'transparent', 
-        border: 'none', 
-        color: 'inherit', 
-        cursor: 'pointer',
-        fontSize: '13px',
-        fontWeight: 500
+      aria-label={
+        locale === "en"
+          ? "Switch language to Myanmar"
+          : "Switch language to English"
+      }
+      style={{
+        background: "transparent",
+        border: "none",
+        color: "inherit",
+        cursor: "pointer",
+        fontSize: "13px",
+        fontWeight: 500,
       }}
     >
-      {locale === 'en' ? 'မြန်မာစာ' : 'English'}
+      {locale === "en" ? "မြန်မာစာ" : "English"}
     </button>
   );
 }

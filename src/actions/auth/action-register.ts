@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { registerSchema } from "@/lib/validations";
 import { headers } from "next/headers";
+import { isRateLimited, getClientIp } from "@/lib/rate-limit";
 
 export type RegisterResult = {
   error?: string;
@@ -23,6 +24,15 @@ export async function registerWithEmail(
   const parsed = registerSchema.safeParse(raw);
   if (!parsed.success) {
     return { error: parsed.error.issues[0].message };
+  }
+
+  const ip = await getClientIp();
+  if (isRateLimited(`register:${ip}`, 5, 300_000)) {
+    // 5 per 5 minutes
+    return {
+      error:
+        "အကောင့်ဖွင့်ခြင်း အကြိမ်ရေများလွန်းနေပါသည်။ ခဏနေမှ ထပ်မံကြိုးစားပါ။",
+    };
   }
 
   const supabase = await createClient();

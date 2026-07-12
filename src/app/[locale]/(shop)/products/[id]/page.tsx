@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import AddToCartButton from "@/components/shop/AddToCartButton";
 import ReviewForm from "@/components/shop/ReviewForm";
 
@@ -75,17 +75,21 @@ export default async function ProductDetailPage({ params }: Props) {
           <div
             className="card"
             style={{
+              position: "relative",
               aspectRatio: "1",
               overflow: "hidden",
               marginBottom: "var(--space-md)",
             }}
           >
             {product.image_url ? (
-              <img
+              <Image
                 src={product.image_url}
                 alt={product.title}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ objectFit: "cover" }}
                 id="product-main-image"
+                priority
               />
             ) : (
               <div

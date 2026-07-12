@@ -1,7 +1,14 @@
-/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import SortDropdown from "@/components/shop/SortDropdown";
+import ProductSidebar from "@/components/shop/ProductSidebar";
+import Image from "next/image";
+import {
+  getProducts,
+  getCategories,
+  getCategoryCounts,
+  getBrandCounts,
+} from "@/services/product.service";
 
 interface Props {
   searchParams: Promise<{
@@ -19,82 +26,29 @@ export default async function ProductsPage({ searchParams }: Props) {
 
   const page = Number(params.page ?? 1);
   const perPage = 12;
-  const offset = (page - 1) * perPage;
 
-  let query = supabase
-    .from("products")
-    .select("*", { count: "exact" })
-    .range(offset, offset + perPage - 1);
+  // 1. Fetch filtered products
+  const { data: products, count } = await getProducts(supabase, {
+    search: params.search,
+    category: params.category,
+    brand: params.brand,
+    sort: params.sort,
+    page,
+    limit: perPage,
+  });
 
-  if (params.search) {
-    query = query.ilike("title", `%${params.search}%`);
-  }
-
-  if (params.category) {
-    query = query.eq("category", params.category);
-  }
-
-  if (params.brand) {
-    query = query.eq("brand", params.brand);
-  }
-
-  // Apply sorting
-  if (params.sort === "price_asc") {
-    query = query.order("price", { ascending: true });
-  } else if (params.sort === "price_desc") {
-    query = query.order("price", { ascending: false });
-  } else {
-    // Default to newest
-    query = query.order("created_at", { ascending: false });
-  }
-
-  const { data: products, count } = await query;
   const totalPages = Math.ceil((count ?? 0) / perPage);
 
-  // Fetch dynamic categories list from categories database table
-  const { data: dbCategories } = await supabase
-    .from("categories")
-    .select("name, slug")
-    .order("name", { ascending: true });
-
-  // Fetch product category counts
-  const { data: allProducts } = await supabase
-    .from("products")
-    .select("category");
-
-  const categoryCounts: Record<string, number> = {};
-  let totalCount = 0;
-
-  if (allProducts) {
-    allProducts.forEach((p) => {
-      if (p.category) {
-        categoryCounts[p.category] = (categoryCounts[p.category] || 0) + 1;
-        totalCount++;
-      }
-    });
-  }
-
-  // Fetch unique brands and counts dynamically for the selected category
-  const brandCounts: Record<string, number> = {};
-  let totalBrandCount = 0;
-
-  if (params.category) {
-    const { data: brandProducts } = await supabase
-      .from("products")
-      .select("brand")
-      .eq("category", params.category);
-
-    if (brandProducts) {
-      brandProducts.forEach((p) => {
-        if (p.brand) {
-          brandCounts[p.brand] = (brandCounts[p.brand] || 0) + 1;
-          totalBrandCount++;
-        }
-      });
-    }
-  }
-
-  const uniqueBrands = Object.keys(brandCounts).sort();
+  // 2. Fetch sidebar data
+  const [
+    dbCategories,
+    { counts: categoryCounts, total: totalCount },
+    { counts: brandCounts, total: totalBrandCount, uniqueBrands },
+  ] = await Promise.all([
+    getCategories(supabase),
+    getCategoryCounts(supabase),
+    getBrandCounts(supabase, params.category),
+  ]);
 
   return (
     <div className="container section" id="products-page">
@@ -124,66 +78,26 @@ export default async function ProductsPage({ searchParams }: Props) {
       </div>
 
       <div className="products-layout-container">
-        <aside className="products-sidebar">
-          <form
-            action="/products"
-            method="GET"
-            style={{ marginBottom: "var(--space-lg)" }}
-          >
-            <input
-              type="search"
-              name="search"
-              className="form-input"
-              placeholder="ရှာဖွေရန်..."
-              defaultValue={params.search ?? ""}
-              id="search-input"
-              style={{ width: "100%" }}
-            />
-            {params.category && (
-              <input type="hidden" name="category" value={params.category} />
-            )}
-            {params.brand && (
-              <input type="hidden" name="brand" value={params.brand} />
-            )}
-            {params.sort && (
-              <input type="hidden" name="sort" value={params.sort} />
-            )}
-          </form>
-
-          <h3 className="products-sidebar-title">
-            အမျိုးအစား
-          </h3>
-          <ul className="category-filter-list">
-            <li className="category-filter-item">
-              <Link
-                href={`/products${params.sort ? `?sort=${params.sort}` : ""}`}
-                className={`category-filter-link ${!params.category ? "active" : ""}`}
-              >
-                အားလုံး ({totalCount})
-              </Link>
-            </li>
-            {dbCategories?.map((cat) => (
-              <li key={cat.slug} className="category-filter-item">
-                <Link
-                  href={`/products?category=${cat.slug}${params.sort ? `&sort=${params.sort}` : ""}`}
-                  className={`category-filter-link ${params.category === cat.slug ? "active" : ""}`}
-                  style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
-                >
-                  <span style={{ textTransform: "capitalize" }}>{cat.name}</span>
-                  <span style={{ fontSize: "var(--font-size-xs)", opacity: 0.7, marginLeft: "var(--space-xs)" }}>
-                    ({categoryCounts[cat.slug] || 0})
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </aside>
+        <ProductSidebar
+          search={params.search}
+          category={params.category}
+          brand={params.brand}
+          sort={params.sort}
+          categories={dbCategories}
+          categoryCounts={categoryCounts}
+          totalCount={totalCount}
+        />
 
         <div>
           {uniqueBrands.length > 0 && (
             <div className="brand-filters">
               <div className="brand-filters-title">
-                {params.category === "computer" ? "Computer Brands" : params.category === "mobile" ? "Mobile Brands" : "Brands"} (Brand ဖြင့် စစ်ထုတ်ရန်)
+                {params.category === "computer"
+                  ? "Computer Brands"
+                  : params.category === "mobile"
+                    ? "Mobile Brands"
+                    : "Brands"}{" "}
+                (Brand ဖြင့် စစ်ထုတ်ရန်)
               </div>
               <div className="brand-chips-container">
                 <Link
@@ -208,54 +122,55 @@ export default async function ProductsPage({ searchParams }: Props) {
           {products && products.length > 0 ? (
             <>
               <div className="product-grid">
-                {products.map((product) => {
-                  return (
-                    <Link
-                      key={product.id}
-                      href={`/products/${product.id}`}
-                      className="product-card"
-                      id={`product-${product.id}`}
+                {products.map((product) => (
+                  <Link
+                    key={product.id}
+                    href={`/products/${product.id}`}
+                    className="product-card"
+                    id={`product-${product.id}`}
+                  >
+                    <div
+                      className="product-card-image"
+                      style={{ position: "relative" }}
                     >
-                      <div className="product-card-image">
-                        {product.image_url ? (
-                          <img
-                            src={product.image_url}
-                            alt={product.title}
-                            loading="lazy"
-                          />
-                        ) : (
-                          <div
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              background: "var(--color-bg-secondary)",
-                              fontSize: "2rem",
-                              color: "var(--color-text-tertiary)",
-                            }}
-                          >
-                            ☐
-                          </div>
-                        )}
-                        {product.category && (
-                          <span className="product-card-category-badge">
-                            {product.category}
-                          </span>
-                        )}
-                      </div>
-                      <div className="product-card-body">
-                        <div className="product-card-name">
-                          {product.title}
+                      {product.image_url ? (
+                        <Image
+                          src={product.image_url}
+                          alt={product.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          style={{ objectFit: "cover" }}
+                        />
+                      ) : (
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            background: "var(--color-bg-secondary)",
+                            fontSize: "2rem",
+                            color: "var(--color-text-tertiary)",
+                          }}
+                        >
+                          ☐
                         </div>
-                        <div className="product-card-price">
-                          ${Number(product.price).toFixed(2)}
-                        </div>
+                      )}
+                      {product.category && (
+                        <span className="product-card-category-badge">
+                          {product.category}
+                        </span>
+                      )}
+                    </div>
+                    <div className="product-card-body">
+                      <div className="product-card-name">{product.title}</div>
+                      <div className="product-card-price">
+                        ${Number(product.price).toFixed(2)}
                       </div>
-                    </Link>
-                  );
-                })}
+                    </div>
+                  </Link>
+                ))}
               </div>
 
               {totalPages > 1 && (

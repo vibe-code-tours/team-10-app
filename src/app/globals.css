@@ -28,7 +28,7 @@
   --color-border-light: #f0f0f0;
   --color-text: #111;
   --color-text-secondary: #666;
-  --color-text-tertiary: #999;
+  --color-text-tertiary: #767676;
   --color-text-inverse: #fff;
 
   --glass-bg: rgba(255, 255, 255, 0.9);
@@ -99,7 +99,7 @@
   --color-border-light: #1e1e1e;
   --color-text: #ededed;
   --color-text-secondary: #888;
-  --color-text-tertiary: #555;
+  --color-text-tertiary: #949494;
   --color-text-inverse: #0a0a0a;
 
   --glass-bg: rgba(10, 10, 10, 0.9);
@@ -148,6 +148,18 @@
   padding: 0;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 html {
   font-size: 16px;
   scroll-behavior: smooth;
@@ -184,6 +196,18 @@ button {
   font-family: inherit;
   border: none;
   background: none;
+}
+
+/* Visible keyboard focus for all interactive elements (a11y) */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Suppress the ring for pointer interactions that don't need it */
+:focus:not(:focus-visible) {
+  outline: none;
 }
 
 input,
@@ -440,7 +464,7 @@ select {
   color: #ffffff;
   padding: 4px 10px;
   border-radius: var(--radius-sm);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -505,14 +529,11 @@ select {
    Header
    ============================================ */
 .header {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
   height: var(--header-height);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  border-bottom: 1px solid var(--color-border-light);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
   z-index: var(--z-sticky);
   display: flex;
   align-items: center;
@@ -588,7 +609,7 @@ select {
   height: 16px;
   background: var(--color-text);
   color: var(--color-bg);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
   border-radius: var(--radius-full);
   display: flex;
@@ -1193,7 +1214,9 @@ select {
   align-items: center;
   justify-content: space-between;
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .admin-stat-card:hover {
@@ -1577,7 +1600,10 @@ select {
 
 /* Premium Product Cards Enhancements */
 .product-card {
-  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base) !important;
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    border-color var(--transition-base) !important;
 }
 
 .product-card:hover {
@@ -1682,22 +1708,22 @@ select {
     height: auto !important;
     min-height: var(--header-height);
   }
-  
+
   .header-inner {
     flex-wrap: wrap !important;
     gap: 0.75rem !important;
     padding: var(--space-sm) var(--container-padding) !important;
   }
-  
+
   .header-logo {
     order: 1;
   }
-  
+
   .header-actions {
     order: 2;
     gap: 1rem !important;
   }
-  
+
   .header-search-container {
     order: 3;
     flex: 0 0 100% !important;
@@ -1705,8 +1731,30 @@ select {
     margin-top: 2px;
   }
 
+  /* Keep theme + language controls available on mobile (a11y / bilingual) */
   .header-settings-group {
-    display: none !important;
+    gap: 0.75rem !important;
+  }
+}
+
+/* ============================================
+   Mobile Touch Targets (≥44px tap area)
+   ============================================ */
+@media (max-width: 768px) {
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .btn-sm {
+    min-height: 44px;
+  }
+  .brand-chip,
+  .category-nav-link,
+  .category-filter-link,
+  .footer-links a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -1770,5 +1818,3 @@ select {
 .dropdown-logout-hover:hover {
   background-color: var(--color-danger-light) !important;
 }
-
-

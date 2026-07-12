@@ -5,15 +5,15 @@
 # Supports the write-only /code-fix workflow with three subcommands:
 #
 #   findings    (read-only)  Aggregate every UNRESOLVED "- [ ]" item across the
-#                            3 analysis report files, grouped by source + count.
+#                            analysis report files, grouped by source + count.
 #                            Feeds Step 1/2 (Present Merged Priority List).
 #
 #   checkpoint  (git)        Create a reversible safety point BEFORE fixing, so a
 #                            bad fix can be rolled back. Commits nothing to history:
 #                            saves a stash snapshot and prints how to restore it.
 #
-#   format      (write)      Post-fix formatting: npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css}\" (backend) +
-#                            npm run format (frontend). Run AFTER fixes are applied.
+#   format      (write)      Post-fix formatting: npx prettier --write "src/**/*.{ts,tsx,css,md}".
+#                            Run AFTER fixes are applied.
 #
 # Usage (from repo root):
 #   bash .agents/skills/code-fix/scripts/code_fix_helper.sh findings
@@ -23,8 +23,6 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
-BACKEND="$ROOT/frontend"
-FRONTEND="$ROOT/frontend"
 REPORTS="$ROOT/.agents/reports"
 cd "$ROOT"
 
@@ -33,7 +31,7 @@ section() { printf '\n==========================================================
 cmd_findings() {
   section "UNRESOLVED FINDINGS (items still '- [ ]', not [FIXED])"
   local total=0
-  for pair in "code-review:code_review_records.md" "qa-tester:qa_tester_records.md" "ui-ux-tester:ui_ux_tester_records.md"; do
+  for pair in "code-review:code_review_records.md" "ui-ux-tester:ui_ux_tester_records.md"; do
     local src="${pair%%:*}" file="$REPORTS/${pair##*:}"
     printf '\n--- /%s (%s) ---\n' "$src" "${pair##*:}"
     if [ ! -f "$file" ]; then echo "  (report file not found — skill not run yet)"; continue; fi
@@ -72,11 +70,9 @@ cmd_checkpoint() {
 }
 
 cmd_format() {
-  section "POST-FIX FORMAT — backend ruff format + frontend npm run format"
-  if command -v pipenv >/dev/null 2>&1; then ( cd "$BACKEND" && echo '$ pipenv run npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css}\"' && pipenv run npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css}\" );
-  elif [ -x "$BACKEND/venv/Scripts/python.exe" ]; then ( cd "$BACKEND" && "./venv/Scripts/python.exe" -m npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css}\" );
-  else ( cd "$BACKEND" && python -m npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css}\" ); fi
-  ( cd "$FRONTEND" && echo '$ npm run format' && npm run format )
+  section "POST-FIX FORMAT — npx prettier --write"
+  echo '$ npx prettier --write "src/**/*.{ts,tsx,css,md}"'
+  npx prettier --write "src/**/*.{ts,tsx,css,md}"
 }
 
 case "${1:-}" in

@@ -9,17 +9,25 @@ interface DeleteProductButtonProps {
   title: string;
 }
 
-export default function DeleteProductButton({ id, title }: DeleteProductButtonProps) {
+export default function DeleteProductButton({
+  id,
+  title,
+}: DeleteProductButtonProps) {
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = async () => {
-    const confirmed = confirm(`Are you sure you want to delete "${title}"?\nဤကုန်ပစ္စည်းကို ဖျက်ရန် သေချာပါသလား?`);
+    const confirmed = confirm(
+      `Are you sure you want to delete "${title}"?\nဤကုန်ပစ္စည်းကို ဖျက်ရန် သေချာပါသလား?`,
+    );
     if (confirmed) {
       startTransition(async () => {
         try {
           await deleteProduct(id);
         } catch (error) {
-          alert("Failed to delete product: " + (error instanceof Error ? error.message : "Unknown error"));
+          alert(
+            "Failed to delete product: " +
+              (error instanceof Error ? error.message : "Unknown error"),
+          );
         }
       });
     }
@@ -35,7 +43,7 @@ export default function DeleteProductButton({ id, title }: DeleteProductButtonPr
         alignItems: "center",
         justifyContent: "center",
         padding: "0.4rem",
-        borderRadius: "var(--radius-md)"
+        borderRadius: "var(--radius-md)",
       }}
       title="Delete Product"
     >

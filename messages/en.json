@@ -131,5 +131,37 @@
         "noCategories": "No categories found."
       }
     }
+  },
+  "Checkout": {
+    "emptyCart": "Your cart is empty",
+    "viewProducts": "View Products",
+    "title": "Checkout",
+    "shippingAddress": "Shipping Address",
+    "fullName": "Full Name",
+    "phone": "Phone Number",
+    "fullAddress": "Full Address",
+    "paymentMethod": "Payment Method",
+    "cod": "Cash on Delivery",
+    "mobileBanking": "Mobile Banking (KBZ Pay / Wave Pay)",
+    "orderSummary": "Order Summary",
+    "totalAmount": "Total Amount",
+    "placingOrder": "Placing order...",
+    "placeOrder": "Place Order"
+  },
+  "Register": {
+    "checkEmail": "Please check your email",
+    "title": "Create an Account",
+    "subtitle": "Fill in the details to create an account",
+    "fullName": "Full Name",
+    "namePlaceholder": "Your Name",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "passwordPlaceholder": "••••••••",
+    "creating": "Creating...",
+    "createBtn": "Create Account",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Login"
   }
 }

@@ -5,14 +5,13 @@ description: Visual and usability QA — audits theme consistency, responsive la
 
 # /ui-ux-tester — Visual & Usability Quality Audit (Read-Only)
 
-> **Role:** Act as a strict UI/UX Quality Inspector for the TBWays Tools Full-Stack Web app
-> (React 18 + Tailwind CSS). Your job is to **discover and record** visual, design, and
+> **Role:** Act as a strict UI/UX Quality Inspector for the YoeYarZay E-commerce App
+> (Next.js 16, plain CSS — no Tailwind). Your job is to **discover and record** visual, design, and
 > usability issues — **NEVER fix code directly.** All findings go to the report file for
 > `/code-fix` to consume.
 >
-> **Parent Rules:** [AGENTS.md](../../../AGENTS.md) | [agents.md](../../agents.md)
-> **Design Rules:** [design_rules.md](../../rules/core_and_standards/design_rules.md)
-> **Frontend Rules:** [frontend_rules.md](../../rules/core_and_standards/frontend_rules.md)
+> **Parent Rules:** [AGENTS.md](../../../AGENTS.md)
+> **Guardrails:** [architecture-guardrails/SKILL.md](../architecture-guardrails/SKILL.md)
 
 ---
 
@@ -39,34 +38,36 @@ description: Visual and usability QA — audits theme consistency, responsive la
 ## Step 1: Design System & Theme Consistency Audit
 
 ### This project's theme tokens (the CORRECT way — do NOT flag these)
-Tailwind is configured with `darkMode: 'class'` and CSS-variable-backed tokens
-([tailwind.config.js](../../../frontend/tailwind.config.js)):
+This project has **no Tailwind**. Theming is plain CSS classes backed by CSS custom
+properties defined in [globals.css](../../../src/app/globals.css):
 
-| Token class | Meaning |
+| Token (CSS var) | Meaning |
 |---|---|
-| `bg-main`, `bg-card` | surface backgrounds (`var(--color-bg-*)`) |
-| `text-main`, `text-muted` | foreground text (`var(--color-text-*)`) |
-| `border` | border color (`var(--color-border)`) |
-| `primary` | brand red `#D6001C` |
-| `blue-*`, `indigo-*` | intentionally remapped to the red brand — **not a bug** if used |
+| `--color-bg`, `--color-bg-secondary`, `--color-surface` | surface/background colors |
+| `--color-text`, `--color-text-secondary` | foreground text |
+| `--color-border`, `--color-border-light` | border colors |
+| `--color-primary`, `--color-primary-light`, `--color-primary-dark`, `--color-primary-ghost` | brand blue `#2563eb` |
+| `--color-success`, `--color-warning`, `--color-danger`, `--color-danger-light` | semantic status colors |
 
-A **violation** is a raw `#hex` / `rgb()` / `hsl()` literal or an inline `style={{ color/background }}`
-where one of the tokens above should be used instead.
+A **violation** is a raw `#hex` / `rgb()` / `hsl()` literal (in a `.tsx` file or a *new* CSS rule
+outside `globals.css`'s own token definitions) where one of the `var(--color-*)` tokens above
+should be used instead.
 
-### Tailwind Theme Compliance
-Scan all frontend files for violations:
+### Theme Compliance
+Scan all `src/**/*.{ts,tsx}` files for violations:
 
 | Check | How to detect | Severity |
 |---|---|---|
-| **Hardcoded colors** | Search for `color:`, `background:`, `#[0-9a-f]`, `rgb(`, `hsl(` in JSX/CSS that should be Tailwind classes | High |
-| **Hardcoded font sizes** | Search for `font-size:` or inline `fontSize:` instead of Tailwind `text-*` classes | Normal |
-| **Hardcoded spacing** | Search for `margin:`, `padding:` with pixel values instead of Tailwind `m-*`, `p-*` | Normal |
-| **Inline styles** | Search for `style={{` in JSX — flag when a Tailwind class equivalent exists | Normal |
-| **Inconsistent color usage** | Same semantic meaning (e.g., "success", "danger") using different colors across components | High |
+| **Hardcoded colors** | Search for `#[0-9a-f]`, `rgb(`, `hsl(` inside `.tsx`/inline styles that should be a `var(--color-*)` token or existing CSS class | High |
+| **Hardcoded font sizes** | Search for inline `fontSize:` instead of an existing CSS class | Normal |
+| **Hardcoded spacing** | Search for inline `margin:`/`padding:` pixel values instead of an existing CSS class | Normal |
+| **Inline styles** | Search for `style={{` in TSX — flag when an existing CSS class in `globals.css` already covers it | Normal |
+| **Inconsistent color usage** | Same semantic meaning (e.g., "success", "danger") using different colors across components instead of the shared token | High |
 
 ### Dark/Light Mode
-- Check if `dark:` variants are used consistently
-- Identify components that render incorrectly in dark mode (missing dark variants)
+- Check that new color rules live under `[data-theme="dark"]` (or the `prefers-color-scheme`
+  media query) in `globals.css` alongside their light-mode counterpart, not just one side
+- Identify components that render incorrectly in dark mode (missing dark-mode override)
 
 ### Typography
 - Verify font family consistency (Google Fonts like Inter/Roboto vs browser defaults)
@@ -77,7 +78,7 @@ Scan all frontend files for violations:
 ## Step 2: Responsive Layout Audit
 
 ### Breakpoint Coverage
-Check that key pages handle these Tailwind breakpoints:
+Check that key pages handle these viewport widths:
 
 | Breakpoint | Width | What to check |
 |---|---|---|
@@ -98,7 +99,7 @@ Check that key pages handle these Tailwind breakpoints:
 ## Step 3: Component Reuse & Consistency Audit
 
 ### Shared Components Check
-- Read `frontend/src/components/` to understand available shared components
+- Read `src/components/` to understand available shared components
 - Scan feature pages for **duplicate UI patterns** that should use shared components:
   - Multiple button styles that should be one `Button` component
   - Repeated modal patterns that should use a shared `Modal`
@@ -118,19 +119,19 @@ For each interactive element (buttons, inputs, links, cards), verify these state
 | State | What to check |
 |---|---|
 | **Default** | Base appearance is clear and intentional |
-| **Hover** | Visual feedback on mouse hover (`hover:` classes) |
-| **Focus** | Keyboard focus ring visible (`focus:`, `focus-visible:`) |
-| **Active/Pressed** | Click feedback (`active:` classes) |
+| **Hover** | Visual feedback on mouse hover (`:hover` CSS rule) |
+| **Focus** | Keyboard focus ring visible (`:focus`, `:focus-visible`) |
+| **Active/Pressed** | Click feedback (`:active` CSS rule) |
 | **Disabled** | Grayed out + `cursor-not-allowed` + non-interactive |
 | **Loading** | Spinner or skeleton while async operation runs |
 | **Error** | Red border/text for validation errors, error messages |
 | **Empty** | Empty state message when no data (not just blank space) |
 
 Priority pages to check:
-- `/yeaung-update` (YeaungSidebar, YeaungDataTable, BinaryModelManager)
-- `/editor` (canvas controls, toolbar buttons)
-- Search pages (search input, results list)
-- Auth pages (login form)
+- `/products`, `/products/[id]` (catalog, product detail)
+- `/cart`, `/checkout` (cart line items, checkout form)
+- `/register`, auth callback (login/signup forms)
+- `/admin/products`, `/admin` (category CRUD, admin tables)
 
 ---
 
@@ -185,8 +186,8 @@ Priority pages to check:
 > If denied, skip this step entirely and note it in the report.
 
 If permitted:
-1. Start the app — this is a **Create React App** project: run `npm start` in
-   `frontend` (serves on `http://localhost:3000`). There is no `dev`/bun script.
+1. Start the app — this is a **Next.js** project: run `npm run dev` from the repo root
+   (serves on `http://localhost:3000`). There is no bun script.
 2. Take screenshots of key pages
 3. Resize to different breakpoints and capture responsive behavior
 4. Toggle dark/light mode if available

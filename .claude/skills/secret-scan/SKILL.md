@@ -57,7 +57,7 @@ Catch a leaked credential before it lands in git history. No signup required.
 **2 real secrets, 1 placeholder ignored**
 
 ### BLOCKER
-- `backend/config.py:14` — Stripe live key `sk_l…` hardcoded.
+- `src/lib/payments/config.ts:14` — Stripe live key `sk_l…` hardcoded.
   Rotate it now (it's compromised once committed) and load from env.
 - `.env.example:9` — AWS key `AKIA…` looks real, not a sample.
   Move to a non-tracked `.env` and rotate.

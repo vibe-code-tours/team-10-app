@@ -9,7 +9,7 @@ export default async function EditProductPage({
   params: { id: string };
 }) {
   const supabase = await createClient();
-  
+
   // Fetch product data
   const { data: product } = await supabase
     .from("products")

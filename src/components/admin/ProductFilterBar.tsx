@@ -10,7 +10,9 @@ interface ProductFilterBarProps {
   categories: string[];
 }
 
-export default function ProductFilterBar({ categories }: ProductFilterBarProps) {
+export default function ProductFilterBar({
+  categories,
+}: ProductFilterBarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -21,16 +23,20 @@ export default function ProductFilterBar({ categories }: ProductFilterBarProps) 
   const [stock, setStock] = useState(searchParams.get("stock") || "");
   const [sort, setSort] = useState(searchParams.get("sort") || "newest");
 
-
-  const updateFilters = (updates: { search?: string; category?: string; stock?: string; sort?: string }) => {
+  const updateFilters = (updates: {
+    search?: string;
+    category?: string;
+    stock?: string;
+    sort?: string;
+  }) => {
     const params = new URLSearchParams(searchParams.toString());
-    
+
     // Process search
     if (updates.search !== undefined) {
       if (updates.search) params.set("search", updates.search);
       else params.delete("search");
     }
-    
+
     // Process category
     if (updates.category !== undefined) {
       if (updates.category) params.set("category", updates.category);
@@ -45,7 +51,8 @@ export default function ProductFilterBar({ categories }: ProductFilterBarProps) 
 
     // Process sort
     if (updates.sort !== undefined) {
-      if (updates.sort && updates.sort !== "newest") params.set("sort", updates.sort);
+      if (updates.sort && updates.sort !== "newest")
+        params.set("sort", updates.sort);
       else params.delete("sort");
     }
 
@@ -65,10 +72,10 @@ export default function ProductFilterBar({ categories }: ProductFilterBarProps) 
     router.push(pathname);
   };
 
-  const hasActiveFilters = 
-    searchParams.get("search") || 
-    searchParams.get("category") || 
-    searchParams.get("stock") || 
+  const hasActiveFilters =
+    searchParams.get("search") ||
+    searchParams.get("category") ||
+    searchParams.get("stock") ||
     (searchParams.get("sort") && searchParams.get("sort") !== "newest");
 
   return (
@@ -86,7 +93,11 @@ export default function ProductFilterBar({ categories }: ProductFilterBarProps) 
         >
           <option value="">{t("filters.allCategories")}</option>
           {categories.map((cat) => (
-            <option key={cat} value={cat} style={{ textTransform: "capitalize" }}>
+            <option
+              key={cat}
+              value={cat}
+              style={{ textTransform: "capitalize" }}
+            >
               {cat}
             </option>
           ))}
@@ -140,7 +151,15 @@ export default function ProductFilterBar({ categories }: ProductFilterBarProps) 
       </form>
 
       {/* Actions (Clear Filters & Add Product) */}
-      <div style={{ display: "flex", gap: "var(--space-sm)", marginLeft: "auto", justifyContent: "flex-end" }} className="admin-filter-actions">
+      <div
+        style={{
+          display: "flex",
+          gap: "var(--space-sm)",
+          marginLeft: "auto",
+          justifyContent: "flex-end",
+        }}
+        className="admin-filter-actions"
+      >
         {hasActiveFilters && (
           <button
             onClick={handleClear}
@@ -153,7 +172,12 @@ export default function ProductFilterBar({ categories }: ProductFilterBarProps) 
         <Link
           href="/admin/products/new"
           className="btn btn-primary"
-          style={{ display: "inline-flex", alignItems: "center", gap: "6px", whiteSpace: "nowrap" }}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            whiteSpace: "nowrap",
+          }}
         >
           <Plus size={18} /> {t("addProduct")}
         </Link>

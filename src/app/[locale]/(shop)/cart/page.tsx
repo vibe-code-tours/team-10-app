@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/components/cart/CartProvider";
 import { useEffect, useState } from "react";
 
@@ -72,6 +72,7 @@ export default function CartPage() {
                   >
                     <div
                       style={{
+                        position: "relative",
                         width: "80px",
                         height: "80px",
                         flexShrink: 0,
@@ -81,12 +82,12 @@ export default function CartPage() {
                       }}
                     >
                       {item.image_url && (
-                        <img
+                        <Image
                           src={item.image_url}
                           alt={item.title}
+                          fill
+                          sizes="80px"
                           style={{
-                            width: "100%",
-                            height: "100%",
                             objectFit: "cover",
                           }}
                         />
