@@ -16,9 +16,20 @@ type Product = {
 interface Props {
   products: Product[];
   soldText: string;
+  title: string;
+  forYouText: string;
+  trendingText: string;
+  noProductsText: string;
 }
 
-export function DailyDiscover({ products, soldText }: Props) {
+export function DailyDiscover({
+  products,
+  soldText,
+  title,
+  forYouText,
+  trendingText,
+  noProductsText,
+}: Props) {
   const [visibleCount, setVisibleCount] = useState(24);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("for-you");
@@ -95,7 +106,7 @@ export function DailyDiscover({ products, soldText }: Props) {
             }}
           >
             <TrendingUp size={20} style={{ color: "var(--color-primary)" }} />
-            Daily Discover (နေ့စဉ်အသစ်များ)
+            {title}
           </h2>
           <div style={{ display: "flex", gap: "8px" }}>
             <span
@@ -109,7 +120,7 @@ export function DailyDiscover({ products, soldText }: Props) {
                 cursor: "pointer",
               }}
             >
-              သင့်အတွက်
+              {forYouText}
             </span>
             <span
               className={`discover-tab ${activeTab === "trending" ? "active" : ""}`}
@@ -123,7 +134,7 @@ export function DailyDiscover({ products, soldText }: Props) {
                 color: "var(--color-text-secondary)",
               }}
             >
-              အရောင်းရဆုံး
+              {trendingText}
             </span>
           </div>
         </div>
@@ -308,7 +319,7 @@ export function DailyDiscover({ products, soldText }: Props) {
               color: "var(--color-text-tertiary)",
             }}
           >
-            No products found
+            {noProductsText}
           </div>
         )}
 

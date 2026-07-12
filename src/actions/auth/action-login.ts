@@ -25,7 +25,7 @@ export async function loginWithEmail(formData: FormData): Promise<AuthResult> {
   const ip = await getClientIp();
   if (isRateLimited(`login:${ip}:${parsed.data.email}`, 5, 60_000)) {
     return {
-      error: "အကြိမ်ပေါင်းများစွာ ကြိုးစားထားပါသည်။ ခဏနေမှ ထပ်မံကြိုးစားပါ။",
+      error: "Too many attempts. Please try again later.",
     };
   }
 
@@ -39,10 +39,10 @@ export async function loginWithEmail(formData: FormData): Promise<AuthResult> {
   if (error) {
     if (error.message.includes("Email not confirmed")) {
       return {
-        error: "အီးမေးလ်အတည်ပြုချက် မပြုလုပ်ရသေးပါ။ အီးမေးလ်ကိုစစ်ဆေးပါ။",
+        error: "Email not verified yet. Please check your inbox.",
       };
     }
-    return { error: "အီးမေးလ် သို့မဟုတ် စကားဝှက်မှားနေပါသည်" };
+    return { error: "Incorrect email or password" };
   }
 
   const redirectTo = formData.get("redirect") as string;
@@ -70,12 +70,12 @@ export async function loginWithGoogle(): Promise<AuthResult> {
   });
 
   if (error) {
-    return { error: "Google ဖြင့်ဝင်ရောက်၍မရပါ" };
+    return { error: "Could not sign in with Google" };
   }
 
   if (data.url) {
     redirect(data.url);
   }
 
-  return { error: "တစ်စုံတစ်ရာမှားယွင်းနေပါသည်" };
+  return { error: "Something went wrong" };
 }

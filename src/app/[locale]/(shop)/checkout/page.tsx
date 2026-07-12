@@ -6,6 +6,7 @@ import { createOrder } from "@/actions/checkout/action-checkout";
 import { useCart } from "@/components/cart/CartProvider";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { QrCode } from "lucide-react";
 
 export default function CheckoutPage() {
   const t = useTranslations("Checkout");
@@ -197,6 +198,59 @@ export default function CheckoutPage() {
                 />
                 <span>{t("mobileBanking")}</span>
               </label>
+
+              {form.payment_method === "mobile_banking" && (
+                <div
+                  style={{
+                    marginTop: "var(--space-lg)",
+                    padding: "var(--space-lg)",
+                    background: "var(--color-bg-secondary)",
+                    borderRadius: "var(--radius-md)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center",
+                    gap: "var(--space-sm)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "160px",
+                      height: "160px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: "var(--color-surface)",
+                      border: "1px solid var(--color-border)",
+                      borderRadius: "var(--radius-md)",
+                    }}
+                  >
+                    <QrCode
+                      size={100}
+                      strokeWidth={1}
+                      style={{ color: "var(--color-text)" }}
+                    />
+                  </div>
+                  <div style={{ fontWeight: 500 }}>{t("scanToPay")}</div>
+                  <div
+                    className="text-secondary"
+                    style={{ fontSize: "var(--font-size-sm)" }}
+                  >
+                    {t("scanInstructions", {
+                      amount: `$${totalPrice.toFixed(2)}`,
+                    })}
+                  </div>
+                  <div
+                    className="text-secondary"
+                    style={{
+                      fontSize: "var(--font-size-xs)",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {t("qrPlaceholderNote")}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

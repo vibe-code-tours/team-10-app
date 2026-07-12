@@ -21,18 +21,12 @@
     "sold": "sold",
     "comingSoon": "Products coming soon",
     "viewMore": "View More",
-    "quickLinks": {
-      "new_user_zone": "New User Zone",
-      "free_shipping": "Free Shipping & Vouchers",
-      "daily_50": "Lagi Murah Daily 50% Off",
-      "football": "Football Festival",
-      "shopee_choice": "Shopee Choice",
-      "get_ready": "#GetReadyWithShopee",
-      "supermarket": "Shopee Supermarket",
-      "global": "Global Outlet",
-      "cod": "Cash On Delivery",
-      "collection_point": "Be a Shopee Collection Point"
-    }
+    "computersLabel": "Computers",
+    "mobilesLabel": "Mobiles",
+    "soldPercent": "{percent}% sold",
+    "forYou": "For You",
+    "trending": "Trending",
+    "noProductsFound": "No products found"
   },
   "Auth": {
     "welcomeBack": "Welcome Back",
@@ -143,6 +137,9 @@
     "paymentMethod": "Payment Method",
     "cod": "Cash on Delivery",
     "mobileBanking": "Mobile Banking (KBZ Pay / Wave Pay)",
+    "scanToPay": "Scan to Pay",
+    "scanInstructions": "Scan this QR with your KPay or Wave Pay app to transfer {amount}.",
+    "qrPlaceholderNote": "Demo QR — no real payment gateway connected yet.",
     "orderSummary": "Order Summary",
     "totalAmount": "Total Amount",
     "placingOrder": "Placing order...",
@@ -163,5 +160,73 @@
     "createBtn": "Create Account",
     "haveAccount": "Already have an account?",
     "loginLink": "Login"
+  },
+  "ProductDetail": {
+    "home": "Home",
+    "productsBreadcrumb": "Products",
+    "inStock": "In Stock ({count})",
+    "outOfStock": "Out of Stock",
+    "description": "Description",
+    "reviewsTitle": "Reviews & Ratings",
+    "noReviews": "No reviews yet. Be the first to review!"
+  },
+  "Reviews": {
+    "writeReview": "Write a Review",
+    "loginRequired": "You need to log in to write a review and rate.",
+    "loginBtn": "Login",
+    "thankYou": "Thank you!",
+    "submitted": "Your review has been submitted successfully.",
+    "rating": "Rating",
+    "commentLabel": "Comment (optional)",
+    "commentPlaceholder": "What do you think about this product...",
+    "submitting": "Submitting...",
+    "submitBtn": "Submit Review"
+  },
+  "AddToCart": {
+    "added": "Added to cart",
+    "adding": "Adding...",
+    "addToCart": "Add to Cart"
+  },
+  "Cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "startShopping": "Start shopping for products",
+    "viewProducts": "View Products",
+    "itemsToOrder": "Items to Order",
+    "items": "items",
+    "remove": "Remove",
+    "orderSummary": "Order Summary",
+    "itemsCount": "Items ({count})",
+    "shipping": "Shipping",
+    "free": "Free",
+    "total": "Total",
+    "goToCheckout": "Go to Checkout",
+    "ariaLabel": "Cart"
+  },
+  "Products": {
+    "searchResultsFor": "Results for \"{query}\"",
+    "allProducts": "All Products",
+    "itemsCount": "{count} items",
+    "brandFilterTitle": "Filter by Brand",
+    "computerBrands": "Computer Brands",
+    "mobileBrands": "Mobile Brands",
+    "brands": "Brands",
+    "allBrandsCount": "All ({count})",
+    "prev": "← Previous",
+    "next": "Next →",
+    "pageOf": "Page {page} / {totalPages}",
+    "notFoundTitle": "No products found",
+    "notFoundDesc": "Try a different search"
+  },
+  "Sidebar": {
+    "searchPlaceholder": "Search...",
+    "categoryTitle": "Category",
+    "allCount": "All ({count})"
+  },
+  "Sort": {
+    "label": "Sort by:",
+    "newest": "Newest",
+    "priceAsc": "Price: Low to High",
+    "priceDesc": "Price: High to Low"
   }
 }

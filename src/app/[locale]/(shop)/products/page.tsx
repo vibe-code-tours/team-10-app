@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getTranslations } from "next-intl/server";
 import SortDropdown from "@/components/shop/SortDropdown";
 import ProductSidebar from "@/components/shop/ProductSidebar";
 import Image from "next/image";
@@ -23,6 +24,7 @@ interface Props {
 export default async function ProductsPage({ searchParams }: Props) {
   const params = await searchParams;
   const supabase = await createClient();
+  const t = await getTranslations("Products");
 
   const page = Number(params.page ?? 1);
   const perPage = 12;
@@ -55,10 +57,10 @@ export default async function ProductsPage({ searchParams }: Props) {
       <div className="section-header">
         <h1 className="section-title" style={{ textTransform: "capitalize" }}>
           {params.search
-            ? `"${params.search}" ရှာဖွေမှု`
+            ? t("searchResultsFor", { query: params.search })
             : params.category
               ? `${params.category}`
-              : "ပစ္စည်းအားလုံး"}
+              : t("allProducts")}
         </h1>
         <div
           style={{
@@ -71,7 +73,7 @@ export default async function ProductsPage({ searchParams }: Props) {
             className="text-secondary"
             style={{ fontSize: "var(--font-size-sm)" }}
           >
-            {count ?? 0} ခု
+            {t("itemsCount", { count: count ?? 0 })}
           </span>
           <SortDropdown />
         </div>
@@ -93,18 +95,18 @@ export default async function ProductsPage({ searchParams }: Props) {
             <div className="brand-filters">
               <div className="brand-filters-title">
                 {params.category === "computer"
-                  ? "Computer Brands"
+                  ? t("computerBrands")
                   : params.category === "mobile"
-                    ? "Mobile Brands"
-                    : "Brands"}{" "}
-                (Brand ဖြင့် စစ်ထုတ်ရန်)
+                    ? t("mobileBrands")
+                    : t("brands")}{" "}
+                ({t("brandFilterTitle")})
               </div>
               <div className="brand-chips-container">
                 <Link
                   href={`/products?category=${params.category}${params.sort ? `&sort=${params.sort}` : ""}`}
                   className={`brand-chip ${!params.brand ? "active" : ""}`}
                 >
-                  အားလုံး ({totalBrandCount})
+                  {t("allBrandsCount", { count: totalBrandCount })}
                 </Link>
                 {uniqueBrands.map((b) => (
                   <Link
@@ -186,7 +188,7 @@ export default async function ProductsPage({ searchParams }: Props) {
                       href={`/products?page=${page - 1}${params.category ? `&category=${params.category}` : ""}${params.search ? `&search=${params.search}` : ""}${params.sort ? `&sort=${params.sort}` : ""}${params.brand ? `&brand=${params.brand}` : ""}`}
                       className="btn btn-secondary btn-sm"
                     >
-                      ← ယခင်
+                      {t("prev")}
                     </Link>
                   ) : (
                     <div />
@@ -195,14 +197,14 @@ export default async function ProductsPage({ searchParams }: Props) {
                     className="text-secondary"
                     style={{ fontSize: "var(--font-size-sm)" }}
                   >
-                    စာမျက်နှာ {page} / {totalPages}
+                    {t("pageOf", { page, totalPages })}
                   </span>
                   {page < totalPages ? (
                     <Link
                       href={`/products?page=${page + 1}${params.category ? `&category=${params.category}` : ""}${params.search ? `&search=${params.search}` : ""}${params.sort ? `&sort=${params.sort}` : ""}${params.brand ? `&brand=${params.brand}` : ""}`}
                       className="btn btn-secondary btn-sm"
                     >
-                      နောက် →
+                      {t("next")}
                     </Link>
                   ) : (
                     <div />
@@ -212,8 +214,8 @@ export default async function ProductsPage({ searchParams }: Props) {
             </>
           ) : (
             <div className="empty-state">
-              <div className="empty-state-title">ပစ္စည်းရှာမတွေ့ပါ</div>
-              <div className="empty-state-desc">ရှာဖွေမှုကိုပြောင်းကြည့်ပါ</div>
+              <div className="empty-state-title">{t("notFoundTitle")}</div>
+              <div className="empty-state-desc">{t("notFoundDesc")}</div>
             </div>
           )}
         </div>

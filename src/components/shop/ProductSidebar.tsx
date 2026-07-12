@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
 interface Category {
   slug: string;
@@ -15,7 +16,7 @@ interface Props {
   totalCount: number;
 }
 
-export default function ProductSidebar({
+export default async function ProductSidebar({
   search,
   category,
   brand,
@@ -24,6 +25,7 @@ export default function ProductSidebar({
   categoryCounts,
   totalCount,
 }: Props) {
+  const t = await getTranslations("Sidebar");
   return (
     <aside className="products-sidebar">
       <form
@@ -35,7 +37,7 @@ export default function ProductSidebar({
           type="search"
           name="search"
           className="form-input"
-          placeholder="ရှာဖွေရန်..."
+          placeholder={t("searchPlaceholder")}
           defaultValue={search ?? ""}
           id="search-input"
           style={{ width: "100%" }}
@@ -45,14 +47,14 @@ export default function ProductSidebar({
         {sort && <input type="hidden" name="sort" value={sort} />}
       </form>
 
-      <h3 className="products-sidebar-title">အမျိုးအစား</h3>
+      <h3 className="products-sidebar-title">{t("categoryTitle")}</h3>
       <ul className="category-filter-list">
         <li className="category-filter-item">
           <Link
             href={`/products${sort ? `?sort=${sort}` : ""}`}
             className={`category-filter-link ${!category ? "active" : ""}`}
           >
-            အားလုံး ({totalCount})
+            {t("allCount", { count: totalCount })}
           </Link>
         </li>
         {categories.map((cat) => (
