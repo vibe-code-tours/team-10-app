@@ -1,6 +1,6 @@
 # Environment & Workflow
 
-This document outlines the local development environment setup and the standard workflow for the **yeaung** project (Next.js App Router + Supabase).
+This document outlines the local development environment setup and the standard workflow for the **YoeYarZaw** project (Next.js App Router + Supabase).
 
 ## 1. Prerequisites
 Ensure you have the following installed on your machine:
