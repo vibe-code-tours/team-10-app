@@ -131,5 +131,37 @@
         "noCategories": "အမျိုးအစား မရှိသေးပါ။"
       }
     }
+  },
+  "Checkout": {
+    "emptyCart": "ခြင်းတောင်းထဲတွင် ပစ္စည်းမရှိပါ",
+    "viewProducts": "ပစ္စည်းများကြည့်ရန်",
+    "title": "Checkout (ငွေပေးချေမှု)",
+    "shippingAddress": "ပို့ဆောင်ရမည့် လိပ်စာအချက်အလက်",
+    "fullName": "အမည် (Full Name)",
+    "phone": "ဖုန်းနံပါတ် (Phone Number)",
+    "fullAddress": "အပြည့်အစုံ လိပ်စာ (Full Address)",
+    "paymentMethod": "ငွေပေးချေမှုစနစ် (Payment Method)",
+    "cod": "ပစ္စည်းရောက်မှ ငွေချေမည် (Cash on Delivery)",
+    "mobileBanking": "KBZ Pay / Wave Pay ဖြင့် ငွေလွှဲမည်",
+    "orderSummary": "အော်ဒါအကျဉ်း",
+    "totalAmount": "စုစုပေါင်းကျသင့်ငွေ",
+    "placingOrder": "အော်ဒါတင်နေသည်...",
+    "placeOrder": "အော်ဒါအတည်ပြုရန်"
+  },
+  "Register": {
+    "checkEmail": "အီးမေးလ်ကိုစစ်ဆေးပါ",
+    "title": "အကောင့်ဖန်တီးရန်",
+    "subtitle": "အချက်အလက်များဖြည့်သွင်းပြီး အကောင့်ဖန်တီးပါ",
+    "fullName": "အမည်",
+    "namePlaceholder": "သင့်အမည်",
+    "email": "အီးမေးလ်",
+    "emailPlaceholder": "you@example.com",
+    "password": "စကားဝှက်",
+    "confirmPassword": "စကားဝှက်ထပ်ရိုက်ပါ",
+    "passwordPlaceholder": "••••••••",
+    "creating": "ဖန်တီးနေသည်...",
+    "createBtn": "အကောင့်ဖန်တီးရန်",
+    "haveAccount": "အကောင့်ရှိပြီးသားလား?",
+    "loginLink": "ဝင်ရောက်ရန်"
   }
 }
