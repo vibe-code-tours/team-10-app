@@ -455,7 +455,9 @@ export default async function HomePage() {
                                 zIndex: 1,
                               }}
                             >
-                              {t("soldPercent", { percent: mockSoldPercentage })}
+                              {t("soldPercent", {
+                                percent: mockSoldPercentage,
+                              })}
                             </span>
                           </div>
                         </div>
