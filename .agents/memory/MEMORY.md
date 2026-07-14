@@ -10,6 +10,19 @@ Completed detailed Myanmar translations (`README_mm.md`) for all 45 `.agents/ski
 
 ## Log
 
+- **2026-07-14**: Executed `/safe-commit` workflow (pre-check, formatting, and docs).
+  - **Changed**: Formatted the entire `src/` codebase using `prettier`. Updated `.agents/architecture/project_mapping.md` to reflect the removal of local agent skills (now globally hosted). All tests and linting passed.
+  - **Why**: To prepare for a safe atomic commit, ensuring strict formatting and correct architectural documentation.
+  - **Gotchas**: Local `.agents/skills` and `.claude/skills` were deleted by the user, moving skills globally.
+  - **Open threads**: Proceeding to code review and atomic commits (Phase 6).
+
+*Myanmar — အနှစ်ချုပ်:*
+- **2026-07-14**: `/safe-commit` လုပ်ငန်းစဉ်ကို ဆောင်ရွက်ခဲ့ပါသည်။
+  - **ပြောင်းလဲမှု**: `src/` အောက်ရှိ ကုဒ်အားလုံးကို `prettier` ဖြင့် format လုပ်ခဲ့ပါသည်။ Local agent skills များအား ဖယ်ရှားထားခြင်းကို ညွှန်းဆိုရန် `project_mapping.md` ကို ပြင်ဆင်ခဲ့ပါသည်။ Test နှင့် lint များ အားလုံး အောင်မြင်ပါသည်။
+  - **အကြောင်းရင်း**: အမှားကင်းသော commit ပြုလုပ်နိုင်ရန်နှင့် codebase တစ်ခုလုံး ပုံစံတကျဖြစ်စေရန် ဖြစ်ပါသည်။
+  - **သတိထားရန်**: Local `.agents/skills` များကို user မှ ဖျက်ပြီး global directory သို့ ရွှေ့ထားပါသည်။
+  - **လက်ကျန်အလုပ်**: Commit အဆင့် (Phase 6) သို့ ဆက်လက်လုပ်ဆောင်ရန် ကျန်ရှိပါသည်။
+
 - **2026-07-12**: Executed `/safe-commit` workflow for fixing Server Action types.
   - **Changed**: Fixed signature mismatches in `action-checkout.test.ts` (passing 3 arguments) and `action-profile.ts` (adding `state` for `useActionState`), resolving IDE errors in `ProfileSettingsForms.tsx`.
   - **Why**: To ensure type safety and proper integration with React 19's `useActionState`.

@@ -27,9 +27,7 @@ export default function CartPage() {
 
       {items.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-state-title">
-            {t("empty")}
-          </div>
+          <div className="empty-state-title">{t("empty")}</div>
           <div className="empty-state-desc">{t("startShopping")}</div>
           <Link
             href="/products"
@@ -59,7 +57,9 @@ export default function CartPage() {
               <div className="card-header">
                 <div className="flex items-center gap-sm">
                   <span style={{ fontWeight: 500 }}>{t("itemsToOrder")}</span>
-                  <span className="badge badge-neutral">{totalItems} {t("items")}</span>
+                  <span className="badge badge-neutral">
+                    {totalItems} {t("items")}
+                  </span>
                 </div>
               </div>
               <div className="card-body" style={{ padding: 0 }}>

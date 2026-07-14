@@ -12,9 +12,7 @@ export function useFormValidation<T extends Values>(
 ) {
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<Errors<T>>({});
-  const [touched, setTouched] = useState<Partial<Record<keyof T, boolean>>>(
-    {},
-  );
+  const [touched, setTouched] = useState<Partial<Record<keyof T, boolean>>>({});
 
   const validate = useCallback(
     (candidate: T) => {

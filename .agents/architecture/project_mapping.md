@@ -6,7 +6,7 @@ This document provides a high-level overview of the directory structure for the 
 
 ```text
 online-shop/
-├── .agents/            # AI Agent skills, architectural guardrails, and memory logs
+├── .agents/            # Architectural guardrails and memory logs
 ├── .claude/            # Claude specific configurations and agents
 ├── .git/               # Git repository configuration
 ├── src/                # The Next.js web application source code
