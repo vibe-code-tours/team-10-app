@@ -34,7 +34,17 @@ export default function LanguageSwitcher() {
         transition: "all 0.2s ease",
       }}
     >
-      {locale === "en" ? "မြန်မာစာ" : "English"}
+      <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        {locale === "en" ? (
+          <>
+            <img src="https://flagcdn.com/w20/gb.png" srcSet="https://flagcdn.com/w40/gb.png 2x" width="20" height="15" alt="UK Flag" style={{ borderRadius: "2px" }} /> EN
+          </>
+        ) : (
+          <>
+            <img src="https://flagcdn.com/w20/mm.png" srcSet="https://flagcdn.com/w40/mm.png 2x" width="20" height="15" alt="Myanmar Flag" style={{ borderRadius: "2px" }} /> MM
+          </>
+        )}
+      </span>
     </button>
   );
 }
