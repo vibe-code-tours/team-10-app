@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import OrderStatusSelect from "@/components/admin/OrderStatusSelect";
 import { format } from "date-fns";
 
@@ -84,15 +84,16 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                       borderRadius: "var(--radius-sm)",
                       overflow: "hidden",
                       background: "var(--color-bg-secondary)",
+                      position: "relative",
                     }}
                   >
                     {item.product?.image_url && (
-                      <img
+                      <Image
                         src={item.product.image_url}
                         alt={item.product?.title || "Product image"}
+                        fill
+                        sizes="64px"
                         style={{
-                          width: "100%",
-                          height: "100%",
                           objectFit: "cover",
                         }}
                       />
