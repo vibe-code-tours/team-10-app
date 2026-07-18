@@ -682,9 +682,7 @@ export default async function HomePage() {
         noProductsText={t("noProductsFound")}
       />
 
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
+      <style>{`
         .quick-link-item:hover .quick-link-icon-wrapper {
           transform: translateY(-3px);
           box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
@@ -740,9 +738,7 @@ export default async function HomePage() {
           0%, 100% { transform: scale(1); opacity: 1; }
           50% { transform: scale(1.1); opacity: 0.8; }
         }
-      `,
-        }}
-      />
+      `}</style>
     </div>
   );
 }
