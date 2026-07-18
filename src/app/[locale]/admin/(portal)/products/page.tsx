@@ -120,7 +120,7 @@ export default async function AdminProductsPage({ searchParams }: Props) {
                       {product.image_url ? (
                         <img
                           src={product.image_url}
-                          alt={product.title}
+                          alt={product.title || "Product image"}
                           className="table-img"
                         />
                       ) : (

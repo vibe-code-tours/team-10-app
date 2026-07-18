@@ -89,7 +89,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                     {item.product?.image_url && (
                       <img
                         src={item.product.image_url}
-                        alt={item.product?.title}
+                        alt={item.product?.title || "Product image"}
                         style={{
                           width: "100%",
                           height: "100%",
