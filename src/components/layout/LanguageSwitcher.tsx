@@ -22,12 +22,16 @@ export default function LanguageSwitcher() {
           : "Switch language to English"
       }
       style={{
-        background: "transparent",
+        background: "var(--color-primary, #007bff)",
+        color: "white",
         border: "none",
-        color: "inherit",
+        borderRadius: "20px",
+        padding: "6px 14px",
         cursor: "pointer",
         fontSize: "13px",
-        fontWeight: 500,
+        fontWeight: 600,
+        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        transition: "all 0.2s ease",
       }}
     >
       {locale === "en" ? "မြန်မာစာ" : "English"}
