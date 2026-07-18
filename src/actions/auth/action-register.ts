@@ -37,7 +37,7 @@ export async function registerWithEmail(
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
@@ -53,6 +53,12 @@ export async function registerWithEmail(
       return { error: "An account with this email already exists" };
     }
     return { error: "Could not create account" };
+  }
+
+  // Supabase returns an empty identities array for existing emails when
+  // Email Enumeration Protection is enabled
+  if (data?.user?.identities?.length === 0) {
+    return { error: "This email is already registered. Please sign in instead." };
   }
 
   return {
