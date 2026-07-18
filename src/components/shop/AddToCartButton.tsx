@@ -7,7 +7,7 @@ import { useCart } from "@/components/cart/CartProvider";
 interface Props {
   product: {
     id: string;
-    name: string;
+    title: string;
     price: number;
     image_url: string;
     stock: number;

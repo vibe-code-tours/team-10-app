@@ -16,7 +16,7 @@ interface CartContextType {
   addToCart: (
     product: {
       id: string;
-      name: string;
+      title: string;
       price: number;
       image_url: string;
       quantity?: number;
@@ -61,7 +61,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const addToCart = (
     product: {
       id: string;
-      name: string;
+      title: string;
       price: number;
       image_url: string;
       quantity?: number;
@@ -85,7 +85,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         ...prev,
         {
           id: product.id,
-          title: product.name,
+          title: product.title,
           price: Number(product.price),
           image_url: product.image_url,
           quantity,

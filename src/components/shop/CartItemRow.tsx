@@ -11,11 +11,10 @@ interface Props {
     quantity: number;
     product: {
       id: string;
-      name: string;
-      slug: string;
+      title: string;
       price: number;
-      stock_quantity: number;
-      images: Array<{ url: string; sort_order: number }>;
+      stock: number;
+      image_url: string;
     };
   };
 }
@@ -24,10 +23,7 @@ export default function CartItemRow({ item }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const product = item.product;
-  const firstImage = product?.images?.sort(
-    (a: { sort_order: number }, b: { sort_order: number }) =>
-      a.sort_order - b.sort_order,
-  )[0];
+  const firstImage = product?.image_url;
 
   async function handleQuantityChange(newQty: number) {
     setLoading(true);
@@ -72,8 +68,8 @@ export default function CartItemRow({ item }: Props) {
       >
         {firstImage ? (
           <img
-            src={firstImage.url}
-            alt={product.name}
+            src={firstImage}
+            alt={product.title}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : (
@@ -103,7 +99,7 @@ export default function CartItemRow({ item }: Props) {
             whiteSpace: "nowrap",
           }}
         >
-          {product.name}
+          {product.title}
         </div>
         <div
           style={{
@@ -154,7 +150,7 @@ export default function CartItemRow({ item }: Props) {
           type="button"
           onClick={() =>
             handleQuantityChange(
-              Math.min(product.stock_quantity, item.quantity + 1),
+              Math.min(product.stock, item.quantity + 1),
             )
           }
           className="btn btn-ghost"
@@ -163,7 +159,7 @@ export default function CartItemRow({ item }: Props) {
             borderRadius: 0,
             fontSize: "var(--font-size-sm)",
           }}
-          disabled={loading || item.quantity >= product.stock_quantity}
+          disabled={loading || item.quantity >= product.stock}
         >
           +
         </button>
