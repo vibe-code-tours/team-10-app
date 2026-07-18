@@ -31,18 +31,17 @@ export async function addToCart(formData: FormData): Promise<CartResult> {
 
   const { data: product } = await supabase
     .from("products")
-    .select("id, stock_quantity, status")
+    .select("id, stock")
     .eq("id", parsed.data.product_id)
-    .eq("status", "active")
     .single();
 
   if (!product) {
     return { error: "ပစ္စည်းရှာမတွေ့ပါ" };
   }
 
-  if (product.stock_quantity < parsed.data.quantity) {
+  if (product.stock < parsed.data.quantity) {
     return {
-      error: `လက်ကျန်မလုံလောက်ပါ (${product.stock_quantity} ခုသာကျန်ပါသည်)`,
+      error: `လက်ကျန်မလုံလောက်ပါ (${product.stock} ခုသာကျန်ပါသည်)`,
     };
   }
 
@@ -55,9 +54,9 @@ export async function addToCart(formData: FormData): Promise<CartResult> {
 
   if (existing) {
     const newQty = existing.quantity + parsed.data.quantity;
-    if (newQty > product.stock_quantity) {
+    if (newQty > product.stock) {
       return {
-        error: `လက်ကျန်မလုံလောက်ပါ (${product.stock_quantity} ခုသာကျန်ပါသည်)`,
+        error: `လက်ကျန်မလုံလောက်ပါ (${product.stock} ခုသာကျန်ပါသည်)`,
       };
     }
 
@@ -152,20 +151,10 @@ export async function getCartItems() {
       created_at,
       product:products (
         id,
-        name,
-        slug,
+        title,
         price,
-        stock_quantity,
-        status,
-        store:stores (
-          id,
-          name,
-          slug
-        ),
-        images:product_images (
-          url,
-          sort_order
-        )
+        stock,
+        image_url
       )
     `,
     )
