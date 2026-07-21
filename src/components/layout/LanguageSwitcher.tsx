@@ -38,11 +38,25 @@ export default function LanguageSwitcher() {
       <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
         {locale === "en" ? (
           <>
-            <Image src="https://flagcdn.com/w40/gb.png" width={20} height={15} alt="UK Flag" style={{ borderRadius: "2px" }} /> EN
+            <Image
+              src="https://flagcdn.com/w40/gb.png"
+              width={20}
+              height={15}
+              alt="UK Flag"
+              style={{ borderRadius: "2px" }}
+            />{" "}
+            EN
           </>
         ) : (
           <>
-            <Image src="https://flagcdn.com/w40/mm.png" width={20} height={15} alt="Myanmar Flag" style={{ borderRadius: "2px" }} /> MM
+            <Image
+              src="https://flagcdn.com/w40/mm.png"
+              width={20}
+              height={15}
+              alt="Myanmar Flag"
+              style={{ borderRadius: "2px" }}
+            />{" "}
+            MM
           </>
         )}
       </span>

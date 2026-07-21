@@ -58,7 +58,9 @@ export async function registerWithEmail(
   // Supabase returns an empty identities array for existing emails when
   // Email Enumeration Protection is enabled
   if (data?.user?.identities?.length === 0) {
-    return { error: "This email is already registered. Please sign in instead." };
+    return {
+      error: "This email is already registered. Please sign in instead.",
+    };
   }
 
   return {

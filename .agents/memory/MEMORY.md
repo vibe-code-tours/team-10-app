@@ -10,6 +10,21 @@ Previously, closed the 6 `/security-auditor` findings (RLS hardening + price-tam
 
 ## Log
 
+- **2026-07-21**: Resolved GitHub Issues #27, #28, #29, and #30 via `/safe-commit` workflow.
+  - **Changed**:
+    - **Issue #27**: Fixed guest cart product title persistence in `CartProvider.tsx`, `AddToCartButton.tsx`, and `guestCartSchema`. Added `__tests__/cart-guest-title.test.ts`.
+    - **Issue #28**: Implemented Multi-Currency Support (`CurrencyProvider.tsx`, `CurrencySwitcher.tsx`, `<Price />` component) supporting USD ($), MMK (Ks), EUR (€), GBP (£), and THB (฿). Added `__tests__/currency.test.ts`.
+    - **Issue #29**: Fixed email confirmation link expiration (`otp_expired` / `access_denied`) in `/auth/callback/route.ts` and `login/page.tsx`. Created `docs/email-confirmation-fix.md` and `__tests__/auth-callback.test.ts`.
+    - **Issue #30**: Created branded registration HTML email template `supabase/templates/confirm_signup.html`, `verification.ts`, `sendVerificationEmail` in `send.ts`, and `docs/email-templates-setup.md`. Added `__tests__/email-template.test.ts`.
+  - **Why**: To fix guest cart bugs, add multi-currency conversion, fix email confirmation links, and provide custom branded email verification templates.
+  - **Gotchas**: All 5 test suites (15 tests) pass cleanly.
+  - **Open threads**: Awaiting confirmation on Multi-Vendor Marketplace design.
+
+*Myanmar — အနှစ်ချုပ်:*
+- **2026-07-21**: GitHub Issues #27, #28, #29, #30 များကို ဖြေရှင်းပြီးစီးခဲ့ပါသည်။
+  - **ပြောင်းလဲမှု**: Guest Cart Title မကျန်ခဲ့အောင် ပြင်ဆင်ခြင်း (#27)၊ USD, MMK, EUR, GBP, THB Multi-Currency စနစ် ထည့်သွင်းခြင်း (#28)၊ Email Confirmation OTP Verification နှင့် Error Handler ပြင်ဆင်ခြင်း (#29)၊ Branded HTML Registration Email Template နှင့် Setup Guide ထည့်သွင်းခြင်း (#30)။ Test Suites ၅ ခုလုံး (၁၅ ခုမြောက် Test Case များ) အောင်မြင်ပါသည်။
+
+
 - **2026-07-14**: Executed `/safe-commit` workflow (pre-check, formatting, and docs).
   - **Changed**: Formatted the entire `src/` codebase using `prettier`. Updated `.agents/architecture/project_mapping.md` to reflect the removal of local agent skills (now globally hosted). All tests and linting passed.
   - **Why**: To prepare for a safe atomic commit, ensuring strict formatting and correct architectural documentation.

@@ -106,7 +106,9 @@ export default async function ProductsPage({ searchParams }: Props) {
                   href={`/products?${[
                     params.category ? `category=${params.category}` : null,
                     params.sort ? `sort=${params.sort}` : null,
-                  ].filter(Boolean).join("&")}`}
+                  ]
+                    .filter(Boolean)
+                    .join("&")}`}
                   className={`brand-chip ${!params.brand ? "active" : ""}`}
                 >
                   {t("allBrandsCount", { count: totalBrandCount })}
@@ -118,7 +120,9 @@ export default async function ProductsPage({ searchParams }: Props) {
                       params.category ? `category=${params.category}` : null,
                       `brand=${b}`,
                       params.sort ? `sort=${params.sort}` : null,
-                    ].filter(Boolean).join("&")}`}
+                    ]
+                      .filter(Boolean)
+                      .join("&")}`}
                     className={`brand-chip ${params.brand === b ? "active" : ""}`}
                   >
                     {b} ({brandCounts[b]})

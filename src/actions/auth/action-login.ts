@@ -47,7 +47,11 @@ export async function loginWithEmail(formData: FormData): Promise<AuthResult> {
 
   const redirectTo = formData.get("redirect") as string;
 
-  if (redirectTo && redirectTo.startsWith("/") && !redirectTo.startsWith("//")) {
+  if (
+    redirectTo &&
+    redirectTo.startsWith("/") &&
+    !redirectTo.startsWith("//")
+  ) {
     redirect(redirectTo);
   }
 

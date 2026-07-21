@@ -27,7 +27,7 @@ export default function DeleteCategoryButton({
       } catch (err) {
         setError(
           "Failed to delete category: " +
-            (err instanceof Error ? err.message : "Unknown error")
+            (err instanceof Error ? err.message : "Unknown error"),
         );
       }
     });
@@ -58,7 +58,8 @@ export default function DeleteCategoryButton({
         title="Delete Category"
         message={
           <>
-            Are you sure you want to delete the category &quot;<strong>{name}</strong>&quot;?
+            Are you sure you want to delete the category &quot;
+            <strong>{name}</strong>&quot;?
             <br />
             ဤအမျိုးအစားကို ဖျက်ရန် သေချာပါသလား?
           </>

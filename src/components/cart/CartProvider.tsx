@@ -45,12 +45,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       try {
         const parsed = JSON.parse(savedCart);
         if (Array.isArray(parsed)) {
-          const normalized = parsed.map(
-            (item: Partial<CartItem> & { name?: string }) => ({
-              ...item,
-              title: item.title || item.name || "",
-            }),
-          );
+          const normalized: CartItem[] = parsed
+            .filter((item: unknown): item is Record<string, unknown> =>
+              Boolean(item && typeof item === "object"),
+            )
+            .map((item) => ({
+              id: String(item.id || item.product_id || ""),
+              title: String(item.title || item.name || ""),
+              price: Number(item.price) || 0,
+              image_url: String(item.image_url || ""),
+              quantity: Number(item.quantity) || 1,
+              stock: Number(item.stock) || 0,
+            }))
+            .filter((item) => Boolean(item.id));
           // eslint-disable-next-line react-hooks/set-state-in-effect
           setItems(normalized);
         }

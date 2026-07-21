@@ -6,7 +6,7 @@
 ## Context
 
 We make choices during the build — framework, database, auth, which AI model,
-hosting. Six months later nobody remembers *why*. A one-file-per-decision log keeps
+hosting. Six months later nobody remembers _why_. A one-file-per-decision log keeps
 the reasoning next to the code so it diffs like code.
 
 ## Decision

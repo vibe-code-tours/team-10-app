@@ -69,10 +69,7 @@ export async function mergeGuestCart(
 
     if (existing) {
       // Merge: sum quantities, cap at stock
-      const newQty = Math.min(
-        existing.quantity + item.quantity,
-        product.stock,
-      );
+      const newQty = Math.min(existing.quantity + item.quantity, product.stock);
 
       await supabase
         .from("cart_items")

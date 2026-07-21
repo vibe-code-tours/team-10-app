@@ -27,7 +27,7 @@ export default function DeleteProductButton({
       } catch (err) {
         setError(
           "Failed to delete product: " +
-            (err instanceof Error ? err.message : "Unknown error")
+            (err instanceof Error ? err.message : "Unknown error"),
         );
       }
     });
@@ -58,7 +58,8 @@ export default function DeleteProductButton({
         title="Delete Product"
         message={
           <>
-            Are you sure you want to delete &quot;<strong>{title}</strong>&quot;?
+            Are you sure you want to delete &quot;<strong>{title}</strong>
+            &quot;?
             <br />
             ဤကုန်ပစ္စည်းကို ဖျက်ရန် သေချာပါသလား?
           </>

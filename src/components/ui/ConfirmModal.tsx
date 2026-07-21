@@ -41,7 +41,10 @@ export default function ConfirmModal({
 
   return (
     <>
-      <div className="modal-backdrop" onClick={!isPending ? onClose : undefined} />
+      <div
+        className="modal-backdrop"
+        onClick={!isPending ? onClose : undefined}
+      />
       <div className="modal">
         <div className="modal-header">
           <h3 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 600 }}>
