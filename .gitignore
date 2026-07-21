@@ -58,3 +58,4 @@ update_broken_images_lorem.js
 scratch_*.js
 config.bat
 .codex/
+.continue/

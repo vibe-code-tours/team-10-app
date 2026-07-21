@@ -10,6 +10,15 @@ Previously, closed the 6 `/security-auditor` findings (RLS hardening + price-tam
 
 ## Log
 
+- **2026-07-21**: Fixed Currency Switcher UI and Product Detail Page reference error via `/safe-commit` workflow.
+  - **Changed**: Rewrote `CurrencySwitcher.tsx` with a custom dropdown component instead of native `<select>` to properly display FlagCDN images for all currencies (bypassing Windows emoji rendering limitations). Added missing `import Price` to `src/app/[locale]/(shop)/products/[id]/page.tsx` to fix the `ReferenceError: Price is not defined` crash. Added `.continue/` to `.gitignore`.
+  - **Why**: To ensure currency flags are visible in the dropdown on Windows OS, and to fix a runtime crash when viewing product details.
+  - **Gotchas**: Native `<select>` options cannot contain HTML `<img>` tags, so a custom `<ul>/<li>` dropdown was built using `lucide-react` and click-outside logic.
+  - **Open threads**: Awaiting confirmation on Multi-Vendor Marketplace design.
+
+*Myanmar — အနှစ်ချုပ်:*
+- **2026-07-21**: Currency Switcher UI နှင့် Product Detail Page ရှိ Error များကို ပြင်ဆင်ခဲ့ပါသည်။
+  - **ပြောင်းလဲမှု**: Windows OS တွင် နိုင်ငံအလံများ သေချာစွာပေါ်စေရန် `CurrencySwitcher.tsx` ကို Native `<select>` အစား Custom Dropdown (FlagCDN) ဖြင့် အစားထိုးရေးသားခဲ့ပါသည်။ `page.tsx` တွင် မပါဝင်ခဲ့သော `import Price` ကို ပြန်လည်ထည့်သွင်း၍ Error ဖြေရှင်းခဲ့ပါသည်။ `.continue/` ကို `.gitignore` တွင် ထည့်သွင်းခဲ့ပါသည်။
 - **2026-07-21**: Resolved GitHub Issues #27, #28, #29, and #30 via `/safe-commit` workflow.
   - **Changed**:
     - **Issue #27**: Fixed guest cart product title persistence in `CartProvider.tsx`, `AddToCartButton.tsx`, and `guestCartSchema`. Added `__tests__/cart-guest-title.test.ts`.
