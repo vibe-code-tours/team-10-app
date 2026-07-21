@@ -32,12 +32,10 @@ export default function LoginPage() {
         urlError === "auth_callback_error" ||
         hash.includes("access_denied")
       ) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setError(
           "Authentication failed or email link expired. Please try signing in.",
         );
       } else if (urlError) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setError(urlError);
       }
     }
