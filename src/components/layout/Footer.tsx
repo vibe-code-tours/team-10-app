@@ -51,9 +51,9 @@ export default function Footer() {
   return (
     <footer
       style={{
-        background: "#f5f5f5",
+        background: "var(--color-bg-secondary)",
         paddingTop: "60px",
-        borderTop: "1px solid #e5e7eb",
+        borderTop: "1px solid var(--color-border-light)",
         color: "var(--color-text)",
         fontSize: "14px",
       }}
@@ -66,7 +66,7 @@ export default function Footer() {
             flexWrap: "wrap",
             justifyContent: "space-between",
             paddingBottom: "40px",
-            borderBottom: "1px solid #e5e7eb",
+            borderBottom: "1px solid var(--color-border-light)",
             marginBottom: "40px",
             gap: "24px",
           }}
@@ -81,7 +81,7 @@ export default function Footer() {
           >
             <div
               style={{
-                background: "#fff",
+                background: "var(--color-surface)",
                 padding: "12px",
                 borderRadius: "50%",
                 color: "var(--color-primary)",

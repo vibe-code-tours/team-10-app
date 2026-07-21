@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import SortDropdown from "@/components/shop/SortDropdown";
 import ProductSidebar from "@/components/shop/ProductSidebar";
 import Image from "next/image";
+import { Price } from "@/components/currency/Price";
 import {
   getProducts,
   getCategories,
@@ -179,7 +180,7 @@ export default async function ProductsPage({ searchParams }: Props) {
                     <div className="product-card-body">
                       <div className="product-card-name">{product.title}</div>
                       <div className="product-card-price">
-                        ${Number(product.price).toFixed(2)}
+                        <Price amount={product.price} />
                       </div>
                     </div>
                   </Link>

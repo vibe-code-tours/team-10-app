@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Star, TrendingUp } from "lucide-react";
 import Image from "next/image";
+import { Price } from "@/components/currency/Price";
 
 type Product = {
   id: string;
@@ -34,6 +35,7 @@ export function DailyDiscover({
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("for-you");
   const observerRef = useRef<HTMLDivElement>(null);
+  const isLoadingRef = useRef(false);
 
   // Pure, deterministic stats generation to prevent hydration mismatches
   const getProductStats = (product: Product) => {
@@ -47,30 +49,34 @@ export function DailyDiscover({
   useEffect(() => {
     if (visibleCount >= products.length) return;
 
+    const el = observerRef.current;
+    if (!el) return;
+
     let timeoutId: NodeJS.Timeout;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isLoading) {
+        if (entries[0].isIntersecting && !isLoadingRef.current) {
+          isLoadingRef.current = true;
           setIsLoading(true);
 
-          // Simulated 600ms network latency for premium e-commerce feel
           timeoutId = setTimeout(() => {
             setVisibleCount((prev) => Math.min(prev + 18, products.length));
+            isLoadingRef.current = false;
             setIsLoading(false);
-          }, 600);
+          }, 400);
         }
       },
       { rootMargin: "200px" },
     );
 
-    if (observerRef.current) observer.observe(observerRef.current);
+    observer.observe(el);
 
     return () => {
       observer.disconnect();
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [products.length, isLoading, visibleCount]);
+  }, [products.length, visibleCount]);
 
   const displayedProducts = products.slice(0, visibleCount);
 
@@ -242,8 +248,8 @@ export function DailyDiscover({
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: "vertical",
                         overflow: "hidden",
-                        lineHeight: "16px",
-                        height: "32px",
+                        lineHeight: "18px",
+                        height: "36px",
                       }}
                     >
                       {product.title}
@@ -300,10 +306,7 @@ export function DailyDiscover({
                           fontWeight: 700,
                         }}
                       >
-                        <span style={{ fontSize: "12px", fontWeight: 600 }}>
-                          $
-                        </span>
-                        {Number(product.price).toFixed(2)}
+                        <Price amount={product.price} />
                       </div>
                     </div>
                   </div>

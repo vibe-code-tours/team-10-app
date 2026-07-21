@@ -5,6 +5,8 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import AddToCartButton from "@/components/shop/AddToCartButton";
 import ReviewForm from "@/components/shop/ReviewForm";
+import { StarRating } from "@/components/ui/StarRating";
+import Price from "@/components/currency/Price";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -127,7 +129,7 @@ export default async function ProductDetailPage({ params }: Props) {
               marginBottom: "var(--space-lg)",
             }}
           >
-            ${Number(product.price).toFixed(2)}
+            <Price amount={product.price} />
           </div>
 
           <div style={{ marginBottom: "var(--space-lg)" }}>
@@ -209,16 +211,7 @@ export default async function ProductDetailPage({ params }: Props) {
           {t("reviewsTitle")}
         </h2>
 
-        <div
-          style={
-            {
-              display: "grid",
-              gridTemplateColumns: "1fr",
-              gap: "var(--space-2xl)",
-              "@media (minWidth: 768px)": { gridTemplateColumns: "2fr 1fr" },
-            } as React.CSSProperties
-          }
-        >
+        <div className="product-reviews-grid">
           {/* Reviews List */}
           <div>
             {reviews && reviews.length > 0 ? (
@@ -254,32 +247,7 @@ export default async function ProductDetailPage({ params }: Props) {
                           marginBottom: "var(--space-sm)",
                         }}
                       >
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "2px",
-                            color: "#FACC15",
-                          }}
-                        >
-                          {[...Array(5)].map((_, i) => (
-                            <svg
-                              key={i}
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill={i < review.rating ? "currentColor" : "none"}
-                              stroke={
-                                i < review.rating ? "none" : "currentColor"
-                              }
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                            </svg>
-                          ))}
-                        </div>
+                        <StarRating rating={review.rating} size={16} />
                         <span
                           style={{
                             fontSize: "var(--font-size-xs)",
