@@ -193,51 +193,44 @@ export default async function SellerDashboardPage() {
               </thead>
               <tbody>
                 {recentItems.map((item, i) => {
-                  const order = getOrder(item);
+                  const o = getOrder(item);
                   return (
                     <tr key={i}>
-                      {(() => {
-                        const o = getOrder(item);
-                        return (
-                          <>
-                            <td style={{ fontWeight: 500 }}>
-                              {o?.customer_name ?? "—"}
-                            </td>
-                            <td>{item.quantity}</td>
-                            <td style={{ fontWeight: 600 }}>
-                              $
-                              {(
-                                Number(item.price) * Number(item.quantity)
-                              ).toFixed(2)}
-                            </td>
-                            <td>
-                              <span
-                                className={`badge ${
-                                  item.fulfillment_status === "delivered"
-                                    ? "badge-success"
-                                    : item.fulfillment_status === "shipped"
-                                      ? "badge-primary"
-                                      : "badge-neutral"
-                                }`}
-                              >
-                                {item.fulfillment_status}
-                              </span>
-                            </td>
-                            <td
-                              style={{
-                                fontSize: "12px",
-                                color: "var(--color-text-secondary)",
-                              }}
-                            >
-                              {o?.created_at
-                                ? formatDistanceToNow(new Date(o.created_at), {
-                                    addSuffix: true,
-                                  })
-                                : "—"}
-                            </td>
-                          </>
-                        );
-                      })()}
+                      <td style={{ fontWeight: 500 }}>
+                        {o?.customer_name ?? "—"}
+                      </td>
+                      <td>{item.quantity}</td>
+                      <td style={{ fontWeight: 600 }}>
+                        $
+                        {(
+                          Number(item.price) * Number(item.quantity)
+                        ).toFixed(2)}
+                      </td>
+                      <td>
+                        <span
+                          className={`badge ${
+                            item.fulfillment_status === "delivered"
+                              ? "badge-success"
+                              : item.fulfillment_status === "shipped"
+                                ? "badge-primary"
+                                : "badge-neutral"
+                          }`}
+                        >
+                          {item.fulfillment_status}
+                        </span>
+                      </td>
+                      <td
+                        style={{
+                          fontSize: "12px",
+                          color: "var(--color-text-secondary)",
+                        }}
+                      >
+                        {o?.created_at
+                          ? formatDistanceToNow(new Date(o.created_at), {
+                              addSuffix: true,
+                            })
+                          : "—"}
+                      </td>
                     </tr>
                   );
                 })}

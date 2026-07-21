@@ -6,7 +6,7 @@ import {
   updateCategory,
 } from "@/actions/admin/action-categories";
 import { useRouter, Link } from "@/i18n/routing";
-import { UploadCloud, Image as ImageIcon, Trash2, X, FileImage } from "lucide-react";
+import { UploadCloud, Trash2 } from "lucide-react";
 
 type Category = {
   id?: string;

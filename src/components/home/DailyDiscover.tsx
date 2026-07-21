@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Star, TrendingUp, ShoppingBag, Flame, Sparkles } from "lucide-react";
+import { Star, TrendingUp, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import { Price } from "@/components/currency/Price";
 

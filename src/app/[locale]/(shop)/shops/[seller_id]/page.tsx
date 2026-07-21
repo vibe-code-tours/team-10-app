@@ -207,7 +207,7 @@ export default async function ShopPage({ params }: Props) {
           <div className="empty-state">
             <div className="empty-state-title">No products found</div>
             <div className="empty-state-desc">
-              This shop hasn't listed any products yet.
+              This shop hasn&apos;t listed any products yet.
             </div>
           </div>
         )}

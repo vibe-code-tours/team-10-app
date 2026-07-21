@@ -16,8 +16,6 @@ import {
   CheckCircle,
   ChevronLeft,
   ChevronRight,
-  Filter,
-  UserPlus,
   ArrowRightLeft,
 } from "lucide-react";
 import CreateUserForm from "./CreateUserForm";

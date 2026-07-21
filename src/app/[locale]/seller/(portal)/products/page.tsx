@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { Link } from "@/i18n/routing";
 import { Edit, Plus } from "lucide-react";
 import DeleteProductButton from "@/components/admin/DeleteProductButton";
-import { getProducts, getCategories } from "@/services/product.service";
+import { getCategories } from "@/services/product.service";
 import ProductFilterBar from "@/components/admin/ProductFilterBar";
 
 interface Props {

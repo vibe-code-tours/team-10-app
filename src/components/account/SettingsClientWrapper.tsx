@@ -32,7 +32,14 @@ interface SettingsClientWrapperProps {
     created_at?: string | null;
     shop_name?: string | null;
   } | null;
-  application: any;
+  application: {
+    status: "pending" | "approved" | "rejected";
+    rejection_reason?: string | null;
+    shop_name?: string | null;
+    created_at?: string;
+    nrc_document_url?: string | null;
+    license_document_url?: string | null;
+  } | null;
 }
 
 function getAvatarGradient(name: string) {

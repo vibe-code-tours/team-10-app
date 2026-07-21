@@ -7,11 +7,23 @@ import { useTranslations } from "next-intl";
 import DeleteProductButton from "./DeleteProductButton";
 import { deleteProducts } from "@/actions/admin/action-products";
 
+type ProductItem = {
+  id: string;
+  title: string;
+  price: number;
+  stock: number;
+  category: string;
+  image_url: string;
+  created_at: string;
+  seller?: { shop_name?: string } | { shop_name?: string }[];
+  brand?: string;
+};
+
 export default function ProductTableClient({
   products,
   currentQueryString,
 }: {
-  products: any[];
+  products: ProductItem[];
   currentQueryString: string;
 }) {
   const t = useTranslations("Admin.products");
@@ -42,7 +54,7 @@ export default function ProductTableClient({
         try {
           await deleteProducts(selectedIds);
           setSelectedIds([]);
-        } catch (error) {
+        } catch {
           alert("Failed to delete products");
         }
       });

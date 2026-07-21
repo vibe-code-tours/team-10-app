@@ -33,7 +33,7 @@ export async function updateSession(
   try {
     const { data } = await supabase.auth.getUser();
     user = data.user;
-  } catch (e) {
+  } catch {
     // Gracefully handle transient network connection timeouts
     console.warn("Auth session check skipped due to transient network delay");
   }

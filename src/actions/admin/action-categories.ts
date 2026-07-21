@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient, createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/supabase/auth-helpers";
 import { setCategoryImage } from "@/lib/category-image-store";
 import { revalidatePath } from "next/cache";

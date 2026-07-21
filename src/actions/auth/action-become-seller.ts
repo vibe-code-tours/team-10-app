@@ -102,7 +102,7 @@ export async function submitSellerApplication(
     }
   }
 
-  const payload: Record<string, any> = {
+  const payload: Record<string, unknown> = {
     user_id: user.id,
     ...parsed.data,
     status: "pending",

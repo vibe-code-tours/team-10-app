@@ -1,9 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 import { createClient } from "@/lib/supabase/server";
 import { Link } from "@/i18n/routing";
-import { Edit } from "lucide-react";
 import ProductFilterBar from "@/components/admin/ProductFilterBar";
-import DeleteProductButton from "@/components/admin/DeleteProductButton";
 import ProductTableClient from "@/components/admin/ProductTableClient";
 import ProductStats from "@/components/admin/ProductStats";
 import { getTranslations } from "next-intl/server";

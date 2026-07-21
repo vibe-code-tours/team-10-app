@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "@/i18n/routing";
 import {
   Store,
@@ -11,24 +11,14 @@ import {
   Search,
   ExternalLink,
   Phone,
-  MapPin,
-  FileText,
   AlertCircle,
-  User,
   ShieldCheck,
-  Check,
   X,
-  Building2,
-  Calendar,
   LayoutGrid,
   List,
   Mail,
   ArrowUpRight,
 } from "lucide-react";
-import {
-  approveSeller,
-  rejectSeller,
-} from "@/actions/admin/action-approve-seller";
 
 export interface ActiveSeller {
   id: string;
@@ -91,10 +81,6 @@ export default function AdminShopsClient({
   );
   const [viewMode, setViewMode] = useState<"table" | "grid">("table");
   const [searchQuery, setSearchQuery] = useState("");
-  const [rejectingAppId, setRejectingAppId] = useState<string | null>(null);
-  const [rejectReason, setRejectReason] = useState("");
-  const [processingId, setProcessingId] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
   const [feedbackMsg, setFeedbackMsg] = useState<{
     type: "success" | "error";
     text: string;
@@ -141,43 +127,6 @@ export default function AdminShopsClient({
         app.phone.toLowerCase().includes(q)
     );
   }, [rejectedApplications, searchQuery]);
-
-  const handleApprove = (app: SellerApplication) => {
-    setProcessingId(app.id);
-    setFeedbackMsg(null);
-    startTransition(async () => {
-      const res = await approveSeller(app.id, app.user_id, app.shop_name);
-      setProcessingId(null);
-      if (res?.error) {
-        setFeedbackMsg({ type: "error", text: res.error });
-      } else {
-        setFeedbackMsg({
-          type: "success",
-          text: `Approved "${app.shop_name}".`,
-        });
-      }
-    });
-  };
-
-  const handleRejectSubmit = (appId: string) => {
-    if (!rejectReason.trim()) return;
-    setProcessingId(appId);
-    setFeedbackMsg(null);
-    startTransition(async () => {
-      const res = await rejectSeller(appId, rejectReason.trim());
-      setProcessingId(null);
-      setRejectingAppId(null);
-      setRejectReason("");
-      if (res?.error) {
-        setFeedbackMsg({ type: "error", text: res.error });
-      } else {
-        setFeedbackMsg({
-          type: "success",
-          text: "Application rejected.",
-        });
-      }
-    });
-  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-md)" }}>

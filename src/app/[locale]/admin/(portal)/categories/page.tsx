@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { Link } from "@/i18n/routing";
-import { FolderTree, Plus, Edit } from "lucide-react";
+import { Plus, Edit } from "lucide-react";
 import DeleteCategoryButton from "@/components/admin/DeleteCategoryButton";
 import { getTranslations } from "next-intl/server";
 
