@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { HeroSlider } from "@/components/home/HeroSlider";
 import { Flame, Clock, Sparkles, ChevronRight } from "lucide-react";
 import { DailyDiscover } from "@/components/home/DailyDiscover";
+import { Price } from "@/components/currency/Price";
 
 export const revalidate = 60;
 
@@ -194,7 +195,8 @@ export default async function HomePage() {
             <div
               style={{
                 padding: "16px 24px",
-                background: "linear-gradient(90deg, #2563eb 0%, #3b82f6 100%)",
+                background:
+                  "linear-gradient(90deg, var(--color-primary-dark) 0%, var(--color-primary-light) 100%)",
                 color: "#fff",
                 display: "flex",
                 justifyContent: "space-between",
@@ -406,8 +408,7 @@ export default async function HomePage() {
                               fontWeight: 700,
                             }}
                           >
-                            <span style={{ fontSize: "11px" }}>$</span>
-                            {Number(product.price).toFixed(2)}
+                            <Price amount={product.price} />
                           </span>
                         </div>
                         <div
@@ -417,7 +418,7 @@ export default async function HomePage() {
                             textDecoration: "line-through",
                           }}
                         >
-                          ${originalPrice.toFixed(2)}
+                          <Price amount={originalPrice} />
                         </div>
 
                         {/* Progress Bar */}
@@ -623,8 +624,7 @@ export default async function HomePage() {
                           fontWeight: 700,
                         }}
                       >
-                        <span style={{ fontSize: "11px" }}>$</span>
-                        {Number(product.price).toFixed(2)}
+                        <Price amount={product.price} />
                       </div>
                     </div>
                   </div>

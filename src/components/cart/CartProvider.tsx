@@ -39,10 +39,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Load from local storage on mount
-    const savedCart = localStorage.getItem("yoeyarzay_cart");
-    if (savedCart) {
-      try {
+    try {
+      const savedCart = localStorage.getItem("yoeyarzay_cart");
+      if (savedCart) {
         const parsed = JSON.parse(savedCart);
         if (Array.isArray(parsed)) {
           const normalized: CartItem[] = parsed
@@ -61,17 +60,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           // eslint-disable-next-line react-hooks/set-state-in-effect
           setItems(normalized);
         }
-      } catch (e) {
-        console.error("Failed to parse cart", e);
       }
+    } catch (error) {
+      console.error("Failed to load cart", error);
     }
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    // Save to local storage whenever items change
-    if (mounted) {
+    if (!mounted) return;
+
+    try {
       localStorage.setItem("yoeyarzay_cart", JSON.stringify(items));
+    } catch (error) {
+      console.error("Failed to save cart", error);
     }
   }, [items, mounted]);
 

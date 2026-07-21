@@ -3,6 +3,7 @@ import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { CurrencyProvider } from "@/components/currency/CurrencyProvider";
+import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 
@@ -35,7 +36,10 @@ export default async function RootLayout(props: {
             enableSystem
           >
             <CurrencyProvider>
-              <CartProvider>{children}</CartProvider>
+              <CartProvider>
+                {children}
+                <ScrollToTop />
+              </CartProvider>
             </CurrencyProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
