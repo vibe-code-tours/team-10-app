@@ -42,6 +42,7 @@
   },
   "overrides": {
     "postcss": "^8.5.10",
-    "eslint": "$eslint"
+    "eslint": "$eslint",
+    "typescript": "$typescript"
   }
 }
