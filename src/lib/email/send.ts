@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { getVerificationEmailHtml } from "./templates/verification";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -27,6 +28,22 @@ export async function sendEmail({ to, subject, html }: SendEmailOptions) {
     console.error("Email send exception:", err);
     return { success: false, error: "Failed to send email" };
   }
+}
+
+/**
+ * Send branded registration verification email
+ */
+export async function sendVerificationEmail(
+  email: string,
+  confirmUrl: string,
+  fullName?: string,
+) {
+  const html = getVerificationEmailHtml(confirmUrl, fullName);
+  return sendEmail({
+    to: email,
+    subject: "Welcome to Yoe Yar Zay! Confirm your email",
+    html,
+  });
 }
 
 /**

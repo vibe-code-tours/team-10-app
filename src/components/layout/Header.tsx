@@ -4,6 +4,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { CartIcon } from "@/components/layout/CartIcon";
 import { Search } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
+import CurrencySwitcher from "@/components/currency/CurrencySwitcher";
 import { getTranslations } from "next-intl/server";
 import ProfileDropdown from "@/components/layout/ProfileDropdown";
 
@@ -133,6 +134,7 @@ export default async function Header() {
           >
             <ThemeToggle />
             <LanguageSwitcher />
+            <CurrencySwitcher />
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>

@@ -16,7 +16,8 @@ interface CartContextType {
   addToCart: (
     product: {
       id: string;
-      name: string;
+      title?: string;
+      name?: string;
       price: number;
       image_url: string;
       quantity?: number;
@@ -42,8 +43,24 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const savedCart = localStorage.getItem("yoeyarzay_cart");
     if (savedCart) {
       try {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setItems(JSON.parse(savedCart));
+        const parsed = JSON.parse(savedCart);
+        if (Array.isArray(parsed)) {
+          const normalized: CartItem[] = parsed
+            .filter((item: unknown): item is Record<string, unknown> =>
+              Boolean(item && typeof item === "object"),
+            )
+            .map((item) => ({
+              id: String(item.id || item.product_id || ""),
+              title: String(item.title || item.name || ""),
+              price: Number(item.price) || 0,
+              image_url: String(item.image_url || ""),
+              quantity: Number(item.quantity) || 1,
+              stock: Number(item.stock) || 0,
+            }))
+            .filter((item) => Boolean(item.id));
+          // eslint-disable-next-line react-hooks/set-state-in-effect
+          setItems(normalized);
+        }
       } catch (e) {
         console.error("Failed to parse cart", e);
       }
@@ -61,7 +78,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const addToCart = (
     product: {
       id: string;
-      name: string;
+      title?: string;
+      name?: string;
       price: number;
       image_url: string;
       quantity?: number;
@@ -69,6 +87,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     },
     quantity: number,
   ) => {
+    const productTitle = product.title || product.name || "";
     setItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
@@ -76,6 +95,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           item.id === product.id
             ? {
                 ...item,
+                title: item.title || productTitle,
                 quantity: Math.min(item.quantity + quantity, item.stock),
               }
             : item,
@@ -85,7 +105,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         ...prev,
         {
           id: product.id,
-          title: product.name,
+          title: productTitle,
           price: Number(product.price),
           image_url: product.image_url,
           quantity,

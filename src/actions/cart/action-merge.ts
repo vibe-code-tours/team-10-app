@@ -53,9 +53,8 @@ export async function mergeGuestCart(
     // Verify product exists and is active
     const { data: product } = await supabase
       .from("products")
-      .select("id, stock_quantity")
+      .select("id, stock")
       .eq("id", item.product_id)
-      .eq("status", "active")
       .single();
 
     if (!product) continue;
@@ -70,10 +69,7 @@ export async function mergeGuestCart(
 
     if (existing) {
       // Merge: sum quantities, cap at stock
-      const newQty = Math.min(
-        existing.quantity + item.quantity,
-        product.stock_quantity,
-      );
+      const newQty = Math.min(existing.quantity + item.quantity, product.stock);
 
       await supabase
         .from("cart_items")
@@ -81,7 +77,7 @@ export async function mergeGuestCart(
         .eq("id", existing.id);
     } else {
       // Insert new: cap at stock
-      const qty = Math.min(item.quantity, product.stock_quantity);
+      const qty = Math.min(item.quantity, product.stock);
 
       await supabase.from("cart_items").insert({
         user_id: user.id,

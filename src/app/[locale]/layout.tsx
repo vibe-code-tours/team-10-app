@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/components/cart/CartProvider";
+import { CurrencyProvider } from "@/components/currency/CurrencyProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 
@@ -33,7 +34,9 @@ export default async function RootLayout(props: {
             defaultTheme="system"
             enableSystem
           >
-            <CartProvider>{children}</CartProvider>
+            <CurrencyProvider>
+              <CartProvider>{children}</CartProvider>
+            </CurrencyProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

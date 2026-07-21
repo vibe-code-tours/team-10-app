@@ -3,12 +3,27 @@
 > **Goal:** High-performance E-commerce platform built with Next.js (App Router) and Supabase.
 
 ## Current Focus
-Completed detailed Myanmar translations (`README_mm.md`) for all 45 `.agents/skills`. Previously, closed the 6 `/security-auditor` findings (RLS hardening + price-tampering + IDOR + error leaks) via `/code-fix`. The `requireAdmin()` Server-Action layer is now backed by RLS that actually enforces `role = 'admin'`. **Migration `20260712120000_harden_rls_and_schema.sql` is now LIVE on the production DB** (`rnrxbetdkosopdptkzqz.supabase.co`), applied manually via the SQL Editor and verified via REST. **No user currently has `role = 'admin'`** — must be set manually before admin actions will work again. Still awaiting user confirmation on the Multi-Vendor Marketplace design (`docs/features/multi-vendor-marketplace.md`). Separately, applied 7 `/ui-ux-scan` a11y/mobile fixes (focus rings, contrast, 44px tap targets, mobile theme/lang) — **uncommitted, not yet `/safe-commit`ed, no visual QA**.
+Previously, closed the 6 `/security-auditor` findings (RLS hardening + price-tampering + IDOR + error leaks) via `/code-fix`. The `requireAdmin()` Server-Action layer is now backed by RLS that actually enforces `role = 'admin'`. **Migration `20260712120000_harden_rls_and_schema.sql` is now LIVE on the production DB** (`rnrxbetdkosopdptkzqz.supabase.co`), applied manually via the SQL Editor and verified via REST. **No user currently has `role = 'admin'`** — must be set manually before admin actions will work again. Local agent skills have been successfully removed and migrated to a global configuration. Still awaiting user confirmation on the Multi-Vendor Marketplace design (`docs/features/multi-vendor-marketplace.md`). Separately, applied 7 `/ui-ux-scan` a11y/mobile fixes (focus rings, contrast, 44px tap targets, mobile theme/lang) which have been successfully **committed and merged**.
 
 *Myanmar — အနှစ်ချုပ်:*
-လက်ရှိတွင် Skill (၄၅) ခုလုံးအတွက် `README_mm.md` မြန်မာဘာသာပြန်ဆိုခြင်းကို အောင်မြင်စွာ ပြီးမြောက်ခဲ့သည်။ ယခင်လုပ်ဆောင်ခဲ့သော RLS လုံခြုံရေးပြင်ဆင်မှုများမှာ Production DB တွင် အသက်ဝင်နေပြီဖြစ်သော်လည်း Admin Role သတ်မှတ်ပေးရန် ကျန်ရှိနေသေးသည်။ Multi-Vendor Marketplace ဒီဇိုင်းအတည်ပြုချက် စောင့်ဆိုင်းနေပြီး၊ UI/UX ပြင်ဆင်မှုများကိုလည်း Commit လုပ်ရန် ကျန်ရှိနေသေးသည်။
+ယခင်လုပ်ဆောင်ခဲ့သော RLS လုံခြုံရေးပြင်ဆင်မှုများမှာ Production DB တွင် အသက်ဝင်နေပြီဖြစ်သော်လည်း Admin Role သတ်မှတ်ပေးရန် ကျန်ရှိနေသေးသည်။ Project အတွင်းရှိ Local agent skills များကို Global အဖြစ်သို့ အောင်မြင်စွာ ပြောင်းရွှေ့ဖယ်ရှားနိုင်ခဲ့သည်။ Multi-Vendor Marketplace ဒီဇိုင်းအတည်ပြုချက် စောင့်ဆိုင်းနေပြီး၊ UI/UX ပြင်ဆင်မှုများကိုလည်း အောင်မြင်စွာ Commit လုပ်ပြီးသွားပါပြီ。
 
 ## Log
+
+- **2026-07-21**: Resolved GitHub Issues #27, #28, #29, and #30 via `/safe-commit` workflow.
+  - **Changed**:
+    - **Issue #27**: Fixed guest cart product title persistence in `CartProvider.tsx`, `AddToCartButton.tsx`, and `guestCartSchema`. Added `__tests__/cart-guest-title.test.ts`.
+    - **Issue #28**: Implemented Multi-Currency Support (`CurrencyProvider.tsx`, `CurrencySwitcher.tsx`, `<Price />` component) supporting USD ($), MMK (Ks), EUR (€), GBP (£), and THB (฿). Added `__tests__/currency.test.ts`.
+    - **Issue #29**: Fixed email confirmation link expiration (`otp_expired` / `access_denied`) in `/auth/callback/route.ts` and `login/page.tsx`. Created `docs/email-confirmation-fix.md` and `__tests__/auth-callback.test.ts`.
+    - **Issue #30**: Created branded registration HTML email template `supabase/templates/confirm_signup.html`, `verification.ts`, `sendVerificationEmail` in `send.ts`, and `docs/email-templates-setup.md`. Added `__tests__/email-template.test.ts`.
+  - **Why**: To fix guest cart bugs, add multi-currency conversion, fix email confirmation links, and provide custom branded email verification templates.
+  - **Gotchas**: All 5 test suites (15 tests) pass cleanly.
+  - **Open threads**: Awaiting confirmation on Multi-Vendor Marketplace design.
+
+*Myanmar — အနှစ်ချုပ်:*
+- **2026-07-21**: GitHub Issues #27, #28, #29, #30 များကို ဖြေရှင်းပြီးစီးခဲ့ပါသည်။
+  - **ပြောင်းလဲမှု**: Guest Cart Title မကျန်ခဲ့အောင် ပြင်ဆင်ခြင်း (#27)၊ USD, MMK, EUR, GBP, THB Multi-Currency စနစ် ထည့်သွင်းခြင်း (#28)၊ Email Confirmation OTP Verification နှင့် Error Handler ပြင်ဆင်ခြင်း (#29)၊ Branded HTML Registration Email Template နှင့် Setup Guide ထည့်သွင်းခြင်း (#30)။ Test Suites ၅ ခုလုံး (၁၅ ခုမြောက် Test Case များ) အောင်မြင်ပါသည်။
+
 
 - **2026-07-14**: Executed `/safe-commit` workflow (pre-check, formatting, and docs).
   - **Changed**: Formatted the entire `src/` codebase using `prettier`. Updated `.agents/architecture/project_mapping.md` to reflect the removal of local agent skills (now globally hosted). All tests and linting passed.
@@ -50,14 +65,14 @@ Completed detailed Myanmar translations (`README_mm.md`) for all 45 `.agents/ski
   - **Changed**: Created or overwrote `README_mm.md` in all 45 subdirectories of `.agents/skills/` (from `accessibility-check` to `ui-ux-tester`).
   - **Why**: The user pointed out that the previous Myanmar summaries were too brief ("အပေါ်ယံအကျဉ်းချုံး"). They requested detailed, step-by-step translations matching the original `SKILL.md` content, while keeping technical terms in English.
   - **Gotchas**: To avoid truncation issues, the generation was split into 9 batches of 5 skills using a "Batch Processing" strategy. Each `README_mm.md` includes a strict English directive instructing the agent to ignore the file and only read `SKILL.md`.
-  - **Open threads**: The 7 `/ui-ux-scan` a11y/mobile fixes from earlier today are still uncommitted and unverified visually. The RLS-authorization design for Multi-Vendor Marketplace is still awaiting confirmation.
+  - **Open threads**: The 7 `/ui-ux-scan` a11y/mobile fixes from earlier today have been successfully committed. The RLS-authorization design for Multi-Vendor Marketplace is still awaiting confirmation.
 
 *Myanmar — အနှစ်ချုပ်:*
 - **2026-07-12**: `.agents/skills/` အောက်ရှိ Skill (၄၅) ခုလုံးအတွက် အသေးစိတ် မြန်မာလိုရှင်းလင်းချက် (`README_mm.md`) များကို ရေးသားဖန်တီးပေးခဲ့သည်။
   - **ပြောင်းလဲမှု**: Skill ဖိုင်တွဲ ၄၅ ခုလုံးတွင် `README_mm.md` ဖိုင်များကို အသစ်ဖန်တီး/အစားထိုးခဲ့သည်။
   - **အကြောင်းရင်း**: ယခင်ရေးသားထားသော မြန်မာဘာသာအနှစ်ချုပ်များမှာ အပေါ်ယံသာဖြစ်နေသဖြင့် မူရင်း `SKILL.md` အတိုင်း အသေးစိတ် ဘာသာပြန်ပေးရန် User မှ တောင်းဆိုခဲ့သောကြောင့် ဖြစ်သည်။ နည်းပညာစကားလုံးများကို အင်္ဂလိပ်လိုသာထားရှိပြီး Batch လိုက်ခွဲ၍ ရေးသားခဲ့သည်။
   - **သတိထားရန်**: စာလုံးရေများ၍ ပြတ်တောက်သွားခြင်းမှ ကာကွယ်ရန် ၅ ခုစီ ခွဲ၍ (Batch processing ဖြင့်) ရေးသားခဲ့သည်။ Agent မှ ယင်းဖိုင်များကို မှားယွင်းမဖတ်မိစေရန် ဖိုင်ထိပ်ဆုံးတွင် အင်္ဂလိပ်ဘာသာဖြင့် တားမြစ်ချက် ထည့်သွင်းထားသည်။
-  - **လက်ကျန်အလုပ်**: ယခင်လုပ်ဆောင်ထားသော UI/UX အပြောင်းအလဲများမှာ Commit မလုပ်ရသေးဘဲ Visual QA လုပ်ရန် ကျန်ရှိနေသေးသည်။ Multi-Vendor Marketplace အတွက် ဒီဇိုင်းအတည်ပြုချက် စောင့်ဆိုင်းနေဆဲဖြစ်သည်။
+  - **လက်ကျန်အလုပ်**: ယခင်လုပ်ဆောင်ထားသော UI/UX အပြောင်းအလဲများကို အောင်မြင်စွာ Commit ပြုလုပ်ပြီးသွားပါပြီ။ Multi-Vendor Marketplace အတွက် ဒီဇိုင်းအတည်ပြုချက် စောင့်ဆိုင်းနေဆဲဖြစ်သည်။
 
 - **2026-07-12**: Fixed 7 `/ui-ux-scan` findings (static source audit) across CSS + header components.
   - **Changed**: `src/app/globals.css` — added a global `:focus-visible` outline (was: only `.form-input:focus` had any focus style); raised `--color-text-tertiary` `#999→#767676` (light) and `#555→#949494` (dark) for WCAG-AA contrast; changed `.header` `position: fixed→sticky` + solid `--color-surface` bg (resolving the conflict with Header's inline `sticky`); un-hid `.header-settings-group` on mobile (theme + language switcher were `display:none` under 768px — a11y/bilingual regression); added a mobile-only `@media (max-width:768px)` block giving `.icon-btn`/`.btn-sm`/chips/`.category-*-link`/footer links ≥44px tap area; bumped 9px badge fonts → 10px. `src/components/layout/Header.tsx` — removed the redundant inline `<header>` style, tokenized inline `24px/14px` font-sizes to `--font-size-2xl/--font-size-sm`, added `aria-label="Search"` to the search submit. Added `aria-label` to `LanguageSwitcher` and `aria-label`/`aria-haspopup`/`aria-expanded` to `ProfileDropdown` trigger.

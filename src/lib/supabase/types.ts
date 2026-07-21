@@ -59,19 +59,15 @@ export interface Category {
 
 export interface Product {
   id: string;
-  store_id: string;
-  category_id: number | null;
-  name: string;
-  slug: string;
+  title: string;
   description: string | null;
   price: number;
-  stock_quantity: number;
-  status: ProductStatus;
+  stock: number;
+  category: string;
+  image_url: string;
   created_at: string;
-  // Joined fields (optional)
-  store?: Store;
-  category?: Category;
-  images?: ProductImage[];
+  updated_at: string;
+  brand?: string; // some queries use brand
 }
 
 export interface ProductImage {

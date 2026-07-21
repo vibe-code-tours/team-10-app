@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Mail } from "lucide-react";
 import { loginWithEmail, loginWithGoogle } from "@/actions/auth/action-login";
@@ -16,6 +16,30 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const t = useTranslations("Auth");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      const urlError = searchParams.get("error");
+      const hash = window.location.hash;
+
+      if (urlError === "otp_expired" || hash.includes("otp_expired")) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setError(
+          "Email link has expired or is invalid. Please sign up again or request a new verification link.",
+        );
+      } else if (
+        urlError === "auth_callback_error" ||
+        hash.includes("access_denied")
+      ) {
+        setError(
+          "Authentication failed or email link expired. Please try signing in.",
+        );
+      } else if (urlError) {
+        setError(urlError);
+      }
+    }
+  }, []);
 
   const { values, errors, handleChange, handleBlur, validateAll } =
     useFormValidation(loginSchema, { email: "", password: "" });

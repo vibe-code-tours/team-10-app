@@ -82,7 +82,11 @@ export default async function SettingsPage() {
               </div>
             </div>
             <form action={signOut}>
-              <button type="submit" className="btn btn-danger">
+              <button
+                type="submit"
+                className="btn btn-danger"
+                aria-label="Logout"
+              >
                 ထွက်ရန်
               </button>
             </form>
