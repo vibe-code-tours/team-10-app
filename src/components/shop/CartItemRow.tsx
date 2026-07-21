@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { updateCartItem, removeFromCart } from "@/actions/cart/action-cart";
 import { useRouter } from "next/navigation";
+import Price from "@/components/currency/Price";
 
 interface Props {
   item: {
@@ -109,7 +110,7 @@ export default function CartItemRow({ item }: Props) {
             marginTop: "2px",
           }}
         >
-          {Number(product.price).toLocaleString()} Ks
+          <Price amount={Number(product.price)} />
         </div>
       </div>
 
@@ -149,9 +150,7 @@ export default function CartItemRow({ item }: Props) {
         <button
           type="button"
           onClick={() =>
-            handleQuantityChange(
-              Math.min(product.stock, item.quantity + 1),
-            )
+            handleQuantityChange(Math.min(product.stock, item.quantity + 1))
           }
           className="btn btn-ghost"
           style={{
@@ -174,7 +173,7 @@ export default function CartItemRow({ item }: Props) {
           fontSize: "var(--font-size-sm)",
         }}
       >
-        {(Number(product.price) * item.quantity).toLocaleString()} Ks
+        <Price amount={Number(product.price) * item.quantity} />
       </div>
 
       {/* Remove */}
