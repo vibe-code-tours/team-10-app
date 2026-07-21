@@ -5,6 +5,7 @@ import SortDropdown from "@/components/shop/SortDropdown";
 import ProductSidebar from "@/components/shop/ProductSidebar";
 import Image from "next/image";
 import { Price } from "@/components/currency/Price";
+import { Store } from "lucide-react";
 import {
   getProducts,
   getCategories,
@@ -182,6 +183,32 @@ export default async function ProductsPage({ searchParams }: Props) {
                       <div className="product-card-price">
                         <Price amount={product.price} />
                       </div>
+                      {product.seller && (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            fontSize: "11px",
+                            color: "var(--color-text-tertiary)",
+                            marginTop: "4px",
+                          }}
+                        >
+                          <Store size={11} />
+                          {(
+                            product.seller as {
+                              shop_name?: string;
+                              full_name?: string;
+                            }
+                          ).shop_name ||
+                            (
+                              product.seller as {
+                                shop_name?: string;
+                                full_name?: string;
+                              }
+                            ).full_name}
+                        </div>
+                      )}
                     </div>
                   </Link>
                 ))}

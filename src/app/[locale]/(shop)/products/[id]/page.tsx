@@ -7,6 +7,7 @@ import AddToCartButton from "@/components/shop/AddToCartButton";
 import ReviewForm from "@/components/shop/ReviewForm";
 import { StarRating } from "@/components/ui/StarRating";
 import Price from "@/components/currency/Price";
+import { Store } from "lucide-react";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -20,7 +21,11 @@ export default async function ProductDetailPage({ params }: Props) {
   const t = await getTranslations("ProductDetail");
 
   const [{ data: product }, { data: reviews }] = await Promise.all([
-    supabase.from("products").select("*").eq("id", id).single(),
+    supabase
+      .from("products")
+      .select("*, seller:users(id, full_name, shop_name)")
+      .eq("id", id)
+      .single(),
     supabase
       .from("product_reviews")
       .select("*")
@@ -116,11 +121,45 @@ export default async function ProductDetailPage({ params }: Props) {
               fontSize: "var(--font-size-2xl)",
               fontWeight: 600,
               letterSpacing: "-0.3px",
-              marginBottom: "var(--space-md)",
+              marginBottom: "var(--space-sm)",
             }}
           >
             {product.title}
           </h1>
+
+          {product.seller && (
+            <Link
+              href={`/shops/${product.seller.id}`}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "6px 12px",
+                background: "var(--color-bg-secondary)",
+                borderRadius: "20px",
+                color: "var(--color-primary)",
+                fontSize: "13px",
+                fontWeight: 500,
+                textDecoration: "none",
+                marginBottom: "var(--space-md)",
+                border: "1px solid var(--color-border-light)",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "var(--color-primary)";
+                e.currentTarget.style.background = "var(--color-primary-ghost)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "var(--color-border-light)";
+                e.currentTarget.style.background = "var(--color-bg-secondary)";
+              }}
+            >
+              <Store size={14} /> Sold by:{" "}
+              {product.seller.shop_name ||
+                product.seller.full_name ||
+                "Unknown Shop"}
+            </Link>
+          )}
 
           <div
             style={{

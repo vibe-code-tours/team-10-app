@@ -68,21 +68,24 @@ export default function ProfileDropdown({
       >
         <div
           style={{
-            width: "24px",
-            height: "24px",
+            width: "26px",
+            height: "26px",
             borderRadius: "50%",
             backgroundColor: "var(--color-primary)",
             color: "var(--color-text-inverse)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: "11px",
-            fontWeight: 600,
+            fontSize: "12px",
+            fontWeight: 700,
+            flexShrink: 0,
           }}
         >
           {(fullName?.[0] || userEmail?.[0] || "?").toUpperCase()}
         </div>
-        <span>{fullName.split(" ")[0]}</span>
+        <span style={{ maxWidth: "120px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {fullName}
+        </span>
         <ChevronDown
           size={14}
           style={{

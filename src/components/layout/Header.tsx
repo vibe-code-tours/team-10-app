@@ -15,6 +15,23 @@ export default async function Header() {
   } = await supabase.auth.getUser();
   const t = await getTranslations("Header");
 
+  let fullName = "User";
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from("users")
+      .select("full_name, shop_name")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    fullName =
+      profile?.full_name ||
+      profile?.shop_name ||
+      user.user_metadata?.full_name ||
+      user.email?.split("@")[0] ||
+      "User";
+  }
+
   return (
     <header className="header" id="main-header">
       <div
@@ -162,7 +179,7 @@ export default async function Header() {
             ) : (
               <ProfileDropdown
                 userEmail={user.email || ""}
-                fullName={user.user_metadata?.full_name || "User"}
+                fullName={fullName}
               />
             )}
           </div>

@@ -60,7 +60,7 @@ async function verifyPricesAndStock(
 ) {
   const { data: products, error: productsError } = await supabase
     .from("products")
-    .select("id, price, stock, title")
+    .select("id, price, stock, title, seller_id")
     .in("id", Array.from(requested.keys()));
 
   if (productsError || !products) {
@@ -102,7 +102,13 @@ async function processOrderTransaction(
   serverTotal: number,
   priceById: Map<string, number>,
   requested: Map<string, number>,
-  products: { id: string; price: number; stock: number; title: string }[],
+  products: {
+    id: string;
+    price: number;
+    stock: number;
+    title: string;
+    seller_id?: string | null;
+  }[],
 ) {
   const itemsJson = Array.from(requested.entries()).map(
     ([productId, quantity]) => {
@@ -111,6 +117,7 @@ async function processOrderTransaction(
         product_id: productId,
         quantity,
         price: product.price,
+        seller_id: product.seller_id,
       };
     },
   );
