@@ -32,13 +32,13 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
+    "eslint": "~9.20.0",
     "eslint-config-next": "16.2.9",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "supabase": "^2.106.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "~5.9.3"
   },
   "overrides": {
     "postcss": "^8.5.10"
