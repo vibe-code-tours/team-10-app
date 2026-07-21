@@ -7,7 +7,8 @@ import { useCart } from "@/components/cart/CartProvider";
 interface Props {
   product: {
     id: string;
-    title: string;
+    title?: string;
+    name?: string;
     price: number;
     image_url: string;
     stock: number;
@@ -28,7 +29,8 @@ export default function AddToCartButton({ product }: Props) {
 
   function handleAddToCart() {
     setLoading(true);
-    addToCart(product, quantity);
+    const title = product.title || product.name || "";
+    addToCart({ ...product, title }, quantity);
     setMessage({ type: "success", text: t("added") });
     setLoading(false);
     setTimeout(() => setMessage(null), 3000);
