@@ -103,7 +103,12 @@ export default async function ProductsPage({ searchParams }: Props) {
               </div>
               <div className="brand-chips-container">
                 <Link
-                  href={`/products?category=${params.category}${params.sort ? `&sort=${params.sort}` : ""}`}
+                  href={`/products?${[
+                    params.category ? `category=${params.category}` : null,
+                    params.sort ? `sort=${params.sort}` : null,
+                  ]
+                    .filter(Boolean)
+                    .join("&")}`}
                   className={`brand-chip ${!params.brand ? "active" : ""}`}
                 >
                   {t("allBrandsCount", { count: totalBrandCount })}
@@ -111,7 +116,13 @@ export default async function ProductsPage({ searchParams }: Props) {
                 {uniqueBrands.map((b) => (
                   <Link
                     key={b}
-                    href={`/products?category=${params.category}&brand=${b}${params.sort ? `&sort=${params.sort}` : ""}`}
+                    href={`/products?${[
+                      params.category ? `category=${params.category}` : null,
+                      `brand=${b}`,
+                      params.sort ? `sort=${params.sort}` : null,
+                    ]
+                      .filter(Boolean)
+                      .join("&")}`}
                     className={`brand-chip ${params.brand === b ? "active" : ""}`}
                   >
                     {b} ({brandCounts[b]})

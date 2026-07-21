@@ -10,7 +10,8 @@
     "signUp": "Sign Up",
     "login": "Login",
     "account": "Account",
-    "searchPlaceholder": "Sign Up & Get RM18 Off Voucher!",
+    "searchPlaceholder": "Search products...",
+    "cart": "Cart",
     "settings": "Settings",
     "payment": "Payment Preferences",
     "logout": "Logout"

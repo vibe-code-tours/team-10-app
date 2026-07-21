@@ -56,3 +56,5 @@ test_lorem.js
 update_broken_images.js
 update_broken_images_lorem.js
 scratch_*.js
+config.bat
+.codex/

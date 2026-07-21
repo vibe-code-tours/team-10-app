@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useCart } from "@/components/cart/CartProvider";
+import Price from "@/components/currency/Price";
 import { useEffect, useState } from "react";
 
 export default function CartPage() {
@@ -120,7 +121,7 @@ export default function CartPage() {
                           color: "var(--color-primary)",
                         }}
                       >
-                        ${item.price.toFixed(2)}
+                        <Price amount={item.price} />
                       </div>
                     </div>
                     <div
@@ -214,7 +215,9 @@ export default function CartPage() {
                   <span className="text-secondary">
                     {t("itemsCount", { count: totalItems })}
                   </span>
-                  <span className="font-bold">${totalPrice.toFixed(2)}</span>
+                  <span className="font-bold">
+                    <Price amount={totalPrice} />
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-secondary">{t("shipping")}</span>
@@ -235,7 +238,7 @@ export default function CartPage() {
                 <div className="flex justify-between">
                   <span style={{ fontWeight: 600 }}>{t("total")}</span>
                   <span style={{ fontWeight: 600 }}>
-                    ${totalPrice.toFixed(2)}
+                    <Price amount={totalPrice} />
                   </span>
                 </div>
               </div>
