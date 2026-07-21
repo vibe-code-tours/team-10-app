@@ -29,9 +29,14 @@ export async function updateSession(
     },
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch (e) {
+    // Gracefully handle transient network connection timeouts
+    console.warn("Auth session check skipped due to transient network delay");
+  }
 
   // Strip locale from pathname for route matching
   const pathname = request.nextUrl.pathname;

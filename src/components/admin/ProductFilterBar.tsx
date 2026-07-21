@@ -8,11 +8,16 @@ import { useTranslations } from "next-intl";
 
 interface ProductFilterBarProps {
   categories: string[];
+  brands?: string[];
+  baseUrl?: string;
 }
 
 export default function ProductFilterBar({
   categories,
+  brands = [],
+  baseUrl,
 }: ProductFilterBarProps) {
+  const addProductUrl = baseUrl ? `${baseUrl}/new` : "/admin/products/new";
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -20,12 +25,14 @@ export default function ProductFilterBar({
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [category, setCategory] = useState(searchParams.get("category") || "");
+  const [brand, setBrand] = useState(searchParams.get("brand") || "");
   const [stock, setStock] = useState(searchParams.get("stock") || "");
   const [sort, setSort] = useState(searchParams.get("sort") || "newest");
 
   const updateFilters = (updates: {
     search?: string;
     category?: string;
+    brand?: string;
     stock?: string;
     sort?: string;
   }) => {
@@ -41,6 +48,13 @@ export default function ProductFilterBar({
     if (updates.category !== undefined) {
       if (updates.category) params.set("category", updates.category);
       else params.delete("category");
+      // Optionally reset brand when category changes, but here we just leave it or let backend handle it
+    }
+
+    // Process brand
+    if (updates.brand !== undefined) {
+      if (updates.brand) params.set("brand", updates.brand);
+      else params.delete("brand");
     }
 
     // Process stock
@@ -56,6 +70,9 @@ export default function ProductFilterBar({
       else params.delete("sort");
     }
 
+    // Reset page to 1 whenever any filter changes
+    params.delete("page");
+
     router.push(`${pathname}?${params.toString()}`);
   };
 
@@ -67,6 +84,7 @@ export default function ProductFilterBar({
   const handleClear = () => {
     setSearch("");
     setCategory("");
+    setBrand("");
     setStock("");
     setSort("newest");
     router.push(pathname);
@@ -75,6 +93,7 @@ export default function ProductFilterBar({
   const hasActiveFilters =
     searchParams.get("search") ||
     searchParams.get("category") ||
+    searchParams.get("brand") ||
     searchParams.get("stock") ||
     (searchParams.get("sort") && searchParams.get("sort") !== "newest");
 
@@ -102,6 +121,25 @@ export default function ProductFilterBar({
             </option>
           ))}
         </select>
+
+        {/* Brand Dropdown (only show if brands exist or if a brand is selected) */}
+        {(brands.length > 0 || brand) && (
+          <select
+            value={brand}
+            onChange={(e) => {
+              setBrand(e.target.value);
+              updateFilters({ brand: e.target.value });
+            }}
+            className="form-input"
+          >
+            <option value="">All Brands</option>
+            {brands.map((b) => (
+              <option key={b} value={b} style={{ textTransform: "capitalize" }}>
+                {b}
+              </option>
+            ))}
+          </select>
+        )}
 
         {/* Stock Filter Dropdown */}
         <select
@@ -170,7 +208,7 @@ export default function ProductFilterBar({
           </button>
         )}
         <Link
-          href="/admin/products/new"
+          href={addProductUrl}
           className="btn btn-primary"
           style={{
             display: "inline-flex",

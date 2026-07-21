@@ -56,6 +56,9 @@ test_lorem.js
 update_broken_images.js
 update_broken_images_lorem.js
 scratch_*.js
+check_*.ts
+scratch_*.ts
+test_api.sh
 config.bat
 .codex/
 .continue/

@@ -7,11 +7,19 @@ import {
   LogOut,
   LayoutDashboard,
   FolderTree,
+  Store,
+  DollarSign,
+  Settings,
+  Users,
 } from "lucide-react";
 import { signOut } from "@/actions/auth/action-signout";
 import { useTranslations } from "next-intl";
 
-export default function AdminNav() {
+export default function AdminNav({
+  userRole,
+}: {
+  userRole?: "admin" | "seller";
+}) {
   const pathname = usePathname();
   const t = useTranslations("Admin.nav");
 
@@ -19,6 +27,10 @@ export default function AdminNav() {
   const isProductsActive = pathname.startsWith("/admin/products");
   const isOrdersActive = pathname.startsWith("/admin/orders");
   const isCategoriesActive = pathname.startsWith("/admin/categories");
+  const isShopsActive = pathname.startsWith("/admin/shops");
+  const isPayoutsActive = pathname.startsWith("/admin/payouts");
+  const isSettingsActive = pathname.startsWith("/admin/settings");
+  const isUsersActive = pathname.startsWith("/admin/users");
 
   return (
     <nav
@@ -44,13 +56,24 @@ export default function AdminNav() {
         <Package size={18} />
         <span>{t("products")}</span>
       </Link>
-      <Link
-        href="/admin/categories"
-        className={`admin-nav-link ${isCategoriesActive ? "active" : ""}`}
-      >
-        <FolderTree size={18} />
-        <span>{t("categories")}</span>
-      </Link>
+      {userRole !== "seller" && (
+        <>
+          <Link
+            href="/admin/categories"
+            className={`admin-nav-link ${isCategoriesActive ? "active" : ""}`}
+          >
+            <FolderTree size={18} />
+            <span>{t("categories")}</span>
+          </Link>
+          <Link
+            href="/admin/shops"
+            className={`admin-nav-link ${isShopsActive ? "active" : ""}`}
+          >
+            <Store size={18} />
+            <span>{t("brandShops") || "Brand Shops"}</span>
+          </Link>
+        </>
+      )}
       <Link
         href="/admin/orders"
         className={`admin-nav-link ${isOrdersActive ? "active" : ""}`}
@@ -58,6 +81,31 @@ export default function AdminNav() {
         <ClipboardList size={18} />
         <span>{t("orders")}</span>
       </Link>
+      {userRole !== "seller" && (
+        <>
+          <Link
+            href="/admin/users"
+            className={`admin-nav-link ${isUsersActive ? "active" : ""}`}
+          >
+            <Users size={18} />
+            <span>Users</span>
+          </Link>
+          <Link
+            href="/admin/payouts"
+            className={`admin-nav-link ${isPayoutsActive ? "active" : ""}`}
+          >
+            <DollarSign size={18} />
+            <span>Payouts</span>
+          </Link>
+          <Link
+            href="/admin/settings/commission"
+            className={`admin-nav-link ${isSettingsActive ? "active" : ""}`}
+          >
+            <Settings size={18} />
+            <span>Commission</span>
+          </Link>
+        </>
+      )}
 
       <form action={signOut} style={{ marginTop: "auto" }}>
         <button
