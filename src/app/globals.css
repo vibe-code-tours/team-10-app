@@ -370,17 +370,22 @@ select {
 }
 
 .form-input {
-  padding: 0.625rem 0.875rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text);
   outline: none;
-  transition: border-color var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .form-input:focus {
-  border-color: var(--color-text);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-ghost);
 }
 
 .form-input::placeholder {
@@ -1069,6 +1074,31 @@ select {
 /* ============================================
    Animations (minimal)
    ============================================ */
+/* Category Filter Links Focus & Hover Styling */
+.category-filter-link {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.category-filter-link:hover,
+.category-filter-link:focus-visible {
+  color: var(--color-primary);
+  background: var(--color-primary-ghost);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.category-filter-link.active {
+  color: var(--color-primary);
+  font-weight: 600;
+  background: var(--color-primary-ghost);
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

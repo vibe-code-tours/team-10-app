@@ -15,7 +15,9 @@ export async function getProducts(
   params: ProductQueryParams,
 ) {
   const offset = (params.page - 1) * params.limit;
-  let query = supabase.from("products").select("*", { count: "exact" });
+  let query = supabase
+    .from("products")
+    .select("*, seller:users(id, full_name, shop_name)", { count: "exact" });
 
   if (params.search) {
     query = query.ilike("title", `%${params.search}%`);
@@ -26,7 +28,7 @@ export async function getProducts(
   }
 
   if (params.brand) {
-    query = query.eq("brand", params.brand);
+    query = query.ilike("brand", params.brand);
   }
 
   if (params.stock) {

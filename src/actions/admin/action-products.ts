@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { requireAdmin } from "@/lib/supabase/auth-helpers";
+import { requireAdminOrSeller } from "@/lib/supabase/auth-helpers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -16,7 +16,7 @@ const ProductSchema = z.object({
 });
 
 export async function createProduct(formData: FormData) {
-  await requireAdmin();
+  const { user } = await requireAdminOrSeller();
   const supabase = await createClient();
 
   const rawData = {
@@ -30,20 +30,29 @@ export async function createProduct(formData: FormData) {
 
   const validatedData = ProductSchema.parse(rawData);
 
-  const { error } = await supabase.from("products").insert(validatedData);
+  const { error } = await supabase
+    .from("products")
+    .insert({ ...validatedData, seller_id: user.id });
 
   if (error) {
     console.error("Error creating product:", error);
     throw new Error("Failed to create product. Please try again.");
   }
 
+  const returnUrl = formData.get("returnUrl") as string | null;
+
   revalidatePath("/admin/products");
   revalidatePath("/products");
-  redirect("/admin/products");
+
+  if (returnUrl) {
+    redirect(returnUrl);
+  } else {
+    redirect("/admin/products");
+  }
 }
 
 export async function updateProduct(id: string, formData: FormData) {
-  await requireAdmin();
+  await requireAdminOrSeller();
   const supabase = await createClient();
 
   const rawData = {
@@ -67,14 +76,21 @@ export async function updateProduct(id: string, formData: FormData) {
     throw new Error("Failed to update product. Please try again.");
   }
 
+  const returnUrl = formData.get("returnUrl") as string | null;
+
   revalidatePath("/admin/products");
   revalidatePath(`/admin/products/${id}/edit`);
   revalidatePath("/products");
-  redirect("/admin/products");
+
+  if (returnUrl) {
+    redirect(returnUrl);
+  } else {
+    redirect("/admin/products");
+  }
 }
 
 export async function deleteProduct(id: string) {
-  await requireAdmin();
+  await requireAdminOrSeller();
   const supabase = await createClient();
 
   const { error } = await supabase.from("products").delete().eq("id", id);
@@ -82,6 +98,21 @@ export async function deleteProduct(id: string) {
   if (error) {
     console.error("Error deleting product:", error);
     throw new Error("Failed to delete product. Please try again.");
+  }
+
+  revalidatePath("/admin/products");
+  revalidatePath("/products");
+}
+
+export async function deleteProducts(ids: string[]) {
+  await requireAdminOrSeller();
+  const supabase = await createClient();
+
+  const { error } = await supabase.from("products").delete().in("id", ids);
+
+  if (error) {
+    console.error("Error deleting products:", error);
+    throw new Error("Failed to delete products. Please try again.");
   }
 
   revalidatePath("/admin/products");

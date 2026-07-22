@@ -1,12 +1,16 @@
 import { createClient } from "@/lib/supabase/server";
 import { Link } from "@/i18n/routing";
-import { FolderTree, Plus, Edit } from "lucide-react";
+import Image from "next/image";
+import { Plus, Edit } from "lucide-react";
 import DeleteCategoryButton from "@/components/admin/DeleteCategoryButton";
 import { getTranslations } from "next-intl/server";
+
+import { getCategoryImageMap, resolveCategoryImage } from "@/lib/category-image-store";
 
 export default async function AdminCategoriesPage() {
   const supabase = await createClient();
   const t = await getTranslations("Admin.categories");
+  const categoryMap = await getCategoryImageMap();
 
   // Fetch categories from database
   const { data: categories } = await supabase
@@ -38,6 +42,7 @@ export default async function AdminCategoriesPage() {
         <table className="table">
           <thead>
             <tr>
+              <th style={{ width: "70px" }}>IMAGE</th>
               <th>{t("table.name")}</th>
               <th>{t("table.slug")}</th>
               <th>{t("table.dateCreated")}</th>
@@ -50,7 +55,7 @@ export default async function AdminCategoriesPage() {
             {!categories || categories.length === 0 ? (
               <tr>
                 <td
-                  colSpan={4}
+                  colSpan={5}
                   className="text-center p-8 text-secondary"
                   style={{ padding: "3rem" }}
                 >
@@ -58,25 +63,30 @@ export default async function AdminCategoriesPage() {
                 </td>
               </tr>
             ) : (
-              categories.map((category) => (
-                <tr key={category.id} className="table-row-hover">
+              categories.map((category) => {
+                const displayImg = resolveCategoryImage(category, categoryMap);
+
+                return (
+                  <tr key={category.id} className="table-row-hover">
+                    <td>
+                      <Image
+                        src={displayImg}
+                        alt={category.name}
+                        width={40}
+                        height={40}
+                        style={{
+                          borderRadius: "8px",
+                          objectFit: "cover",
+                          border: "1px solid var(--color-border)",
+                          boxShadow: "0 2px 4px rgba(0,0,0,0.06)",
+                        }}
+                      />
+                    </td>
                   <td
                     className="font-bold"
                     style={{ color: "var(--color-text)" }}
                   >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                      }}
-                    >
-                      <FolderTree
-                        size={16}
-                        style={{ color: "var(--color-text-secondary)" }}
-                      />
-                      <span>{category.name}</span>
-                    </div>
+                    <span>{category.name}</span>
                   </td>
                   <td>
                     <span
@@ -97,7 +107,7 @@ export default async function AdminCategoriesPage() {
                   <td>
                     <div className="flex justify-end gap-sm">
                       <Link
-                        href={`/admin/categories/${category.id}/edit`}
+                        href={`/admin/categories/${category.slug || category.id}/edit`}
                         className="btn btn-sm btn-secondary"
                         style={{
                           display: "flex",
@@ -117,7 +127,8 @@ export default async function AdminCategoriesPage() {
                     </div>
                   </td>
                 </tr>
-              ))
+              );
+              })
             )}
           </tbody>
         </table>

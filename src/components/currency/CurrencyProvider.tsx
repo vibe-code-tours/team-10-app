@@ -8,6 +8,7 @@ export interface CurrencyConfig {
   code: CurrencyCode;
   symbol: string;
   label: string;
+  flag: string;
   rate: number; // relative to USD (USD = 1)
   position: "before" | "after";
   space: boolean;
@@ -19,6 +20,7 @@ export const CURRENCIES: Record<CurrencyCode, CurrencyConfig> = {
     code: "USD",
     symbol: "$",
     label: "USD ($)",
+    flag: "🇺🇸",
     rate: 1.0,
     position: "before",
     space: false,
@@ -28,6 +30,7 @@ export const CURRENCIES: Record<CurrencyCode, CurrencyConfig> = {
     code: "MMK",
     symbol: "Ks",
     label: "MMK (Ks)",
+    flag: "🇲🇲",
     rate: 3500.0,
     position: "after",
     space: true,
@@ -37,6 +40,7 @@ export const CURRENCIES: Record<CurrencyCode, CurrencyConfig> = {
     code: "EUR",
     symbol: "€",
     label: "EUR (€)",
+    flag: "🇪🇺",
     rate: 0.92,
     position: "before",
     space: false,
@@ -46,6 +50,7 @@ export const CURRENCIES: Record<CurrencyCode, CurrencyConfig> = {
     code: "GBP",
     symbol: "£",
     label: "GBP (£)",
+    flag: "🇬🇧",
     rate: 0.78,
     position: "before",
     space: false,
@@ -55,6 +60,7 @@ export const CURRENCIES: Record<CurrencyCode, CurrencyConfig> = {
     code: "THB",
     symbol: "฿",
     label: "THB (฿)",
+    flag: "🇹🇭",
     rate: 36.5,
     position: "before",
     space: false,

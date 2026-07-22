@@ -1,21 +1,21 @@
-/* eslint-disable @next/next/no-img-element */
 import { createClient } from "@/lib/supabase/server";
 import { Link } from "@/i18n/routing";
-import { Edit } from "lucide-react";
 import ProductFilterBar from "@/components/admin/ProductFilterBar";
-import DeleteProductButton from "@/components/admin/DeleteProductButton";
+import ProductTableClient from "@/components/admin/ProductTableClient";
 import ProductStats from "@/components/admin/ProductStats";
 import { getTranslations } from "next-intl/server";
 import {
   getAdminProductStats,
   getProducts,
   getCategories,
+  getBrandCounts,
 } from "@/services/product.service";
 
 interface Props {
   searchParams: Promise<{
     search?: string;
     category?: string;
+    brand?: string;
     stock?: string;
     sort?: string;
     page?: string;
@@ -37,10 +37,14 @@ export default async function AdminProductsPage({ searchParams }: Props) {
   const dbCategories = await getCategories(supabase);
   const categories = dbCategories.map((c) => c.slug);
 
+  // Fetch unique brands for the current category
+  const { uniqueBrands } = await getBrandCounts(supabase, params.category);
+
   // 2. Fetch filtered products list
   const { data: products, count } = await getProducts(supabase, {
     search: params.search,
     category: params.category,
+    brand: params.brand,
     stock: params.stock,
     sort: params.sort,
     page,
@@ -54,11 +58,37 @@ export default async function AdminProductsPage({ searchParams }: Props) {
     const newParams = new URLSearchParams();
     if (params.search) newParams.set("search", params.search);
     if (params.category) newParams.set("category", params.category);
+    if (params.brand) newParams.set("brand", params.brand);
     if (params.stock) newParams.set("stock", params.stock);
     if (params.sort && params.sort !== "newest")
       newParams.set("sort", params.sort);
     newParams.set("page", String(pageNum));
     return `/admin/products?${newParams.toString()}`;
+  };
+
+  const currentQueryString = getPageLink(page).replace("/admin/products", "");
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (page <= 3) {
+        pages.push(1, 2, 3, 4, "...", totalPages);
+      } else if (page >= totalPages - 2) {
+        pages.push(
+          1,
+          "...",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages,
+        );
+      } else {
+        pages.push(1, "...", page - 1, page, page + 1, "...", totalPages);
+      }
+    }
+    return pages;
   };
 
   return (
@@ -73,158 +103,17 @@ export default async function AdminProductsPage({ searchParams }: Props) {
       <ProductStats {...stats} />
 
       {/* Filter and Search Bar */}
-      <ProductFilterBar key={JSON.stringify(params)} categories={categories} />
+      <ProductFilterBar
+        key={JSON.stringify(params)}
+        categories={categories}
+        brands={uniqueBrands}
+      />
 
       {/* Table Section */}
-      <div className="table-wrapper">
-        <table className="table">
-          <thead>
-            <tr>
-              <th style={{ width: "80px" }}>{t("table.image")}</th>
-              <th>{t("table.product")}</th>
-              <th>{t("table.category")}</th>
-              <th>{t("table.price")}</th>
-              <th>{t("table.stock")}</th>
-              <th className="text-right" style={{ width: "120px" }}>
-                {t("table.actions")}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {!products || products.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={6}
-                  className="text-center p-8 text-secondary"
-                  style={{ padding: "3rem" }}
-                >
-                  {t("table.noProducts")}
-                </td>
-              </tr>
-            ) : (
-              products.map((product) => {
-                let stockBadgeClass = "badge-success";
-                let stockStatusText = t("table.statusInStock");
-
-                if (product.stock === 0) {
-                  stockBadgeClass = "badge-danger";
-                  stockStatusText = t("table.statusOutOfStock");
-                } else if (product.stock < 10) {
-                  stockBadgeClass = "badge-warning";
-                  stockStatusText = t("table.statusLowStock");
-                }
-
-                return (
-                  <tr key={product.id} className="table-row-hover">
-                    <td>
-                      {product.image_url ? (
-                        <img
-                          src={product.image_url}
-                          alt={product.title || "Product image"}
-                          className="table-img"
-                        />
-                      ) : (
-                        <div className="table-img-placeholder">ပုံမရှိပါ</div>
-                      )}
-                    </td>
-                    <td>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "2px",
-                        }}
-                      >
-                        <span
-                          className="font-bold"
-                          style={{
-                            fontSize: "var(--font-size-base)",
-                            color: "var(--color-text)",
-                          }}
-                        >
-                          {product.title}
-                        </span>
-                        {product.brand && (
-                          <span
-                            style={{
-                              fontSize: "var(--font-size-xs)",
-                              color: "var(--color-text-secondary)",
-                            }}
-                          >
-                            Brand: {product.brand}
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td>
-                      <span
-                        className="badge"
-                        style={{
-                          background: "var(--color-bg-secondary)",
-                          color: "var(--color-text-secondary)",
-                          textTransform: "capitalize",
-                        }}
-                      >
-                        {product.category}
-                      </span>
-                    </td>
-                    <td
-                      className="font-bold"
-                      style={{ color: "var(--color-primary)" }}
-                    >
-                      ${product.price.toFixed(2)}
-                    </td>
-                    <td>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "4px",
-                          alignItems: "flex-start",
-                        }}
-                      >
-                        <span className={`badge ${stockBadgeClass}`}>
-                          {product.stock} {t("table.pcs")}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: "10px",
-                            color: "var(--color-text-tertiary)",
-                          }}
-                        >
-                          {stockStatusText}
-                        </span>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="flex justify-end gap-sm">
-                        <Link
-                          href={`/admin/products/${product.id}/edit`}
-                          className="btn btn-sm btn-secondary"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            padding: "0.4rem",
-                            borderRadius: "var(--radius-md)",
-                          }}
-                          title="Edit Product"
-                        >
-                          <Edit size={16} />
-                        </Link>
-                        <DeleteProductButton
-                          id={product.id}
-                          title={product.title}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
-      </div>
+      <ProductTableClient
+        products={products || []}
+        currentQueryString={currentQueryString}
+      />
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
@@ -258,15 +147,41 @@ export default async function AdminProductsPage({ searchParams }: Props) {
             </button>
           )}
 
-          <span
+          <div
             style={{
-              fontSize: "var(--font-size-sm)",
-              color: "var(--color-text-secondary)",
-              fontWeight: 500,
+              display: "flex",
+              gap: "var(--space-xs)",
+              alignItems: "center",
             }}
           >
-            {t("pagination.pageOf", { page, totalPages })}
-          </span>
+            {getPageNumbers().map((p, i) =>
+              p === "..." ? (
+                <span
+                  key={`ellipsis-${i}`}
+                  style={{
+                    color: "var(--color-text-secondary)",
+                    padding: "0 8px",
+                  }}
+                >
+                  ...
+                </span>
+              ) : (
+                <Link
+                  key={`page-${p}`}
+                  href={getPageLink(p as number)}
+                  className={`btn btn-sm ${page === p ? "btn-primary" : "btn-ghost"}`}
+                  style={{
+                    minWidth: "32px",
+                    display: "flex",
+                    justifyContent: "center",
+                    fontWeight: page === p ? 600 : 400,
+                  }}
+                >
+                  {p}
+                </Link>
+              ),
+            )}
+          </div>
 
           {page < totalPages ? (
             <Link

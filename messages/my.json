@@ -17,6 +17,7 @@
   },
   "HomePage": {
     "categories": "အမျိုးအစားများ",
+    "brandShops": "ဆိုင်များ အားလုံး",
     "dailyDiscover": "ယနေ့အတွက် အသစ်များ",
     "sold": "ခု ရောင်းပြီး",
     "comingSoon": "ပစ္စည်းများ မကြာမီရောက်လာပါမည်",
@@ -26,7 +27,15 @@
     "soldPercent": "{percent}% ရောင်းပြီး",
     "forYou": "သင့်အတွက်",
     "trending": "အရောင်းရဆုံး",
-    "noProductsFound": "ပစ္စည်းရှာမတွေ့ပါ"
+    "noProductsFound": "ပစ္စည်းရှာမတွေ့ပါ",
+    "deliveryTitle": "တစ်နိုင်ငံလုံး အမြန်ပို့ဆောင်မှု",
+    "deliverySub": "မြန်မာတစ်နိုင်ငံလုံးသို့ အမြန်ပို့ဆောင်ပေးသည်",
+    "authenticTitle": "၁၀၀% စစ်မှန်သော အမှတ်တံဆိပ်များ",
+    "authenticSub": "စစ်မှန်သော ဒေသထွက်နှင့် အမှတ်တံဆိပ် ပစ္စည်းများ",
+    "paymentTitle": "စိတ်ချရသော မိုဘိုင်း ငွေပေးချေမှု",
+    "paymentSub": "KBZPay, WavePay တို့ဖြင့် စိတ်ချစွာ ငွေချေနိုင်သည်",
+    "supportTitle": "၂၄ နာရီ ကူညီထောက်ပံ့မှု",
+    "supportSub": "လူကြီးမင်းအတွက် အမြဲမပြတ် ကူညီပေးလျက်"
   },
   "Auth": {
     "welcomeBack": "ပြန်လည်ကြိုဆိုပါတယ်",
@@ -47,6 +56,7 @@
       "products": "ကုန်ပစ္စည်းများ",
       "orders": "အော်ဒါများ",
       "categories": "အမျိုးအစားများ",
+      "brandShops": "Brand ဆိုင်များ",
       "logout": "ထွက်ရန်"
     },
     "dashboard": {
@@ -146,6 +156,7 @@
     "placeOrder": "အော်ဒါအတည်ပြုရန်"
   },
   "Register": {
+    "continueWithGoogle": "Google ဖြင့် ဆက်လုပ်မည်",
     "checkEmail": "အီးမေးလ်ကိုစစ်ဆေးပါ",
     "title": "အကောင့်ဖန်တီးရန်",
     "subtitle": "အချက်အလက်များဖြည့်သွင်းပြီး အကောင့်ဖန်တီးပါ",
@@ -222,6 +233,50 @@
     "searchPlaceholder": "ရှာဖွေရန်...",
     "categoryTitle": "အမျိုးအစား",
     "allCount": "အားလုံး ({count})"
+  },
+  "Seller": {
+    "becomeSeller": "အရောင်းသူအဖြစ် မှတ်ပုံတင်ရန်",
+    "tagline": "Yoe Yar Zay တွင် ယနေ့ပင် စတင်ရောင်းချပါ။",
+    "applicationTitle": "ဆိုင်ဖွင့်ရန် လျှောက်လွှာ",
+    "shopName": "ဆိုင်အမည်",
+    "ownerName": "ပိုင်ရှင်အမည်",
+    "phone": "ဖုန်းနံပါတ်",
+    "nrc": "မှတ်ပုံတင်နံပါတ်",
+    "businessLicense": "လုပ်ငန်းလိုင်စင်",
+    "address": "နေရပ်လိပ်စာ",
+    "submit": "လျှောက်ထားရန်",
+    "submitting": "တင်နေသည်...",
+    "pending": "စစ်ဆေးဆဲ",
+    "pendingDesc": "Admin မှ စစ်ဆေးပြီး အကြောင်းကြားပါမည်။",
+    "approved": "အတည်ပြုပြီး",
+    "approvedDesc": "Seller Dashboard တွင် ကုန်ပစ္စည်းတင်နိုင်ပြီ။",
+    "rejected": "ပယ်ချခံရသည်",
+    "rejectedDesc": "ပြင်ဆင်ပြီး ထပ်မံ လျှောက်ထားနိုင်သည်။",
+    "rejectionReason": "အကြောင်းရင်း",
+    "successMsg": "လျှောက်လွှာ တင်ပြီးပါပြီ။ Admin မှ မကြာမီ စစ်ဆေးပေးပါမည်။",
+    "dashboard": {
+      "title": "Seller Dashboard",
+      "products": "ကျွန်ုပ်၏ ကုန်ပစ္စည်းများ",
+      "orders": "ကျွန်ုပ်၏ အော်ဒါများ",
+      "earnings": "ဝင်ငွေ",
+      "totalProducts": "ကုန်ပစ္စည်း စုစုပေါင်း",
+      "totalOrders": "အော်ဒါ စုစုပေါင်း",
+      "totalRevenue": "စုစုပေါင်း ဝင်ငွေ",
+      "pendingOrders": "အော်ဒါအသစ်",
+      "recentOrders": "လတ်တလော အော်ဒါများ"
+    },
+    "earnings": {
+      "title": "ဝင်ငွေနှင့် ပေးချေမှုများ",
+      "gross": "စုစုပေါင်း ဝင်ငွေ",
+      "commission": "Commission နုတ်ငွေ",
+      "net": "ရရှိမည့် အသားတင်ငွေ",
+      "payoutHistory": "ငွေလွဲမှတ်တမ်း",
+      "noPayouts": "ငွေလွဲမှတ်တမ်း မရှိသေးပါ။",
+      "status": "အခြေအနေ",
+      "period": "ကာလ",
+      "paid": "ပေးပြီး",
+      "pending": "စောင့်ဆိုင်းဆဲ"
+    }
   },
   "Sort": {
     "label": "စီစဉ်ရန်:",

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { createClient } from "@/lib/supabase/server";
-import { requireAdmin } from "@/lib/supabase/auth-helpers";
+import { requireAdminOrSeller } from "@/lib/supabase/auth-helpers";
 import { redirect, notFound } from "next/navigation";
 import { Shield } from "lucide-react";
 import AdminNav from "@/components/admin/AdminNav";
@@ -25,8 +25,10 @@ export default async function AdminLayout({
     redirect("/admin/login");
   }
 
+  let role: "admin" | "seller" = "admin";
   try {
-    await requireAdmin();
+    const res = await requireAdminOrSeller();
+    role = res.role;
   } catch {
     notFound();
   }
@@ -105,7 +107,7 @@ export default async function AdminLayout({
             <Shield size={14} />
             <span>{t("panel")}</span>
           </h2>
-          <AdminNav />
+          <AdminNav userRole={role} />
         </div>
       </aside>
 

@@ -18,6 +18,7 @@
   },
   "HomePage": {
     "categories": "CATEGORIES",
+    "brandShops": "All Shops",
     "dailyDiscover": "DAILY DISCOVER",
     "sold": "sold",
     "comingSoon": "Products coming soon",
@@ -27,7 +28,15 @@
     "soldPercent": "{percent}% sold",
     "forYou": "For You",
     "trending": "Trending",
-    "noProductsFound": "No products found"
+    "noProductsFound": "No products found",
+    "deliveryTitle": "Islandwide Fast Delivery",
+    "deliverySub": "Fast & safe delivery across Myanmar",
+    "authenticTitle": "100% Authentic Brands",
+    "authenticSub": "Guaranteed authentic local & global brands",
+    "paymentTitle": "Secure Mobile Payment",
+    "paymentSub": "Pay safely via KBZPay, WavePay & Cards",
+    "supportTitle": "24/7 Local Support",
+    "supportSub": "Dedicated local customer assistance"
   },
   "Auth": {
     "welcomeBack": "Welcome Back",
@@ -48,6 +57,7 @@
       "products": "Products",
       "orders": "Orders",
       "categories": "Categories",
+      "brandShops": "Brand Shops",
       "logout": "Logout"
     },
     "dashboard": {
@@ -147,6 +157,7 @@
     "placeOrder": "Place Order"
   },
   "Register": {
+    "continueWithGoogle": "Continue with Google",
     "checkEmail": "Please check your email",
     "title": "Create an Account",
     "subtitle": "Fill in the details to create an account",
@@ -223,6 +234,50 @@
     "searchPlaceholder": "Search...",
     "categoryTitle": "Category",
     "allCount": "All ({count})"
+  },
+  "Seller": {
+    "becomeSeller": "Register as Seller",
+    "tagline": "Start selling on Yoe Yar Zay today.",
+    "applicationTitle": "Seller Application",
+    "shopName": "Shop Name",
+    "ownerName": "Owner Name",
+    "phone": "Phone Number",
+    "nrc": "NRC Number",
+    "businessLicense": "Business License",
+    "address": "Address",
+    "submit": "Submit Application",
+    "submitting": "Submitting...",
+    "pending": "Application Under Review",
+    "pendingDesc": "Admin will review and notify you.",
+    "approved": "Seller Approved",
+    "approvedDesc": "You can now list products in your seller dashboard.",
+    "rejected": "Application Rejected",
+    "rejectedDesc": "Please fix and resubmit.",
+    "rejectionReason": "Reason",
+    "successMsg": "Application submitted. Admin will review shortly.",
+    "dashboard": {
+      "title": "Seller Dashboard",
+      "products": "My Products",
+      "orders": "My Orders",
+      "earnings": "Earnings",
+      "totalProducts": "Total Products",
+      "totalOrders": "Total Orders",
+      "totalRevenue": "Gross Revenue",
+      "pendingOrders": "Pending Orders",
+      "recentOrders": "Recent Orders"
+    },
+    "earnings": {
+      "title": "Earnings & Payouts",
+      "gross": "Gross Revenue",
+      "commission": "Commission Deducted",
+      "net": "Net Earnings",
+      "payoutHistory": "Payout History",
+      "noPayouts": "No payouts yet.",
+      "status": "Status",
+      "period": "Period",
+      "paid": "Paid",
+      "pending": "Pending"
+    }
   },
   "Sort": {
     "label": "Sort by:",

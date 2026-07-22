@@ -18,6 +18,20 @@ export default function AdminHeaderTitle() {
     title = t("categories");
   } else if (pathname.startsWith("/admin/orders")) {
     title = t("orders");
+  } else if (pathname.startsWith("/admin/users")) {
+    title = "User Management";
+  } else if (pathname.startsWith("/admin/shops")) {
+    title = "Seller Management";
+  } else if (pathname.startsWith("/admin/payouts")) {
+    title = "Seller Payouts";
+  } else if (pathname.startsWith("/admin/payments")) {
+    title = "Payment Accounts";
+  } else if (pathname.startsWith("/admin/logistics")) {
+    title = "Logistics Partners";
+  } else if (pathname.startsWith("/admin/banners")) {
+    title = "Hero Banners";
+  } else if (pathname.startsWith("/admin/settings/commission")) {
+    title = "Commission Settings";
   }
 
   return (

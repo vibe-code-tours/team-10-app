@@ -54,6 +54,13 @@ export async function updateProfile(state: any, formData: FormData) {
       return { error: "Failed to update profile." };
     }
 
+    // Keep Supabase Auth metadata in sync
+    await supabase.auth.updateUser({
+      data: { full_name: fullName },
+    });
+
+    revalidatePath("/", "layout");
+    revalidatePath("/settings");
     revalidatePath("/account/settings");
     revalidatePath("/account");
   } catch (err: unknown) {
