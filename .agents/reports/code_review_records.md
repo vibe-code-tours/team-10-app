@@ -27,3 +27,13 @@ Full-codebase security audit (Next.js + Supabase). **Headline:** the `requireAdm
 
 ### 🟡 Normal Priority
 - None. All recent changes (Rate Limiting, Accessibility `sr-only`, Mobile Touch Targets) adhere perfectly to architecture and security standards. ESLint passed with zero errors.
+
+
+## 2026-07-22 — Code Review (`/code-review`)
+
+### 🔴 High Priority
+- [x] [FIXED 2026-07-22] **[Performance & Security]** `src/app/[locale]/(shop)/shops/[seller_id]/page.tsx:L23-L38` — Unpaginated DB query fetches ALL users (`role = seller`) into server memory, then uses JavaScript `.find()` to locate the target shop. Fixed by replacing full scan with targeted UUID single query or first-word candidate search.
+
+### 🟡 Normal Priority
+- [x] [FIXED 2026-07-22] **[Performance / Image Optimization]** `src/app/[locale]/admin/(portal)/categories/page.tsx:L71`, `src/components/account/SellerApplicationForm.tsx:L175`, `src/components/admin/CategoryForm.tsx:L245`, `src/components/admin/ProductTableClient.tsx:L152`, `src/components/currency/CurrencySwitcher.tsx:L67,L144` — ESLint warning: Using `<img>` instead of Next.js `<Image />` component. Fixed by migrating all 5 files to Next.js `<Image />` component.
+

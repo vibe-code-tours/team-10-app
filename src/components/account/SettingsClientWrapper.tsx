@@ -66,7 +66,7 @@ export function SettingsClientWrapper({
   const locale = useLocale();
   const isMM = locale === "my";
 
-  const [activeTab, setActiveTab] = useState<"all" | "profile" | "payment" | "seller" | "security">("all");
+  const [activeTab, setActiveTab] = useState<"profile" | "payment" | "seller" | "security">("profile");
 
   const userName = profile?.full_name || profile?.shop_name || user.email || "Account User";
   const initialLetter = userName.charAt(0).toUpperCase();
@@ -102,12 +102,12 @@ export function SettingsClientWrapper({
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            flexWrap: "wrap",
             gap: "16px",
-            boxShadow: "var(--shadow-xs)",
+            borderRadius: "var(--radius-lg)",
+            flexWrap: "wrap",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <div
               style={{
                 width: "52px",
@@ -118,18 +118,19 @@ export function SettingsClientWrapper({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                fontSize: "20px",
                 fontWeight: 700,
-                fontSize: "22px",
-                boxShadow: "0 4px 10px rgba(0,0,0,0.12)",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                 flexShrink: 0,
               }}
             >
               {initialLetter}
             </div>
+
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <h1 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--color-text)", margin: 0, lineHeight: 1.2 }}>
-                  {profile?.full_name || (isMM ? "အကောင့် ဆက်တင်များ" : "Account Profile Settings")}
+                <h1 style={{ fontSize: "18px", fontWeight: 700, color: "var(--color-text)", margin: 0 }}>
+                  {userName}
                 </h1>
                 <span
                   className={`badge ${
@@ -196,30 +197,6 @@ export function SettingsClientWrapper({
             top: "calc(var(--header-height) + 16px)",
           }}
         >
-          <button
-            onClick={() => setActiveTab("all")}
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "10px 12px",
-              borderRadius: "var(--radius-md)",
-              border: "none",
-              background: activeTab === "all" ? "var(--color-primary-ghost)" : "transparent",
-              color: activeTab === "all" ? "var(--color-primary)" : "var(--color-text)",
-              fontWeight: activeTab === "all" ? 600 : 500,
-              fontSize: "13px",
-              cursor: "pointer",
-              textAlign: "left",
-            }}
-          >
-            <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <User size={16} /> {isMM ? "ဆက်တင် အားလုံး" : "All Settings"}
-            </span>
-            <ChevronRight size={14} style={{ opacity: activeTab === "all" ? 1 : 0.4 }} />
-          </button>
-
           <button
             onClick={() => setActiveTab("profile")}
             style={{
@@ -320,17 +297,17 @@ export function SettingsClientWrapper({
         {/* Settings Content Column */}
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-lg)" }}>
           {/* Profile & Payment Forms */}
-          {(activeTab === "all" || activeTab === "profile" || activeTab === "payment") && (
+          {(activeTab === "profile" || activeTab === "payment") && (
             <ProfileSettingsForms profile={profile} activeTab={activeTab} />
           )}
 
           {/* Become a Seller Application */}
-          {(activeTab === "all" || activeTab === "seller") && (
+          {activeTab === "seller" && (
             <SellerApplicationForm application={application} />
           )}
 
           {/* Security & Logout Card */}
-          {(activeTab === "all" || activeTab === "security") && (
+          {activeTab === "security" && (
             <div
               className="admin-card"
               style={{
