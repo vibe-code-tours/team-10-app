@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { useCurrency, CURRENCIES, CurrencyCode } from "./CurrencyProvider";
 import { ChevronDown } from "lucide-react";
 
@@ -38,6 +39,7 @@ export default function CurrencySwitcher() {
       style={{ position: "relative", display: "inline-block" }}
     >
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Select currency"
         aria-haspopup="listbox"
@@ -46,13 +48,13 @@ export default function CurrencySwitcher() {
           display: "flex",
           alignItems: "center",
           gap: "8px",
-          background: "var(--color-bg-secondary, #f0f2f5)",
+          backgroundColor: "var(--color-surface, #fff)",
           color: "var(--color-text, #111827)",
           border: "1px solid var(--color-border, #d1d5db)",
           borderRadius: "20px",
-          padding: "5px 10px 5px 12px",
+          padding: "4px 10px",
           cursor: "pointer",
-          fontSize: "13px",
+          fontSize: "12px",
           fontWeight: 600,
           transition: "all 0.2s ease",
           outline: "none",
@@ -64,10 +66,11 @@ export default function CurrencySwitcher() {
           e.currentTarget.style.borderColor = "var(--color-border, #d1d5db)";
         }}
       >
-        <img
+        <Image
           src={`https://flagcdn.com/w20/${FLAG_MAP[currencyConfig.code]}.png`}
           width={20}
           height={15}
+          unoptimized
           alt={currencyConfig.code}
           style={{ borderRadius: "2px", objectFit: "cover", flexShrink: 0 }}
         />
@@ -141,10 +144,11 @@ export default function CurrencySwitcher() {
                 }
               }}
             >
-              <img
+              <Image
                 src={`https://flagcdn.com/w20/${FLAG_MAP[c.code as CurrencyCode]}.png`}
                 width={20}
                 height={15}
+                unoptimized
                 alt={c.code}
                 style={{
                   borderRadius: "2px",

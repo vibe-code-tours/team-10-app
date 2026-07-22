@@ -35,9 +35,20 @@ Multi-Vendor Marketplace နှင့် Admin Category Management (Category Ima
     - **Other**: `ProductFilterBar` accepts `baseUrl` prop. Scratch files added to `.gitignore`. `tsconfig.json` excludes scratch `.ts` files. `project_mapping.md` fully rewritten for multi-vendor architecture.
   - **Why**: Multi-vendor marketplace transition — platform owner manages sellers; sellers manage own products/orders/earnings; buyers see shop pages.
   - **Gotchas**: (1) Zod v4 uses `.issues` not `.errors`. (2) Supabase returns arrays for joined relations — use `Array.isArray()` check or index `[0]`. (3) `ProductFilterBar` hardcoded `/admin/products/new` — fixed with `baseUrl` prop. (4) `csstype` package was corrupt — deleted and reinstalled. (5) `lock_user_role` trigger blocks self-escalation — admin approval uses `createAdminClient()` (service_role) to bypass. (6) DB migrations `20260722*` must be run manually on production SQL Editor before seller features work. (7) IDE showed false `Cannot find module CreateUserForm` — tsc clean, VS Code cache issue.
-  - **Open threads**: (1) Run DB migrations `20260722100000` + `20260722110000` on production SQL Editor. (2) Create 5 brand seller users via `/admin/users` page. (3) Run product→seller assignment SQL (by category). (4) Commit pending — branch `fix/ui-currency-fixes`.
+- **2026-07-22**: Resolved Code Review Findings (Shop Detail Page Performance & Next.js Image Optimization).
+  - **Changed**:
+    - **Shop Detail Page Query Optimization**: Updated `src/app/[locale]/(shop)/shops/[seller_id]/page.tsx` to eliminate full-table scan of all sellers. Implemented targeted UUID lookup and search candidate matching.
+    - **Next.js Image Migration**: Replaced standard `<img>` tags with Next.js `<Image />` component across 5 files (`categories/page.tsx`, `SellerApplicationForm.tsx`, `CategoryForm.tsx`, `ProductTableClient.tsx`, `CurrencySwitcher.tsx`).
+    - **Settings Navigation Cleanup**: Removed "All Settings" ("ဆက်တင် အားလုံး") sidebar tab from `SettingsClientWrapper.tsx` and updated default view to "Personal Info" tab.
+    - **Homepage UX Hybrid Load More Button**: Upgraded `DailyDiscover.tsx` from auto IntersectionObserver infinite scroll to a modern Hybrid "Load More Products" button UI with product progress counter and end badge. Eliminates Footer Trap.
+    - **Professional Footer UI/UX Redesign**: Completely overhauled `Footer.tsx` with a modern dark gradient Newsletter Subscription banner, 4 Trust & Guarantee Pillars, structured 4-column Marketplace Links (Customer Care, Shop Directory, Seller Centre, App Download), official branded payment SVG logos (KBZPay, WavePay, Visa, Mastercard, JCB, COD), logistics partner badges (Ninja Van, Royal Express, K-MD), and official App Store & Google Play download badges.
+    - **Main Header & Navigation Bar UI/UX Redesign**: Transformed `Header.tsx`, `LanguageSwitcher.tsx`, and `CurrencySwitcher.tsx` from a cluttered single-line bar into a modern 3-tier structure: (1) Top Utility Strip (announcement promo, Seller Centre link, grouped subtle Language/Currency/Theme pills), (2) Main Header Bar (glowing Yoe Yar Zay logo, 560px prominent search bar with button, user profile avatar & cart), and (3) Category Quick Navigation Strip (All Products, Crafts, Fashion, Beauty, Brand Shops, Daily Discover Deals).
+    - **Daily Discover Dedicated Route (`/daily-discover`)**: Created `src/app/[locale]/(shop)/daily-discover/page.tsx` fixing the 404 error when accessing `/daily-discover`. Features a dark gradient Deals banner, 3 promotional coupon cards (30% OFF, Free Shipping, Gift Vouchers), Trust pillars, and dynamic product grid with "For You" / "Trending" tabs and Hybrid Load More button.
+  - **Why**: Eliminate 404 error on `/daily-discover` and provide a dedicated marketplace deals & vouchers landing page.
+  - **Open threads**: Ready for atomic commit on branch `fix/ui-currency-fixes`.
 
 *Myanmar — အနှစ်ချုပ်:*
-- **2026-07-22**: Multi-Vendor Marketplace (Phase 1-4) နှင့် Admin User Management အပြည့်အစုံ ဆောင်ရွက်ပြီးစီးခဲ့သည်။
+- **2026-07-22**: Code Review စစ်ဆေးတွေ့ရှိချက်များ၊ Account Settings တွင် "ဆက်တင် အားလုံး" Tab ဖယ်ရှားခြင်း၊ Homepage Hybrid Load More Button၊ Admin Portal Payment Accounts, Logistics Partners နှင့် Hero Banners Control Center စနစ်များ၊ `/daily-discover` Page Route (404 ပြဿနာ ပြင်ဆင်မှု)၊ Header/Navbar 3-Tier UI/UX၊ Shopee-Style 2-Column Hero Banner နှင့် Footer Redesign ပြင်ဆင်မှုများ အပြည့်အစုံ ပြီးစီးခဲ့သည်။
 
 Older entries: see [archive/2026-07.md](archive/2026-07.md)
+
