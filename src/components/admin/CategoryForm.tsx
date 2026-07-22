@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition, useRef } from "react";
+import Image from "next/image";
 import {
   createCategory,
   updateCategory,
@@ -242,12 +243,13 @@ export default function CategoryForm({ category }: { category?: Category }) {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <img
+              <Image
                 src={activeImage}
                 alt="Category Preview"
+                width={56}
+                height={56}
+                unoptimized
                 style={{
-                  width: "56px",
-                  height: "56px",
                   borderRadius: "8px",
                   objectFit: "cover",
                   border: "1px solid var(--color-border)",

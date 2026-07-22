@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState, useRef } from "react";
+import Image from "next/image";
 import { useLocale } from "next-intl";
 import {
   submitSellerApplication,
@@ -172,12 +173,13 @@ function DragDropUploader({ label, name, acceptedTypes = "image/*,application/pd
         >
           <div style={{ display: "flex", alignItems: "center", gap: "10px", overflow: "hidden" }}>
             {previewUrl ? (
-              <img
+              <Image
                 src={previewUrl}
                 alt="Document preview"
+                width={44}
+                height={44}
+                unoptimized
                 style={{
-                  width: "44px",
-                  height: "44px",
                   borderRadius: "6px",
                   objectFit: "cover",
                   border: "1px solid var(--color-border)",

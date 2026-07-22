@@ -16,6 +16,7 @@ export default function LanguageSwitcher() {
 
   return (
     <button
+      type="button"
       onClick={toggleLanguage}
       aria-label={
         locale === "en"
@@ -23,43 +24,50 @@ export default function LanguageSwitcher() {
           : "Switch language to English"
       }
       style={{
-        background: "var(--color-primary, #007bff)",
-        color: "white",
-        border: "none",
+        background: "var(--color-surface)",
+        color: "var(--color-text)",
+        border: "1px solid var(--color-border)",
         borderRadius: "20px",
-        padding: "6px 14px",
+        padding: "4px 10px",
         cursor: "pointer",
-        fontSize: "13px",
+        fontSize: "12px",
         fontWeight: 600,
-        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "6px",
         transition: "all 0.2s ease",
+        outline: "none",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = "var(--color-primary)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = "var(--color-border)";
       }}
     >
-      <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-        {locale === "en" ? (
-          <>
-            <Image
-              src="https://flagcdn.com/w40/gb.png"
-              width={20}
-              height={15}
-              alt="UK Flag"
-              style={{ borderRadius: "2px" }}
-            />{" "}
-            EN
-          </>
-        ) : (
-          <>
-            <Image
-              src="https://flagcdn.com/w40/mm.png"
-              width={20}
-              height={15}
-              alt="Myanmar Flag"
-              style={{ borderRadius: "2px" }}
-            />{" "}
-            MM
-          </>
-        )}
-      </span>
+      {locale === "en" ? (
+        <>
+          <Image
+            src="https://flagcdn.com/w40/gb.png"
+            width={18}
+            height={13}
+            alt="UK Flag"
+            style={{ borderRadius: "2px", objectFit: "cover" }}
+          />
+          <span>EN</span>
+        </>
+      ) : (
+        <>
+          <Image
+            src="https://flagcdn.com/w40/mm.png"
+            width={18}
+            height={13}
+            alt="Myanmar Flag"
+            style={{ borderRadius: "2px", objectFit: "cover" }}
+          />
+          <span>MY</span>
+        </>
+      )}
     </button>
   );
 }

@@ -25,12 +25,12 @@ interface ProfileSettingsFormsProps {
     address?: string | null;
     preferred_payment_method?: string | null;
   } | null;
-  activeTab?: "all" | "profile" | "payment" | "seller" | "security";
+  activeTab?: "profile" | "payment" | "seller" | "security";
 }
 
 export function ProfileSettingsForms({
   profile,
-  activeTab = "all",
+  activeTab = "profile",
 }: ProfileSettingsFormsProps) {
   const locale = useLocale();
   const isMM = locale === "my";
@@ -44,8 +44,8 @@ export function ProfileSettingsForms({
     null
   );
 
-  const showProfile = activeTab === "all" || activeTab === "profile";
-  const showPayment = activeTab === "all" || activeTab === "payment";
+  const showProfile = activeTab === "profile";
+  const showPayment = activeTab === "payment";
 
   return (
     <>

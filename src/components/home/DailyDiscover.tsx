@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Star, TrendingUp, ShoppingBag } from "lucide-react";
+import { Star, TrendingUp, ShoppingBag, ChevronDown, Loader2, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import { Price } from "@/components/currency/Price";
 
@@ -34,8 +34,6 @@ export function DailyDiscover({
   const [visibleCount, setVisibleCount] = useState(24);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("for-you");
-  const observerRef = useRef<HTMLDivElement>(null);
-  const isLoadingRef = useRef(false);
 
   // Deterministic product stats & badges
   const getProductStats = (product: Product) => {
@@ -63,37 +61,14 @@ export function DailyDiscover({
     return { sales, rating, badgeText, badgeColor };
   };
 
-  useEffect(() => {
-    if (visibleCount >= products.length) return;
-
-    const el = observerRef.current;
-    if (!el) return;
-
-    let timeoutId: NodeJS.Timeout;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !isLoadingRef.current) {
-          isLoadingRef.current = true;
-          setIsLoading(true);
-
-          timeoutId = setTimeout(() => {
-            setVisibleCount((prev) => Math.min(prev + 18, products.length));
-            isLoadingRef.current = false;
-            setIsLoading(false);
-          }, 400);
-        }
-      },
-      { rootMargin: "200px" },
-    );
-
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-  }, [products.length, visibleCount]);
+  const handleLoadMore = () => {
+    if (isLoading || visibleCount >= products.length) return;
+    setIsLoading(true);
+    setTimeout(() => {
+      setVisibleCount((prev) => Math.min(prev + 18, products.length));
+      setIsLoading(false);
+    }, 350);
+  };
 
   const displayedProducts = products.slice(0, visibleCount);
 
@@ -405,35 +380,100 @@ export function DailyDiscover({
           </div>
         )}
 
-        {/* Loading Spinner & Observer Trigger */}
-        {visibleCount < products.length && (
-          <div
-            ref={observerRef}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "24px 0",
-              width: "100%",
-            }}
-          >
-            {isLoading ? (
-              <div
-                className="shopee-spinner"
+        {/* Load More Button & Progress Footer */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "28px 16px 36px 16px",
+            gap: "12px",
+            borderTop: "1px solid var(--color-border-light)",
+            background: "var(--color-surface)",
+          }}
+        >
+          {visibleCount < products.length ? (
+            <>
+              <button
+                type="button"
+                onClick={handleLoadMore}
+                disabled={isLoading}
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  border: "3px solid var(--color-primary-ghost)",
-                  borderTop: "3px solid var(--color-primary)",
-                  borderRadius: "50%",
-                  animation: "spin 0.6s linear infinite",
+                  padding: "11px 32px",
+                  borderRadius: "24px",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  cursor: isLoading ? "not-allowed" : "pointer",
+                  transition: "all 0.2s ease-in-out",
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+                  background: "var(--color-surface)",
+                  border: "1.5px solid var(--color-primary)",
+                  color: "var(--color-primary)",
+                  outline: "none",
                 }}
-              />
-            ) : (
-              <div style={{ height: "20px" }} />
-            )}
-          </div>
-        )}
+                onMouseEnter={(e) => {
+                  if (!isLoading) {
+                    e.currentTarget.style.background = "var(--color-primary)";
+                    e.currentTarget.style.color = "#ffffff";
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow = "0 4px 14px rgba(37, 99, 235, 0.25)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isLoading) {
+                    e.currentTarget.style.background = "var(--color-surface)";
+                    e.currentTarget.style.color = "var(--color-primary)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "0 2px 10px rgba(0,0,0,0.05)";
+                  }
+                }}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    <span>Loading...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Load More Products ({products.length - visibleCount} remaining)</span>
+                    <ChevronDown size={16} />
+                  </>
+                )}
+              </button>
+              <div
+                style={{
+                  fontSize: "12.5px",
+                  color: "var(--color-text-tertiary)",
+                  fontWeight: 500,
+                }}
+              >
+                Showing {displayedProducts.length} of {products.length} products
+              </div>
+            </>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                fontSize: "13px",
+                color: "var(--color-text-secondary)",
+                fontWeight: 600,
+                padding: "8px 18px",
+                background: "var(--color-bg-secondary)",
+                borderRadius: "20px",
+                border: "1px solid var(--color-border-light)",
+              }}
+            >
+              <CheckCircle2 size={16} style={{ color: "#10b981" }} />
+              <span>You&apos;ve viewed all {products.length} products</span>
+            </div>
+          )}
+        </div>
       </div>
 
       <style
@@ -442,6 +482,9 @@ export function DailyDiscover({
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
+        }
+        .animate-spin {
+          animation: spin 0.8s linear infinite;
         }
         .discover-product-card:hover {
           transform: translateY(-4px);
