@@ -2,7 +2,7 @@ import { Link } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CartIcon } from "@/components/layout/CartIcon";
-import { Search, Store, Sparkles, ShoppingBag, Heart, HelpCircle } from "lucide-react";
+import { Search, Store, Sparkles, ShoppingBag } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import CurrencySwitcher from "@/components/currency/CurrencySwitcher";
 import { getTranslations } from "next-intl/server";

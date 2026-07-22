@@ -1,9 +1,7 @@
 import React from "react";
-import Link from "next/link";
-import Image from "next/image";
 import { createPublicClient } from "@/lib/supabase/public";
 import { getTranslations } from "next-intl/server";
-import { Sparkles, Flame, Tag, Truck, Gift, ChevronRight } from "lucide-react";
+import { Flame, Tag, Truck, Gift } from "lucide-react";
 import { DailyDiscover } from "@/components/home/DailyDiscover";
 import { ValuePropsBar } from "@/components/home/ValuePropsBar";
 

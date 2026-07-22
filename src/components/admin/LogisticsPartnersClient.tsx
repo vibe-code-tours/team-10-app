@@ -16,7 +16,6 @@ import {
   Trash2,
   CheckCircle2,
   XCircle,
-  Upload,
   Crown,
   Package,
   Plane,
@@ -26,7 +25,6 @@ import {
   Copy,
   Check,
   ExternalLink,
-  HelpCircle,
 } from "lucide-react";
 
 const INITIAL_DEFAULT_PARTNERS: LogisticsPartner[] = [
@@ -93,9 +91,21 @@ export default function LogisticsPartnersClient({
 }: {
   initialPartners: LogisticsPartner[];
 }) {
-  const [partners, setPartners] = useState<LogisticsPartner[]>(
-    initialPartners && initialPartners.length > 0 ? initialPartners : INITIAL_DEFAULT_PARTNERS
-  );
+  const [partners, setPartners] = useState<LogisticsPartner[]>(() => {
+    if (initialPartners && initialPartners.length > 0) return initialPartners;
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("yoeyarzay_logistics_partners_v1");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        } catch (e) {
+          console.error("Failed to parse saved logistics partners:", e);
+        }
+      }
+    }
+    return INITIAL_DEFAULT_PARTNERS;
+  });
   const [dbNotice, setDbNotice] = useState<string | null>(null);
 
   // Modal State
@@ -118,31 +128,12 @@ export default function LogisticsPartnersClient({
   // Copy SQL script state
   const [copiedSql, setCopiedSql] = useState(false);
 
-  // Sync to localStorage
+  // Sync to localStorage when partners change
   useEffect(() => {
-    if (initialPartners && initialPartners.length > 0) {
-      setPartners(initialPartners);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("yoeyarzay_logistics_partners_v1", JSON.stringify(initialPartners));
-      }
-    } else {
-      if (typeof window !== "undefined") {
-        const saved = localStorage.getItem("yoeyarzay_logistics_partners_v1");
-        if (saved) {
-          try {
-            const parsed = JSON.parse(saved);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              setPartners(parsed);
-              return;
-            }
-          } catch (e) {
-            console.error("Failed to parse saved logistics partners:", e);
-          }
-        }
-        localStorage.setItem("yoeyarzay_logistics_partners_v1", JSON.stringify(INITIAL_DEFAULT_PARTNERS));
-      }
+    if (typeof window !== "undefined") {
+      localStorage.setItem("yoeyarzay_logistics_partners_v1", JSON.stringify(partners));
     }
-  }, [initialPartners]);
+  }, [partners]);
 
   // Open Modal for Create
   const handleOpenCreateModal = () => {

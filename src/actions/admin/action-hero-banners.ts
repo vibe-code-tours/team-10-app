@@ -86,9 +86,9 @@ export async function createHeroBanner(payload: {
     revalidatePath("/[locale]/admin/banners", "page");
 
     return { success: true, data: data as HeroBanner };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Failed to create hero banner:", err);
-    return { success: false, error: err.message || "Failed to create hero banner" };
+    return { success: false, error: (err as Error).message || "Failed to create hero banner" };
   }
 }
 
@@ -112,7 +112,7 @@ export async function updateHeroBanner(
     await requireAdmin();
     const supabase = createAdminClient();
 
-    const updateData: Record<string, any> = {
+    const updateData: Record<string, string | number | boolean> = {
       updated_at: new Date().toISOString(),
     };
 
@@ -141,9 +141,9 @@ export async function updateHeroBanner(
     revalidatePath("/[locale]/admin/banners", "page");
 
     return { success: true, data: data as HeroBanner };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Failed to update hero banner:", err);
-    return { success: false, error: err.message || "Failed to update hero banner" };
+    return { success: false, error: (err as Error).message || "Failed to update hero banner" };
   }
 }
 
@@ -172,9 +172,9 @@ export async function toggleHeroBannerActive(
     revalidatePath("/[locale]/admin/banners", "page");
 
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Failed to toggle hero banner active status:", err);
-    return { success: false, error: err.message || "Failed to toggle active status" };
+    return { success: false, error: (err as Error).message || "Failed to toggle active status" };
   }
 }
 
@@ -199,8 +199,8 @@ export async function deleteHeroBanner(
     revalidatePath("/[locale]/admin/banners", "page");
 
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Failed to delete hero banner:", err);
-    return { success: false, error: err.message || "Failed to delete banner" };
+    return { success: false, error: (err as Error).message || "Failed to delete banner" };
   }
 }

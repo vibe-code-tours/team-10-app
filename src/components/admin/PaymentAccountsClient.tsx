@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useRef, useEffect } from "react";
+import { useState, useTransition, useRef } from "react";
 import {
   CreditCard,
   Plus,
@@ -138,28 +138,22 @@ export function PaymentAccountsClient({
 }: {
   initialAccounts: PaymentAccount[];
 }) {
-  const effectiveInitialAccounts =
-    initialAccounts.length > 0 ? initialAccounts : DEFAULT_FOOTER_PAYMENT_ACCOUNTS;
-
-  const [accounts, setAccounts] = useState<PaymentAccount[]>(effectiveInitialAccounts);
-  const [isPending, startTransition] = useTransition();
-
-  // Load from localStorage if DB initial is empty
-  useEffect(() => {
-    if (initialAccounts.length === 0 && typeof window !== "undefined") {
+  const [accounts, setAccounts] = useState<PaymentAccount[]>(() => {
+    if (initialAccounts.length > 0) return initialAccounts;
+    if (typeof window !== "undefined") {
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setAccounts(parsed);
-          }
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
         } catch (e) {
           console.error("Failed to load local payment accounts:", e);
         }
       }
     }
-  }, [initialAccounts]);
+    return DEFAULT_FOOTER_PAYMENT_ACCOUNTS;
+  });
+  const [isPending, startTransition] = useTransition();
 
   const updateAndPersist = (newAccounts: PaymentAccount[]) => {
     setAccounts(newAccounts);

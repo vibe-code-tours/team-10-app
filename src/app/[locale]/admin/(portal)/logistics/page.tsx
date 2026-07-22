@@ -1,6 +1,5 @@
 import { getLogisticsPartners } from "@/actions/admin/action-logistics-partners";
 import LogisticsPartnersClient from "@/components/admin/LogisticsPartnersClient";
-import AdminHeaderTitle from "@/components/admin/AdminHeaderTitle";
 
 export const metadata = {
   title: "Logistics Partners Management | Yoe Yar Zay Admin",

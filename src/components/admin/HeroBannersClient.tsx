@@ -21,11 +21,7 @@ import {
   Copy,
   Check,
   Shield,
-  Sparkles,
-  Tag,
-  Truck,
   ExternalLink,
-  SlidersHorizontal,
   Eye,
 } from "lucide-react";
 
@@ -99,7 +95,6 @@ export function HeroBannersClient({ initialBanners }: { initialBanners: HeroBann
   const [banners, setBanners] = useState<HeroBanner[]>(
     initialBanners.length > 0 ? initialBanners : INITIAL_FALLBACK_BANNERS
   );
-  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<"all" | "main_slider" | "side_banners">("all");
   const [isDbConnected, setIsDbConnected] = useState(initialBanners.length > 0);
   const [copiedSql, setCopiedSql] = useState(false);
@@ -176,7 +171,7 @@ export function HeroBannersClient({ initialBanners }: { initialBanners: HeroBann
 
   const openEditModal = (banner: HeroBanner) => {
     setEditingBanner(banner);
-    setBannerType(banner.banner_type as any);
+    setBannerType(banner.banner_type as "main_slider" | "side_top" | "side_bottom");
     setTitle(banner.title);
     setSubtitle(banner.subtitle || "");
     setBadge(banner.badge || "");
@@ -854,7 +849,7 @@ CREATE POLICY "Authenticated admin full access hero_banners" ON public.hero_bann
                 </label>
                 <select
                   value={bannerType}
-                  onChange={(e: any) => setBannerType(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setBannerType(e.target.value as "main_slider" | "side_top" | "side_bottom")}
                   style={{
                     width: "100%",
                     padding: "10px 12px",
