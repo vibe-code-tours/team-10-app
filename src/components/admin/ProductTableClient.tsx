@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { Edit, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -149,10 +150,13 @@ export default function ProductTableClient({
                   </td>
                   <td>
                     {product.image_url ? (
-                      <img
+                      <Image
                         src={product.image_url}
                         alt={product.title || "Product image"}
+                        width={40}
+                        height={40}
                         className="table-img"
+                        style={{ objectFit: "cover", borderRadius: "6px" }}
                       />
                     ) : (
                       <div className="table-img-placeholder">ပုံမရှိပါ</div>

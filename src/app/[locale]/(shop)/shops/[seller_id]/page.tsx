@@ -19,23 +19,44 @@ export default async function ShopPage({ params }: Props) {
   const supabase = createAdminClient();
   const t = await getTranslations("Products");
 
-  // 1. Fetch seller details by shop_slug or id (UUID)
-  const { data: allSellers } = await supabase
-    .from("users")
-    .select(
-      "id, full_name, shop_name, phone_number, address, role, created_at"
-    )
-    .eq("role", "seller");
+  // 1. Fetch targeted seller details by id (UUID) or shop slug candidate
+  const isUuid =
+    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
+      seller_id
+    );
 
-  const seller = (allSellers || []).find((s) => {
-    if (s.id === seller_id) return true;
-    const slug = (s.shop_name || s.full_name || "")
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)+/g, "");
-    return slug === seller_id;
-  });
+  let seller = null;
+
+  if (isUuid) {
+    const { data } = await supabase
+      .from("users")
+      .select(
+        "id, full_name, shop_name, phone_number, address, role, created_at"
+      )
+      .eq("role", "seller")
+      .eq("id", seller_id)
+      .maybeSingle();
+    seller = data;
+  } else {
+    const firstWord = seller_id.split("-")[0] || "";
+    const { data: candidates } = await supabase
+      .from("users")
+      .select(
+        "id, full_name, shop_name, phone_number, address, role, created_at"
+      )
+      .eq("role", "seller")
+      .or(`shop_name.ilike.%${firstWord}%,full_name.ilike.%${firstWord}%`);
+
+    seller =
+      (candidates || []).find((s) => {
+        const slug = (s.shop_name || s.full_name || "")
+          .toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)+/g, "");
+        return slug === seller_id;
+      }) || null;
+  }
 
   if (!seller || seller.role !== "seller") {
     return (

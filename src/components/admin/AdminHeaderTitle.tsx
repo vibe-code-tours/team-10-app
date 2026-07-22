@@ -24,6 +24,12 @@ export default function AdminHeaderTitle() {
     title = "Seller Management";
   } else if (pathname.startsWith("/admin/payouts")) {
     title = "Seller Payouts";
+  } else if (pathname.startsWith("/admin/payments")) {
+    title = "Payment Accounts";
+  } else if (pathname.startsWith("/admin/logistics")) {
+    title = "Logistics Partners";
+  } else if (pathname.startsWith("/admin/banners")) {
+    title = "Hero Banners";
   } else if (pathname.startsWith("/admin/settings/commission")) {
     title = "Commission Settings";
   }
