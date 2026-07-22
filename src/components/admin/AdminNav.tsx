@@ -11,6 +11,9 @@ import {
   DollarSign,
   Settings,
   Users,
+  CreditCard,
+  Truck,
+  Image as ImageIcon,
 } from "lucide-react";
 import { signOut } from "@/actions/auth/action-signout";
 import { useTranslations } from "next-intl";
@@ -29,6 +32,8 @@ export default function AdminNav({
   const isCategoriesActive = pathname.startsWith("/admin/categories");
   const isShopsActive = pathname.startsWith("/admin/shops");
   const isPayoutsActive = pathname.startsWith("/admin/payouts");
+  const isPaymentsActive = pathname.startsWith("/admin/payments");
+  const isLogisticsActive = pathname.startsWith("/admin/logistics");
   const isSettingsActive = pathname.startsWith("/admin/settings");
   const isUsersActive = pathname.startsWith("/admin/users");
 
@@ -96,6 +101,27 @@ export default function AdminNav({
           >
             <DollarSign size={18} />
             <span>Payouts</span>
+          </Link>
+          <Link
+            href="/admin/payments"
+            className={`admin-nav-link ${isPaymentsActive ? "active" : ""}`}
+          >
+            <CreditCard size={18} />
+            <span>Payments</span>
+          </Link>
+          <Link
+            href="/admin/logistics"
+            className={`admin-nav-link ${isLogisticsActive ? "active" : ""}`}
+          >
+            <Truck size={18} />
+            <span>Logistics</span>
+          </Link>
+          <Link
+            href="/admin/banners"
+            className={`admin-nav-link ${pathname.startsWith("/admin/banners") ? "active" : ""}`}
+          >
+            <ImageIcon size={18} />
+            <span>Hero Banners</span>
           </Link>
           <Link
             href="/admin/settings/commission"

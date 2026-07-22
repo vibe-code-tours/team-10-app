@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { Link } from "@/i18n/routing";
+import Image from "next/image";
 import { Plus, Edit } from "lucide-react";
 import DeleteCategoryButton from "@/components/admin/DeleteCategoryButton";
 import { getTranslations } from "next-intl/server";
@@ -68,12 +69,12 @@ export default async function AdminCategoriesPage() {
                 return (
                   <tr key={category.id} className="table-row-hover">
                     <td>
-                      <img
+                      <Image
                         src={displayImg}
                         alt={category.name}
+                        width={40}
+                        height={40}
                         style={{
-                          width: "40px",
-                          height: "40px",
                           borderRadius: "8px",
                           objectFit: "cover",
                           border: "1px solid var(--color-border)",
